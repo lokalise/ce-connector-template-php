@@ -30,5 +30,11 @@ services:
     error_handler.error_renderer.serializer:
         alias: App\Renderer\ApiErrorRenderer
 
+    App\TokenExtractor\TokenExtractorInterface:
+        class: App\TokenExtractor\HeaderTokenExtractor
+
     App\Interfaces\AuthenticationInterface:
         class: App\Integration\AuthenticationService
+
+    App\Interfaces\PublishInterface:
+        class: App\Integration\PublishService
