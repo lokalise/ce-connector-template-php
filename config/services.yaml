@@ -31,4 +31,4 @@ services:
         alias: App\Renderer\ApiErrorRenderer
 
     App\Interfaces\AuthenticationInterface:
-        class: App\Service\Integration\AuthenticationService
+        class: App\Integration\AuthenticationService
