@@ -38,3 +38,9 @@ services:
 
     App\Interfaces\PublishInterface:
         class: App\Integration\PublishService
+
+    App\Interfaces\CacheInterface:
+        class: App\Integration\CacheService
+
+    App\Interfaces\EnvironmentInterface:
+        class: App\Integration\EnvironmentService
