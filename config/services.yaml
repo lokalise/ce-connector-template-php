@@ -41,6 +41,3 @@ services:
 
     App\Interfaces\TranslationInterface:
         class: App\Integration\TranslationService
-
-    App\Interfaces\TranslationRendererInterface:
-        class: App\Integration\TranslationRenderer

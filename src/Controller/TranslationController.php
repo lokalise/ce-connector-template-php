@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\DTO\Request\TranslateRequest;
+use App\DTO\Response\TranslationResponse;
 use App\Interfaces\TranslationInterface;
-use App\Interfaces\TranslationRendererInterface;
 use App\TokenExtractor\TokenExtractorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +17,6 @@ class TranslationController extends AbstractController implements TokenAuthentic
     public function __construct(
         private readonly TokenExtractorInterface $tokenExtractor,
         private readonly TranslationInterface $translationService,
-        private readonly TranslationRendererInterface $translationRenderer,
     ) {
     }
 
@@ -25,7 +24,7 @@ class TranslationController extends AbstractController implements TokenAuthentic
         path: '/translate',
         methods: [Request::METHOD_POST]
     )]
-    public function publish(Request $request, TranslateRequest $translateRequest): JsonResponse
+    public function translate(Request $request, TranslateRequest $translateRequest): JsonResponse
     {
         $accessToken = $this->tokenExtractor->extract($request);
 
@@ -38,7 +37,7 @@ class TranslationController extends AbstractController implements TokenAuthentic
             throw new AccessDeniedHttpException('Could not retrieve content items');
         }
 
-        $responseDTO = $this->translationRenderer->render($items);
+        $responseDTO = new TranslationResponse($items);;
 
         return $this->json($responseDTO);
     }
