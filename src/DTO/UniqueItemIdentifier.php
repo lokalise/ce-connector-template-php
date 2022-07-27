@@ -8,11 +8,11 @@ class UniqueItemIdentifier
 {
     #[Assert\NotBlank()]
     #[Assert\Length(min: 1, max: 256)]
-    public string $uniqueId;
+    public ?string $uniqueId = null;
 
     #[Assert\NotBlank()]
     #[Assert\Length(min: 1, max: 256)]
-    public string $groupId;
+    public ?string $groupId = null;
 
     /**
      * @var array<string, string>|null
