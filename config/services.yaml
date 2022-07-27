@@ -38,3 +38,6 @@ services:
 
     App\Interfaces\PublishInterface:
         class: App\Integration\PublishService
+
+    App\Interfaces\TranslationInterface:
+        class: App\Integration\TranslationService
