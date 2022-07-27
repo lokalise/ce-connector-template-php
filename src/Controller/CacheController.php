@@ -10,9 +10,10 @@ use App\TokenExtractor\TokenExtractorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CacheController extends AbstractController
+class CacheController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
         private readonly TokenExtractorInterface $tokenExtractor,
@@ -28,11 +29,11 @@ class CacheController extends AbstractController
     {
         $accessToken = $this->tokenExtractor->extract($request);
 
-        if (!$accessToken) {
-            throw new AccessDeniedHttpException('Not authorised');
-        }
+        $cacheResult = $this->cacheService->listItems($accessToken);
 
-        $cacheResult =$this->cacheService->listItems($accessToken);
+        if (!$cacheResult) {
+            throw new AccessDeniedHttpException('Could not retrieve content items');
+        }
 
         $responseDTO = new CacheResponse($cacheResult);
 
@@ -47,11 +48,11 @@ class CacheController extends AbstractController
     {
         $accessToken = $this->tokenExtractor->extract($request);
 
-        if (!$accessToken) {
-            throw new AccessDeniedHttpException('Not authorised');
-        }
+        $cacheResult = $this->cacheService->getItems($accessToken, $cacheRequest->items);
 
-        $cacheResult =$this->cacheService->getItems($accessToken, $cacheRequest->items);
+        if (!$cacheResult) {
+            throw new AccessDeniedHttpException('Could not retrieve content items');
+        }
 
         $responseDTO = new CacheItemsResponse($cacheResult);
 

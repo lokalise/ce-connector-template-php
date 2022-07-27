@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PublishController extends AbstractController implements TokenAuthenticatedController
+class PublishController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
         private readonly TokenExtractorInterface $tokenExtractor,
@@ -30,6 +30,7 @@ class PublishController extends AbstractController implements TokenAuthenticated
         $accessToken = $this->tokenExtractor->extract($request);
 
         $publishResult = $this->publishService->publishContent($accessToken, $publishRequest->items);
+
         if (!$publishResult) {
             throw new AccessDeniedHttpException('Could not publish content');
         }

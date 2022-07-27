@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Exception\ValidationFailedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RequestDtoResolver implements ArgumentValueResolverInterface
@@ -31,7 +30,7 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($requestDTO);
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string) $violations);
+            throw new BadRequestHttpException((string)$violations);
         }
 
         yield $requestDTO;

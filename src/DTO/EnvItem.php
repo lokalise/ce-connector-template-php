@@ -8,7 +8,7 @@ class EnvItem
 {
     #[Assert\NotBlank()]
     #[Assert\Length(min: 2, max: 5)]
-    public string $defaultLocale;
+    public ?string $defaultLocale = null;
 
     /**
      * @var array<int, LocaleItem>|null

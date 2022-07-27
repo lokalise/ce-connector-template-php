@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TranslationController extends AbstractController implements TokenAuthenticatedController
+class TranslationController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
         private readonly TokenExtractorInterface $tokenExtractor,
@@ -33,6 +33,7 @@ class TranslationController extends AbstractController implements TokenAuthentic
             $translateRequest->locales,
             $translateRequest->items,
         );
+
         if (!$items) {
             throw new AccessDeniedHttpException('Could not retrieve content items');
         }

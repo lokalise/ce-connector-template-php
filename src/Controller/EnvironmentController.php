@@ -7,10 +7,11 @@ use App\Interfaces\EnvironmentInterface;
 use App\TokenExtractor\TokenExtractorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class EnvironmentController extends AbstractController
+class EnvironmentController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
         private readonly TokenExtractorInterface $tokenExtractor,
@@ -26,11 +27,11 @@ class EnvironmentController extends AbstractController
     {
         $accessToken = $this->tokenExtractor->extract($request);
 
-        if (!$accessToken) {
-            throw new AccessDeniedHttpException('Not authorised');
-        }
+        $envResult = $this->envService->getEnv($accessToken);
 
-        $envResult =$this->envService->getEnv($accessToken);
+        if (!$envResult) {
+            throw new AccessDeniedHttpException('Could not retrieve content items');
+        }
 
         $responseDTO = new EnvironmentResponse($envResult);
 

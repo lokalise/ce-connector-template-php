@@ -2,10 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Controller\AuthenticationController;
-use App\Controller\PublishController;
-use App\Controller\TokenAuthenticatedController;
-use App\Controller\TranslationController;
+use App\Controller\TokenAuthenticatedControllerInterface;
 use App\TokenExtractor\TokenExtractorInterface;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -38,7 +35,7 @@ class TokenSubscriber implements EventSubscriberInterface
             $controller = $controller[0];
         }
 
-        if (!$controller instanceof TokenAuthenticatedController) {
+        if (!$controller instanceof TokenAuthenticatedControllerInterface) {
             return;
         }
 

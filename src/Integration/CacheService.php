@@ -13,7 +13,15 @@ class CacheService implements CacheInterface
      */
     public function listItems(string $accessToken): ?array
     {
-        return [];
+        $item = new UniqueItemIdentifier();
+        $item->uniqueId = "post:1:title";
+        $item->groupId = "post:1";
+        $item->metadata = [
+            "contentType" => "post",
+            "field" => "title"
+        ];
+
+        return [$item];
     }
 
     /**
@@ -23,6 +31,17 @@ class CacheService implements CacheInterface
      */
     public function getItems(string $accessToken, array $items): ?array
     {
-        return [];
+        return array_map(
+            function (UniqueItemIdentifier $uniqueItemIdentifier): CacheItem {
+                $cacheItem = new CacheItem();
+                $cacheItem->uniqueId = $uniqueItemIdentifier->uniqueId;
+                $cacheItem->groupId = $uniqueItemIdentifier->groupId;
+                $cacheItem->metadata = $uniqueItemIdentifier->metadata;
+                $cacheItem->fields = $uniqueItemIdentifier->metadata;
+
+                return $cacheItem;
+            },
+            $items
+        );
     }
 }
