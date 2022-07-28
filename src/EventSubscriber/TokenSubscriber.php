@@ -40,6 +40,7 @@ class TokenSubscriber implements EventSubscriberInterface
         }
 
         $accessToken = $this->tokenExtractor->extract($event->getRequest());
+
         if (!$accessToken) {
             throw new AccessDeniedHttpException('Not authorised');
         }
