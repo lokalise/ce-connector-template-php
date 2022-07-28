@@ -14,11 +14,11 @@ class EnvironmentService implements EnvironmentInterface
     public function getEnv(string $accessToken): ?array
     {
         $locale = new LocaleItem();
-        $locale->code = 'ge';
+        $locale->code = 'de';
         $locale->name = 'German';
 
         $item = new EnvItem();
-        $item->defaultLocale = 'ge';
+        $item->defaultLocale = 'de';
         $item->locales = [$locale];
         $item->cacheItemStructure = ["title" => "Title"];
 

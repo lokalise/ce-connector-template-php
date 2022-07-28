@@ -25,6 +25,6 @@ class EnvironmentControllerTest extends AbstractApiTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertNotEmpty($response->getContent());
-        $this->assertEquals('{"items":[{"defaultLocale":"ge","locales":[{"name":"German","code":"ge"}],"cacheItemStructure":{"title":"Title"}}]}', $response->getContent());
+        $this->assertEquals('{"items":[{"defaultLocale":"de","locales":[{"name":"German","code":"de"}],"cacheItemStructure":{"title":"Title"}}]}', $response->getContent());
     }
 }

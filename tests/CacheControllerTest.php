@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CacheControllerTest extends AbstractApiTestCase
 {
-    public function testCacheNotAuthorised(): void
+    public function testCache(): void
     {
         self::bootKernel();
 
@@ -50,14 +50,6 @@ class CacheControllerTest extends AbstractApiTestCase
                             "contentType" => "post",
                             "field" => "title"
                         ]
-                    ],
-                    [
-                        "groupId" => "post:1",
-                        "uniqueId" => "post:1:title",
-                        "metadata" => [
-                            "contentType" => "post",
-                            "field" => "title"
-                        ]
                     ]
                 ]
             ],
@@ -70,7 +62,7 @@ class CacheControllerTest extends AbstractApiTestCase
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertNotEmpty($response->getContent());
         $this->assertEquals(
-            '{"items":[{"fields":{"contentType":"post","field":"title"},"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}},{"fields":{"contentType":"post","field":"title"},"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}}]}',
+            '{"items":[{"fields":{"contentType":"post","field":"title"},"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}}]}',
             $response->getContent()
         );
     }
