@@ -9,8 +9,6 @@ class TranslationControllerTest extends AbstractApiTestCase
 {
     public function testTranslate(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -20,7 +18,7 @@ class TranslationControllerTest extends AbstractApiTestCase
                 "locales" => [
                     "en",
                     "en_US",
-                    "ru"
+                    "ru",
                 ],
                 "items" => [
                     [
@@ -28,12 +26,14 @@ class TranslationControllerTest extends AbstractApiTestCase
                         "uniqueId" => "post:1:title",
                         "metadata" => [
                             "contentType" => "post",
-                            "field" => "title"
-                        ]
-                    ]
-                ]
+                            "field" => "title",
+                        ],
+                    ],
+                ],
             ],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();
@@ -42,15 +42,29 @@ class TranslationControllerTest extends AbstractApiTestCase
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertNotEmpty($response->getContent());
         $this->assertEquals(
-            '{"items":[{"translations":{"en":"en","en_US":"en_US","ru":"ru"},"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}}]}',
-            $response->getContent()
+            [
+                "items" => [
+                    [
+                        "translations" => [
+                            "en" => "en",
+                            "en_US" => "en_US",
+                            "ru" => "ru",
+                        ],
+                        "uniqueId" => "post:1:title",
+                        "groupId" => "post:1",
+                        "metadata" => [
+                            "contentType" => "post",
+                            "field" => "title",
+                        ],
+                    ],
+                ],
+            ],
+            json_decode($response->getContent(), true)
         );
     }
 
     public function testTranslateNotAuthorised(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -60,7 +74,7 @@ class TranslationControllerTest extends AbstractApiTestCase
                 "locales" => [
                     "en",
                     "en_US",
-                    "ru"
+                    "ru",
                 ],
                 "items" => [
                     [
@@ -68,10 +82,10 @@ class TranslationControllerTest extends AbstractApiTestCase
                         "uniqueId" => "post:1:title",
                         "metadata" => [
                             "contentType" => "post",
-                            "field" => "title"
-                        ]
-                    ]
-                ]
+                            "field" => "title",
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -85,15 +99,15 @@ class TranslationControllerTest extends AbstractApiTestCase
 
     public function testTranslateEmptyRequest(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_POST,
             '/translate',
             [],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();

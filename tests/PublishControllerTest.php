@@ -9,8 +9,6 @@ class PublishControllerTest extends AbstractApiTestCase
 {
     public function testPublish(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -23,15 +21,17 @@ class PublishControllerTest extends AbstractApiTestCase
                         "groupId" => "post:1",
                         "metadata" => [
                             "contentType" => "post",
-                            "field" => "title"
+                            "field" => "title",
                         ],
                         "translations" => [
-                            "ge" => "Hallo Welt!"
-                        ]
-                    ]
-                ]
+                            "ge" => "Hallo Welt!",
+                        ],
+                    ],
+                ],
             ],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();
@@ -44,8 +44,6 @@ class PublishControllerTest extends AbstractApiTestCase
 
     public function testPublishNotAuthorised(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -58,13 +56,13 @@ class PublishControllerTest extends AbstractApiTestCase
                         "groupId" => "post:1",
                         "metadata" => [
                             "contentType" => "post",
-                            "field" => "title"
+                            "field" => "title",
                         ],
                         "translations" => [
-                            "ge" => "Hallo Welt!"
-                        ]
-                    ]
-                ]
+                            "ge" => "Hallo Welt!",
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -78,15 +76,15 @@ class PublishControllerTest extends AbstractApiTestCase
 
     public function testPublishEmptyRequest(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_POST,
             '/publish',
             [],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();

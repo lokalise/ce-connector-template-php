@@ -9,15 +9,15 @@ class EnvironmentControllerTest extends AbstractApiTestCase
 {
     public function testEnv(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_GET,
             '/env',
             [],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();
@@ -25,13 +25,29 @@ class EnvironmentControllerTest extends AbstractApiTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertNotEmpty($response->getContent());
-        $this->assertEquals('{"items":[{"defaultLocale":"de","locales":[{"name":"German","code":"de"}],"cacheItemStructure":{"title":"Title"}}]}', $response->getContent());
+        $this->assertEquals(
+            [
+                "items" => [
+                    [
+                        "defaultLocale" => "de",
+                        "locales" => [
+                            [
+                                "name" => "German",
+                                "code" => "de",
+                            ],
+                        ],
+                        "cacheItemStructure" => [
+                            "title" => "Title",
+                        ],
+                    ],
+                ],
+            ],
+            json_decode($response->getContent(), true)
+        );
     }
 
     public function testEnvNotAuthorised(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(

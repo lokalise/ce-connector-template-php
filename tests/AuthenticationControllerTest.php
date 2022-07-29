@@ -9,14 +9,14 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 {
     public function testAuth(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_POST,
             '/auth',
-            ["key" => 'irure dolor in']
+            [
+                "key" => 'irure dolor in',
+            ]
         );
 
         $response = $client->getResponse();
@@ -29,8 +29,6 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
     public function testAuthEmptyRequest(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -45,14 +43,14 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
     public function testRefresh(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_POST,
             '/auth/refresh',
-            ["refreshKey" => 'dolor Excepteur exercitation']
+            [
+                "refreshKey" => 'dolor Excepteur exercitation',
+            ]
         );
 
         $response = $client->getResponse();
@@ -65,8 +63,6 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
     public function testRefreshEmptyRequest(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(

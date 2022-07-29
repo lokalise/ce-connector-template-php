@@ -3,22 +3,21 @@
 namespace App\Tests;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 class CacheControllerTest extends AbstractApiTestCase
 {
     public function testCache(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_GET,
             '/cache',
             [],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();
@@ -27,15 +26,24 @@ class CacheControllerTest extends AbstractApiTestCase
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertNotEmpty($response->getContent());
         $this->assertEquals(
-            '{"items":[{"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}}]}',
-            $response->getContent()
+            [
+                "items" => [
+                    [
+                        "uniqueId" => "post:1:title",
+                        "groupId" => "post:1",
+                        "metadata" => [
+                            "contentType" => "post",
+                            "field" => "title",
+                        ],
+                    ],
+                ],
+            ],
+            json_decode($response->getContent(), true)
         );
     }
 
     public function testCacheNotAuthorised(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -53,8 +61,6 @@ class CacheControllerTest extends AbstractApiTestCase
 
     public function testCacheItems(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -67,12 +73,14 @@ class CacheControllerTest extends AbstractApiTestCase
                         "uniqueId" => "post:1:title",
                         "metadata" => [
                             "contentType" => "post",
-                            "field" => "title"
-                        ]
-                    ]
-                ]
+                            "field" => "title",
+                        ],
+                    ],
+                ],
             ],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();
@@ -81,15 +89,28 @@ class CacheControllerTest extends AbstractApiTestCase
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertNotEmpty($response->getContent());
         $this->assertEquals(
-            '{"items":[{"fields":{"contentType":"post","field":"title"},"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}}]}',
-            $response->getContent()
+            [
+                "items" => [
+                    [
+                        "groupId" => "post:1",
+                        "uniqueId" => "post:1:title",
+                        "metadata" => [
+                            "contentType" => "post",
+                            "field" => "title",
+                        ],
+                        "fields" => [
+                            "contentType" => "post",
+                            "field" => "title",
+                        ],
+                    ],
+                ],
+            ],
+            json_decode($response->getContent(), true)
         );
     }
 
     public function testCacheItemsNotAuthorised(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -102,10 +123,10 @@ class CacheControllerTest extends AbstractApiTestCase
                         "uniqueId" => "post:1:title",
                         "metadata" => [
                             "contentType" => "post",
-                            "field" => "title"
-                        ]
-                    ]
-                ]
+                            "field" => "title",
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -119,15 +140,15 @@ class CacheControllerTest extends AbstractApiTestCase
 
     public function testCacheItemsEmptyRequest(): void
     {
-        self::bootKernel();
-
         $client = static::createClient();
 
         $client->jsonRequest(
             Request::METHOD_POST,
             '/cache/items',
             [],
-            ['HTTP_x-api-token' => 'token']
+            [
+                'HTTP_x-api-token' => 'token',
+            ]
         );
 
         $response = $client->getResponse();
