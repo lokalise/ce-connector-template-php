@@ -32,6 +32,25 @@ class CacheControllerTest extends AbstractApiTestCase
         );
     }
 
+    public function testCacheNotAuthorised(): void
+    {
+        self::bootKernel();
+
+        $client = static::createClient();
+
+        $client->jsonRequest(
+            Request::METHOD_GET,
+            '/cache'
+        );
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertNotEmpty($response->getContent());
+        $this->assertEquals('{"code":403,"message":"Not authorised"}', $response->getContent());
+    }
+
     public function testCacheItems(): void
     {
         self::bootKernel();
@@ -65,5 +84,54 @@ class CacheControllerTest extends AbstractApiTestCase
             '{"items":[{"fields":{"contentType":"post","field":"title"},"uniqueId":"post:1:title","groupId":"post:1","metadata":{"contentType":"post","field":"title"}}]}',
             $response->getContent()
         );
+    }
+
+    public function testCacheItemsNotAuthorised(): void
+    {
+        self::bootKernel();
+
+        $client = static::createClient();
+
+        $client->jsonRequest(
+            Request::METHOD_POST,
+            '/cache/items',
+            [
+                "items" => [
+                    [
+                        "groupId" => "post:1",
+                        "uniqueId" => "post:1:title",
+                        "metadata" => [
+                            "contentType" => "post",
+                            "field" => "title"
+                        ]
+                    ]
+                ]
+            ]
+        );
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertNotEmpty($response->getContent());
+        $this->assertEquals('{"code":403,"message":"Not authorised"}', $response->getContent());
+    }
+
+    public function testCacheItemsEmptyRequest(): void
+    {
+        self::bootKernel();
+
+        $client = static::createClient();
+
+        $client->jsonRequest(
+            Request::METHOD_POST,
+            '/cache/items',
+            [],
+            ['HTTP_x-api-token' => 'token']
+        );
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 }

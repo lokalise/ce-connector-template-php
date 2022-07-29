@@ -8,8 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CacheRequest implements RequestDTO
 {
     /**
-     * @var array<int, UniqueItemIdentifier>
+     * @var array<int, UniqueItemIdentifier>|null
      */
     #[Assert\Valid()]
-    public array $items = [];
+    #[Assert\NotBlank()]
+    public ?array $items = null;
 }

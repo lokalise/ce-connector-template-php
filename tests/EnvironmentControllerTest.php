@@ -27,4 +27,23 @@ class EnvironmentControllerTest extends AbstractApiTestCase
         $this->assertNotEmpty($response->getContent());
         $this->assertEquals('{"items":[{"defaultLocale":"de","locales":[{"name":"German","code":"de"}],"cacheItemStructure":{"title":"Title"}}]}', $response->getContent());
     }
+
+    public function testEnvNotAuthorised(): void
+    {
+        self::bootKernel();
+
+        $client = static::createClient();
+
+        $client->jsonRequest(
+            Request::METHOD_GET,
+            '/env'
+        );
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertNotEmpty($response->getContent());
+        $this->assertEquals('{"code":403,"message":"Not authorised"}', $response->getContent());
+    }
 }

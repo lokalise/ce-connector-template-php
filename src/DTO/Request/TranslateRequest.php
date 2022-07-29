@@ -8,16 +8,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TranslateRequest implements RequestDTO
 {
     /**
-     * @var array<int, string>
+     * @var array<int, string>|null
      */
     #[Assert\All(
         new Assert\Type('string'),
     )]
-    public array $locales = [];
+    #[Assert\NotBlank()]
+    public ?array $locales = null;
 
     /**
-     * @var array<int, UniqueItemIdentifier>
+     * @var array<int, UniqueItemIdentifier>|null
      */
     #[Assert\Valid()]
-    public array $items = [];
+    #[Assert\NotBlank()]
+    public ?array $items = null;
 }
