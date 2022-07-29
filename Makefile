@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := up
+
 build:
 	docker-compose -f docker-compose.yml --env-file .env.local build $(c)
 up:
