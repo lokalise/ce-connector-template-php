@@ -16,6 +16,9 @@ http:
   static:
     dir: "public"
     forbid: [ ".php", ".htaccess" ]
+  pool:
+    num_workers: 1
+    debug: true
 
 logs:
   mode: production

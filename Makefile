@@ -1,29 +1,21 @@
 .DEFAULT_GOAL := up
 
 build:
-	docker-compose -f docker-compose.yml --env-file .env.local build $(c)
+	docker-compose -f docker-compose.yml --env-file .env.local build development_workspace $(c)
 up:
-	docker-compose -f docker-compose.yml --env-file .env.local up -d $(c)
+	docker-compose -f docker-compose.yml --env-file .env.local up -d development_workspace $(c)
 start:
 	docker-compose -f docker-compose.yml start $(c)
 down:
-	docker-compose -f docker-compose.yml down $(c)
+	docker-compose -f docker-compose.yml down --remove-orphans $(c)
 destroy:
-	docker-compose -f docker-compose.yml down -v $(c)
+	docker-compose -f docker-compose.yml down --remove-orphans -v $(c)
 stop:
 	docker-compose -f docker-compose.yml stop $(c)
-restart:
-	docker-compose -f docker-compose.yml stop $(c)
-	docker-compose -f docker-compose.yml --env-file .env.local up -d $(c)
-init:
-	docker-compose -f docker-compose.yml --env-file .env.local up -d --build $(c)
-	docker-compose -f docker-compose.yml exec workspace composer install -n $(c)
-
-dpl ?= .env.local
-include $(dpl)
-export $(shell sed 's/=.*//' $(dpl))
+restart: stop up
+init: build up
 
 build-prod:
-	docker build --build-arg PHP_VERSION=$(PHP_VERSION) -t $(APP_NAME) .
+	docker-compose -f docker-compose.yml --env-file .env.local build production_workspace $(c)
 up-prod: build-prod
-	docker run -i -t --rm -p=$(NGINX_HOST_HTTP_PORT):8080 --name="$(APP_NAME)" $(APP_NAME)
+	docker-compose -f docker-compose.yml --env-file .env.local up -d production_workspace $(c)
