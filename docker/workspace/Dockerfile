@@ -42,7 +42,8 @@ RUN set -xe; \
     groupadd -g ${PGID} connector && \
     useradd -l -u ${PUID} -g connector -m connector && \
     usermod -p "*" connector -s /bin/bash && \
-    apt-get install -yqq libzip-dev zip unzip
+    apt-get install -yqq libzip-dev zip unzip && \
+    docker-php-ext-install sockets
 
 #
 #--------------------------------------------------------------------------
