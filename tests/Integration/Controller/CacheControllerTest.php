@@ -35,16 +35,10 @@ class CacheControllerTest extends AbstractApiTestCase
             [
                 "items" => [
                     [
-                        "groupId" => "post:1",
-                        "uniqueId" => "post:1:title",
-                        "metadata" => [
-                            "contentType" => "post",
-                            "field" => "title",
-                        ],
-                        "fields" => [
-                            "contentType" => "post",
-                            "field" => "title",
-                        ],
+                        "uniqueId" => AbstractApiTestCase::UNIQUE_ID,
+                        "groupId" => AbstractApiTestCase::GROUP_ID,
+                        "metadata" => AbstractApiTestCase::METADATA,
+                        "fields" => AbstractApiTestCase::METADATA,
                     ],
                 ],
             ],
@@ -74,14 +68,7 @@ class CacheControllerTest extends AbstractApiTestCase
     {
         return [
             "items" => [
-                [
-                    "groupId" => "post:1",
-                    "uniqueId" => "post:1:title",
-                    "metadata" => [
-                        "contentType" => "post",
-                        "field" => "title",
-                    ],
-                ],
+                AbstractApiTestCase::UNIQUE_ITEM_IDENTIFIER,
             ],
         ];
     }

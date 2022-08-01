@@ -44,12 +44,9 @@ class PublishControllerTest extends AbstractApiTestCase
         return [
             "items" => [
                 [
-                    "uniqueId" => "post:1:title",
-                    "groupId" => "post:1",
-                    "metadata" => [
-                        "contentType" => "post",
-                        "field" => "title",
-                    ],
+                    "uniqueId" => AbstractApiTestCase::UNIQUE_ID,
+                    "groupId" => AbstractApiTestCase::GROUP_ID,
+                    "metadata" => AbstractApiTestCase::METADATA,
                     "translations" => [
                         "ge" => "Hallo Welt!",
                     ],

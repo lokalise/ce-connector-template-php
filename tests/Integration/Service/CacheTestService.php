@@ -5,6 +5,7 @@ namespace App\Tests\Integration\Service;
 use App\DTO\CacheItem;
 use App\DTO\UniqueItemIdentifier;
 use App\Interfaces\CacheInterface;
+use App\Tests\Integration\AbstractApiTestCase;
 
 class CacheTestService implements CacheInterface
 {
@@ -14,12 +15,9 @@ class CacheTestService implements CacheInterface
     public function listItems(string $accessToken): ?array
     {
         $item = new UniqueItemIdentifier();
-        $item->uniqueId = "post:1:title";
-        $item->groupId = "post:1";
-        $item->metadata = [
-            "contentType" => "post",
-            "field" => "title"
-        ];
+        $item->uniqueId = AbstractApiTestCase::UNIQUE_ID;
+        $item->groupId = AbstractApiTestCase::GROUP_ID;
+        $item->metadata = AbstractApiTestCase::METADATA;
 
         return [$item];
     }

@@ -3,6 +3,7 @@
 namespace App\Tests\Integration\Controller;
 
 use App\Tests\Integration\AbstractApiTestCase;
+use App\Tests\Integration\Service\EnvironmentTestService;
 use Symfony\Component\HttpFoundation\Request;
 
 class EnvironmentControllerTest extends AbstractApiTestCase
@@ -16,16 +17,14 @@ class EnvironmentControllerTest extends AbstractApiTestCase
             [
                 "items" => [
                     [
-                        "defaultLocale" => "de",
+                        "defaultLocale" => EnvironmentTestService::LOCALE_CODE,
                         "locales" => [
                             [
-                                "name" => "German",
-                                "code" => "de",
+                                "name" => EnvironmentTestService::LOCALE_NAME,
+                                "code" => EnvironmentTestService::LOCALE_CODE,
                             ],
                         ],
-                        "cacheItemStructure" => [
-                            "title" => "Title",
-                        ],
+                        "cacheItemStructure" => EnvironmentTestService::CACHE_ITEM_STRUCTURE,
                     ],
                 ],
             ],

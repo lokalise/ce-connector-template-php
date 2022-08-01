@@ -21,12 +21,9 @@ class TranslationControllerTest extends AbstractApiTestCase
                             "en_US" => "en_US",
                             "ru" => "ru",
                         ],
-                        "uniqueId" => "post:1:title",
-                        "groupId" => "post:1",
-                        "metadata" => [
-                            "contentType" => "post",
-                            "field" => "title",
-                        ],
+                        "uniqueId" => AbstractApiTestCase::UNIQUE_ID,
+                        "groupId" => AbstractApiTestCase::GROUP_ID,
+                        "metadata" => AbstractApiTestCase::METADATA,
                     ],
                 ],
             ],
@@ -61,14 +58,7 @@ class TranslationControllerTest extends AbstractApiTestCase
                 "ru",
             ],
             "items" => [
-                [
-                    "groupId" => "post:1",
-                    "uniqueId" => "post:1:title",
-                    "metadata" => [
-                        "contentType" => "post",
-                        "field" => "title",
-                    ],
-                ],
+                AbstractApiTestCase::UNIQUE_ITEM_IDENTIFIER,
             ],
         ];
     }

@@ -11,6 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractApiTestCase extends KernelTestCase
 {
+    const UNIQUE_ID = 'post:1:title';
+    const GROUP_ID = 'post:1';
+    const METADATA = [
+        "contentType" => "post",
+        "field" => "title",
+    ];
+    const UNIQUE_ITEM_IDENTIFIER = [
+        "uniqueId" => self::UNIQUE_ID,
+        "groupId" => self::GROUP_ID,
+        "metadata" => self::METADATA,
+    ];
+
     protected static function createClient(): KernelBrowser
     {
         try {
@@ -37,7 +49,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
         array $parameters,
         array $expectedResponse,
         array $server = []
-    ): void {
+    ): array {
         $client = static::createClient();
 
         $client->jsonRequest(
@@ -48,17 +60,20 @@ abstract class AbstractApiTestCase extends KernelTestCase
         );
 
         $response = $client->getResponse();
+        $decodedResponse = json_decode($response->getContent(), true);
 
         self::assertSame(Response::HTTP_OK, $response->getStatusCode());
         self::assertSame('application/json', $response->headers->get('Content-Type'));
         self::assertNotEmpty($response->getContent());
         self::assertEquals(
             $expectedResponse,
-            json_decode($response->getContent(), true)
+            $decodedResponse
         );
+
+        return $decodedResponse;
     }
 
-    public static function checkNotAuthorisedRequest(string $method, string $uri, array $parameters = []): void
+    public static function checkNotAuthorisedRequest(string $method, string $uri, array $parameters = []): array
     {
         $client = static::createClient();
 
@@ -69,6 +84,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
         );
 
         $response = $client->getResponse();
+        $decodedResponse = json_decode($response->getContent(), true);
 
         self::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         self::assertSame('application/json', $response->headers->get('Content-Type'));
@@ -78,11 +94,13 @@ abstract class AbstractApiTestCase extends KernelTestCase
                 'code' => 403,
                 'message' => 'Not authorised',
             ],
-            json_decode($response->getContent(), true)
+            $decodedResponse
         );
+
+        return $decodedResponse;
     }
 
-    public static function checkEmptyRequest(string $method, string $uri, array $server = []): void
+    public static function checkEmptyRequest(string $method, string $uri, array $server = []): array
     {
         $client = static::createClient();
 
@@ -96,6 +114,8 @@ abstract class AbstractApiTestCase extends KernelTestCase
         $response = $client->getResponse();
 
         self::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+
+        return json_decode($response->getContent(), true);
     }
 
     public static function getTestTokenHeader(): array

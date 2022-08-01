@@ -10,15 +10,15 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 {
     public function testAuth(): void
     {
-        $keyData = [
-            "key" => AuthenticationTestService::KEY,
-        ];
-
         static::checkRequest(
             Request::METHOD_POST,
             '/auth',
-            $keyData,
-            $keyData
+            [
+                "key" => 'irure dolor in',
+            ],
+            [
+                "key" => AuthenticationTestService::KEY,
+            ]
         );
     }
 
@@ -36,7 +36,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             Request::METHOD_POST,
             '/auth/refresh',
             [
-                "refreshKey" => AuthenticationTestService::REFRESH_KEY,
+                "refreshKey" => 'dolor Excepteur exercitation',
             ],
             [
                 'key' => AuthenticationTestService::REFRESH_KEY,
