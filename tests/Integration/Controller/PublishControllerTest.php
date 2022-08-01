@@ -7,26 +7,29 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PublishControllerTest extends AbstractApiTestCase
 {
-    public function testPublish(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\PublishDataProvider::publishRequestParametersProvider
+     */
+    public function testPublish(array $parameters, array $expectedResponse): void
     {
         static::checkRequest(
             Request::METHOD_POST,
             '/publish',
-            $this->getPublishRequestParameters(),
-            [
-                "code" => "200",
-                "message" => "Content successfully updated"
-            ],
+            $parameters,
+            $expectedResponse,
             static::getTestTokenHeader()
         );
     }
 
-    public function testPublishNotAuthorised(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\PublishDataProvider::publishRequestParametersProvider
+     */
+    public function testPublishNotAuthorised(array $parameters): void
     {
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/publish',
-            $this->getPublishRequestParameters()
+            $parameters
         );
     }
 
@@ -37,21 +40,5 @@ class PublishControllerTest extends AbstractApiTestCase
             '/publish',
             static::getTestTokenHeader()
         );
-    }
-
-    private function getPublishRequestParameters(): array
-    {
-        return [
-            "items" => [
-                [
-                    "uniqueId" => AbstractApiTestCase::UNIQUE_ID,
-                    "groupId" => AbstractApiTestCase::GROUP_ID,
-                    "metadata" => AbstractApiTestCase::METADATA,
-                    "translations" => [
-                        "ge" => "Hallo Welt!",
-                    ],
-                ],
-            ],
-        ];
     }
 }

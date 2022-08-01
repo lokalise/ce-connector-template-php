@@ -7,36 +7,29 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TranslationControllerTest extends AbstractApiTestCase
 {
-    public function testTranslate(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\TranslationDataProvider::translationRequestParametersProvider
+     */
+    public function testTranslate(array $parameters, array $expectedResponse): void
     {
         static::checkRequest(
             Request::METHOD_POST,
             '/translate',
-            $this->getTranslateRequestParameters(),
-            [
-                "items" => [
-                    [
-                        "translations" => [
-                            "en" => "en",
-                            "en_US" => "en_US",
-                            "ru" => "ru",
-                        ],
-                        "uniqueId" => AbstractApiTestCase::UNIQUE_ID,
-                        "groupId" => AbstractApiTestCase::GROUP_ID,
-                        "metadata" => AbstractApiTestCase::METADATA,
-                    ],
-                ],
-            ],
+            $parameters,
+            $expectedResponse,
             static::getTestTokenHeader()
         );
     }
 
-    public function testTranslateNotAuthorised(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\TranslationDataProvider::translationRequestParametersProvider
+     */
+    public function testTranslateNotAuthorised(array $parameters): void
     {
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/translate',
-            $this->getTranslateRequestParameters()
+            $parameters
         );
     }
 
@@ -47,19 +40,5 @@ class TranslationControllerTest extends AbstractApiTestCase
             '/translate',
             static::getTestTokenHeader()
         );
-    }
-
-    private function getTranslateRequestParameters(): array
-    {
-        return [
-            "locales" => [
-                "en",
-                "en_US",
-                "ru",
-            ],
-            "items" => [
-                AbstractApiTestCase::UNIQUE_ITEM_IDENTIFIER,
-            ],
-        ];
     }
 }

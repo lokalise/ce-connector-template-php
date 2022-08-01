@@ -7,13 +7,16 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CacheControllerTest extends AbstractApiTestCase
 {
-    public function testCache(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\CacheDataProvider::cacheResponseProvider
+     */
+    public function testCache(array $expectedResponse): void
     {
         static::checkRequest(
             Request::METHOD_GET,
             '/cache',
             [],
-            $this->getCacheRequestAndResponseParameters(),
+            $expectedResponse,
             static::getTestTokenHeader()
         );
     }
@@ -26,32 +29,29 @@ class CacheControllerTest extends AbstractApiTestCase
         );
     }
 
-    public function testCacheItems(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\CacheDataProvider::cacheRequestAndResponseParametersProvider
+     */
+    public function testCacheItems(array $parameters, array $expectedResponse): void
     {
         static::checkRequest(
             Request::METHOD_POST,
             '/cache/items',
-            $this->getCacheRequestAndResponseParameters(),
-            [
-                "items" => [
-                    [
-                        "uniqueId" => AbstractApiTestCase::UNIQUE_ID,
-                        "groupId" => AbstractApiTestCase::GROUP_ID,
-                        "metadata" => AbstractApiTestCase::METADATA,
-                        "fields" => AbstractApiTestCase::METADATA,
-                    ],
-                ],
-            ],
+            $parameters,
+            $expectedResponse,
             static::getTestTokenHeader()
         );
     }
 
-    public function testCacheItemsNotAuthorised(): void
+    /**
+     * @dataProvider App\Tests\Integration\DataProvider\CacheDataProvider::cacheRequestProvider
+     */
+    public function testCacheItemsNotAuthorised(array $parameters): void
     {
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/cache/items',
-            $this->getCacheRequestAndResponseParameters()
+            $parameters
         );
     }
 
@@ -62,14 +62,5 @@ class CacheControllerTest extends AbstractApiTestCase
             '/cache/items',
             static::getTestTokenHeader()
         );
-    }
-
-    private function getCacheRequestAndResponseParameters(): array
-    {
-        return [
-            "items" => [
-                AbstractApiTestCase::UNIQUE_ITEM_IDENTIFIER,
-            ],
-        ];
     }
 }

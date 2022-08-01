@@ -6,23 +6,10 @@ use LogicException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractApiTestCase extends KernelTestCase
 {
-    const UNIQUE_ID = 'post:1:title';
-    const GROUP_ID = 'post:1';
-    const METADATA = [
-        "contentType" => "post",
-        "field" => "title",
-    ];
-    const UNIQUE_ITEM_IDENTIFIER = [
-        "uniqueId" => self::UNIQUE_ID,
-        "groupId" => self::GROUP_ID,
-        "metadata" => self::METADATA,
-    ];
-
     protected static function createClient(): KernelBrowser
     {
         try {
