@@ -1,0 +1,39 @@
+#
+#--------------------------------------------------------------------------
+# Image Setup
+#--------------------------------------------------------------------------
+#
+
+ARG PHP_VERSION
+FROM php:${PHP_VERSION}-alpine
+
+RUN apk add --no-cache autoconf g++ make zlib-dev libzip-dev && \
+    docker-php-ext-install opcache zip sockets
+
+#####################################
+# Composer:
+#####################################
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+###########################################################################
+# Set Timezone
+###########################################################################
+
+ARG TZ=UTC
+ENV TZ ${TZ}
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Set default work directory
+ARG APP_CODE_PATH_CONTAINER=/var/www
+ENV APP_CODE_PATH_CONTAINER ${APP_CODE_PATH_CONTAINER}
+WORKDIR ${APP_CODE_PATH_CONTAINER}
+
+COPY . .
+
+RUN composer install --no-dev --no-scripts --prefer-dist --no-progress --no-interaction
+
+RUN ./vendor/bin/rr get-binary --location /usr/local/bin
+
+CMD ["rr", "serve"]
