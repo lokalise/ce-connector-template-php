@@ -13,6 +13,7 @@
         "symfony/dotenv": "6.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "6.1.*",
+        "symfony/monolog-bundle": "^3.8",
         "symfony/property-access": "6.1.*",
         "symfony/runtime": "6.1.*",
         "symfony/serializer": "6.1.*",
