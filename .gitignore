@@ -1,4 +1,6 @@
-.idea
+/.idea
+
+/docker/logs
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -9,6 +11,10 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> baldinof/roadrunner-bundle ###
+/bin/rr
+###< baldinof/roadrunner-bundle ###
 
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache

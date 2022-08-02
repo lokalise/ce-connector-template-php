@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\DTO\Request\CacheRequest;
 use App\DTO\Response\CacheItemsResponse;
 use App\DTO\Response\CacheResponse;
+use App\DTO\Token;
 use App\Interfaces\CacheInterface;
-use App\TokenExtractor\TokenExtractorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class CacheController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
-        private readonly TokenExtractorInterface $tokenExtractor,
         private readonly CacheInterface $cacheService,
     ) {
     }
@@ -25,11 +24,9 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache',
         methods: [Request::METHOD_GET],
     )]
-    public function cache(Request $request): JsonResponse
+    public function cache(Token $token): JsonResponse
     {
-        $accessToken = $this->tokenExtractor->extract($request);
-
-        $cacheResult = $this->cacheService->listItems($accessToken);
+        $cacheResult = $this->cacheService->listItems($token->value);
 
         if (!$cacheResult) {
             throw new AccessDeniedHttpException('Could not retrieve content items');
@@ -44,11 +41,9 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache/items',
         methods: [Request::METHOD_POST],
     )]
-    public function cacheItems(Request $request, CacheRequest $cacheRequest): JsonResponse
+    public function cacheItems(Token $token, CacheRequest $cacheRequest): JsonResponse
     {
-        $accessToken = $this->tokenExtractor->extract($request);
-
-        $cacheResult = $this->cacheService->getItems($accessToken, $cacheRequest->items);
+        $cacheResult = $this->cacheService->getItems($token->value, $cacheRequest->items);
 
         if (!$cacheResult) {
             throw new AccessDeniedHttpException('Could not retrieve content items');

@@ -27,6 +27,10 @@ services:
         tags:
             - { name: controller.argument_value_resolver, priority: 50 }
 
+    App\ArgumentResolver\TokenResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 50 }
+
     error_handler.error_renderer.serializer:
         alias: App\Renderer\ApiErrorRenderer
 

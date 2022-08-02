@@ -1,0 +1,40 @@
+version: '3.9'
+
+networks:
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
+services:
+### Workspace Utilities ##################################
+  development_workspace:
+    build:
+      context: .
+      dockerfile: ./docker/workspace/Dockerfile.development
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - INSTALL_XDEBUG=${WORKSPACE_INSTALL_XDEBUG}
+        - TZ=${WORKSPACE_TIMEZONE}
+        - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+    environment:
+      PHP_IDE_CONFIG: "serverName=localhost"
+    ports:
+      - "${WORKSPACE_HTTP_PORT}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - backend
+
+  production_workspace:
+    build:
+      context: .
+      dockerfile: ./docker/workspace/Dockerfile.production
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - TZ=${WORKSPACE_TIMEZONE}
+        - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
+    ports:
+      - "${WORKSPACE_HTTP_PORT}:8080"
+    networks:
+      - backend
