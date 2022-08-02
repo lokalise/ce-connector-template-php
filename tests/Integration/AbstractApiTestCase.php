@@ -34,9 +34,9 @@ abstract class AbstractApiTestCase extends KernelTestCase
         string $method,
         string $uri,
         array $parameters,
-        array $expectedResponse,
+        array|string $expectedResponse,
         array $server = []
-    ): array {
+    ): array|string {
         $client = static::createClient();
 
         $client->jsonRequest(
