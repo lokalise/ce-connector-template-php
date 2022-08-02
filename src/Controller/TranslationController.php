@@ -35,7 +35,7 @@ class TranslationController extends AbstractController implements TokenAuthentic
             throw new AccessDeniedHttpException('Could not retrieve content items');
         }
 
-        $responseDTO = new TranslationResponse($items);;
+        $responseDTO = new TranslationResponse($items);
 
         return $this->json($responseDTO);
     }
