@@ -4,6 +4,8 @@ namespace App\Tests\Integration\Controller;
 
 use App\Tests\Integration\AbstractApiTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TranslationControllerTest extends AbstractApiTestCase
 {
@@ -26,6 +28,8 @@ class TranslationControllerTest extends AbstractApiTestCase
      */
     public function testTranslateNotAuthorised(array $parameters): void
     {
+        $this->expectException(AccessDeniedHttpException::class);
+
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/translate',
@@ -35,6 +39,8 @@ class TranslationControllerTest extends AbstractApiTestCase
 
     public function testTranslateEmptyRequest(): void
     {
+        $this->expectException(BadRequestHttpException::class);
+
         static::checkEmptyRequest(
             Request::METHOD_POST,
             '/translate',

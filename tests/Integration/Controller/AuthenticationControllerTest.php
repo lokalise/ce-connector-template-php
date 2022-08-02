@@ -5,6 +5,7 @@ namespace App\Tests\Integration\Controller;
 use App\Tests\Integration\AbstractApiTestCase;
 use App\Tests\Integration\Service\AuthenticationTestService;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class AuthenticationControllerTest extends AbstractApiTestCase
 {
@@ -24,6 +25,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
     public function testAuthEmptyRequest(): void
     {
+        $this->expectException(BadRequestHttpException::class);
+
         static::checkEmptyRequest(
             Request::METHOD_POST,
             '/auth'
@@ -46,6 +49,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
     public function testRefreshEmptyRequest(): void
     {
+        $this->expectException(BadRequestHttpException::class);
+
         static::checkEmptyRequest(
             Request::METHOD_POST,
             '/auth/refresh'

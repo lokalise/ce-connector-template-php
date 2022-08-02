@@ -4,6 +4,7 @@ namespace App\Tests\Integration\Controller;
 
 use App\Tests\Integration\AbstractApiTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EnvironmentControllerTest extends AbstractApiTestCase
 {
@@ -23,6 +24,8 @@ class EnvironmentControllerTest extends AbstractApiTestCase
 
     public function testEnvNotAuthorised(): void
     {
+        $this->expectException(AccessDeniedHttpException::class);
+
         static::checkNotAuthorisedRequest(
             Request::METHOD_GET,
             '/env'

@@ -4,6 +4,8 @@ namespace App\Tests\Integration\Controller;
 
 use App\Tests\Integration\AbstractApiTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CacheControllerTest extends AbstractApiTestCase
 {
@@ -23,6 +25,8 @@ class CacheControllerTest extends AbstractApiTestCase
 
     public function testCacheNotAuthorised(): void
     {
+        $this->expectException(AccessDeniedHttpException::class);
+
         static::checkNotAuthorisedRequest(
             Request::METHOD_GET,
             '/cache'
@@ -48,6 +52,8 @@ class CacheControllerTest extends AbstractApiTestCase
      */
     public function testCacheItemsNotAuthorised(array $parameters): void
     {
+        $this->expectException(AccessDeniedHttpException::class);
+
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/cache/items',
@@ -57,6 +63,8 @@ class CacheControllerTest extends AbstractApiTestCase
 
     public function testCacheItemsEmptyRequest(): void
     {
+        $this->expectException(BadRequestHttpException::class);
+
         static::checkEmptyRequest(
             Request::METHOD_POST,
             '/cache/items',

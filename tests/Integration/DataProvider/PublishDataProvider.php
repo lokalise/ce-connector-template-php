@@ -4,9 +4,6 @@ namespace App\Tests\Integration\DataProvider;
 
 abstract class PublishDataProvider extends UniqueItemIdentifierDataProvider
 {
-    /**
-     * @dataProvider
-     */
     public static function publishRequestParametersProvider(): array
     {
         $request = self::getItemsData([

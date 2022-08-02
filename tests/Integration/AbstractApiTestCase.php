@@ -64,6 +64,8 @@ abstract class AbstractApiTestCase extends KernelTestCase
     {
         $client = static::createClient();
 
+        $client->catchExceptions(false);
+
         $client->jsonRequest(
             $method,
             $uri,
@@ -90,6 +92,8 @@ abstract class AbstractApiTestCase extends KernelTestCase
     public static function checkEmptyRequest(string $method, string $uri, array $server = []): array
     {
         $client = static::createClient();
+
+        $client->catchExceptions(false);
 
         $client->jsonRequest(
             $method,

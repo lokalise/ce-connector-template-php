@@ -4,9 +4,6 @@ namespace App\Tests\Integration\DataProvider;
 
 abstract class TranslationDataProvider extends UniqueItemIdentifierDataProvider
 {
-    /**
-     * @dataProvider
-     */
     public static function translationRequestParametersProvider(): array
     {
         $request = [

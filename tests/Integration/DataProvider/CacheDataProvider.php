@@ -4,9 +4,6 @@ namespace App\Tests\Integration\DataProvider;
 
 abstract class CacheDataProvider extends UniqueItemIdentifierDataProvider
 {
-    /**
-     * @dataProvider
-     */
     private static function getCacheParameters(): array
     {
         return [
@@ -14,25 +11,16 @@ abstract class CacheDataProvider extends UniqueItemIdentifierDataProvider
         ];
     }
 
-    /**
-     * @dataProvider
-     */
     public static function cacheResponseProvider(): array
     {
         return self::getCacheParameters();
     }
 
-    /**
-     * @dataProvider
-     */
     public static function cacheRequestProvider(): array
     {
         return self::getCacheParameters();
     }
 
-    /**
-     * @dataProvider
-     */
     public static function cacheRequestAndResponseParametersProvider(): array
     {
         $request = self::getItemsData();

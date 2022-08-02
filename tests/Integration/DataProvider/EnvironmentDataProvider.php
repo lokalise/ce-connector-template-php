@@ -10,9 +10,6 @@ abstract class EnvironmentDataProvider
         "title" => "Title",
     ];
 
-    /**
-     * @dataProvider
-     */
     public static function environmentResponseProvider(): array
     {
         return [
