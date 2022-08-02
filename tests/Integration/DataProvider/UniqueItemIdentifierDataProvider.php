@@ -20,7 +20,7 @@ abstract class UniqueItemIdentifierDataProvider
     {
         return [
             "items" => [
-                $fields ? array_merge(self::UNIQUE_ITEM_IDENTIFIER, $fields) : self::UNIQUE_ITEM_IDENTIFIER
+                array_merge(self::UNIQUE_ITEM_IDENTIFIER, $fields)
             ]
         ];
     }
