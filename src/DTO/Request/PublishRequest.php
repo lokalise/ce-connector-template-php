@@ -8,8 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class PublishRequest implements RequestDTO
 {
     /**
-     * @var array<int, ContentItem>
+     * @var array<int, ContentItem>|null
      */
     #[Assert\Valid()]
-    public array $items = [];
+    #[Assert\NotBlank()]
+    public ?array $items = null;
 }

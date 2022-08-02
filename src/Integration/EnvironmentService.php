@@ -3,6 +3,7 @@
 namespace App\Integration;
 
 use App\DTO\EnvItem;
+use App\DTO\LocaleItem;
 use App\Interfaces\EnvironmentInterface;
 
 class EnvironmentService implements EnvironmentInterface
@@ -12,6 +13,15 @@ class EnvironmentService implements EnvironmentInterface
      */
     public function getEnv(string $accessToken): ?array
     {
-        return [];
+        $locale = new LocaleItem();
+        $locale->code = 'de';
+        $locale->name = 'German';
+
+        $item = new EnvItem();
+        $item->defaultLocale = 'de';
+        $item->locales = [$locale];
+        $item->cacheItemStructure = ["title" => "Title"];
+
+        return [$item];
     }
 }

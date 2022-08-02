@@ -40,14 +40,14 @@ services:
     App\Interfaces\AuthenticationInterface:
         class: App\Integration\AuthenticationService
 
-    App\Interfaces\PublishInterface:
-        class: App\Integration\PublishService
-
-    App\Interfaces\TranslationInterface:
-        class: App\Integration\TranslationService
-
     App\Interfaces\CacheInterface:
         class: App\Integration\CacheService
 
     App\Interfaces\EnvironmentInterface:
         class: App\Integration\EnvironmentService
+
+    App\Interfaces\PublishInterface:
+        class: App\Integration\PublishService
+
+    App\Interfaces\TranslationInterface:
+        class: App\Integration\TranslationService

@@ -22,7 +22,7 @@ class EnvironmentController extends AbstractController implements TokenAuthentic
         path: '/env',
         methods: [Request::METHOD_GET],
     )]
-    public function index(Token $token): JsonResponse
+    public function env(Token $token): JsonResponse
     {
         $envResult = $this->envService->getEnv($token->value);
 

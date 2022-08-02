@@ -24,7 +24,7 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache',
         methods: [Request::METHOD_GET],
     )]
-    public function index(Token $token): JsonResponse
+    public function cache(Token $token): JsonResponse
     {
         $cacheResult = $this->cacheService->listItems($token->value);
 
@@ -41,7 +41,7 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache/items',
         methods: [Request::METHOD_POST],
     )]
-    public function items(Token $token, CacheRequest $cacheRequest): JsonResponse
+    public function cacheItems(Token $token, CacheRequest $cacheRequest): JsonResponse
     {
         $cacheResult = $this->cacheService->getItems($token->value, $cacheRequest->items);
 
