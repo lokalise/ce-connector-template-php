@@ -15,6 +15,10 @@ stop:
 restart: stop up
 init: build up
 
+.PHONY: tests
+tests:
+	docker-compose run development_workspace php bin/phpunit
+
 build-prod:
 	docker-compose -f docker-compose.yml --env-file .env.local build production_workspace $(c)
 up-prod: build-prod
