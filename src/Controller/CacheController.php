@@ -3,20 +3,23 @@
 namespace App\Controller;
 
 use App\DTO\Request\CacheRequest;
-use App\DTO\Response\CacheItemsResponse;
-use App\DTO\Response\CacheResponse;
 use App\DTO\Token;
-use App\Interfaces\CacheInterface;
-use Symfony\Component\HttpFoundation\Request;
+use App\Exception\AccessDeniedException;
+use App\Interfaces\Renderer\CacheItemRendererInterface;
+use App\Interfaces\Renderer\CacheRendererInterface;
+use App\Interfaces\Service\CacheServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CacheController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
-        private readonly CacheInterface $cacheService,
+        private readonly CacheServiceInterface $cacheService,
+        private readonly CacheRendererInterface $cacheRenderer,
+        private readonly CacheItemRendererInterface $cacheItemRenderer,
     ) {
     }
 
@@ -24,33 +27,29 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache',
         methods: [Request::METHOD_GET],
     )]
-    public function cache(Token $token): JsonResponse
+    public function cache(Token $token): Response
     {
-        $cacheResult = $this->cacheService->listItems($token->value);
+        try {
+            $cacheResult = $this->cacheService->getCache($token->value);
 
-        if (!$cacheResult) {
+            return $this->cacheRenderer->render($cacheResult);
+        } catch (AccessDeniedException) {
             throw new AccessDeniedHttpException('Could not retrieve content items');
         }
-
-        $responseDTO = new CacheResponse($cacheResult);
-
-        return $this->json($responseDTO);
     }
 
     #[Route(
         path: '/cache/items',
         methods: [Request::METHOD_POST],
     )]
-    public function cacheItems(Token $token, CacheRequest $cacheRequest): JsonResponse
+    public function cacheItems(Token $token, CacheRequest $cacheRequest): Response
     {
-        $cacheResult = $this->cacheService->getItems($token->value, $cacheRequest->items);
+        try {
+            $cacheResult = $this->cacheService->getCacheItems($token->value, $cacheRequest->items);
 
-        if (!$cacheResult) {
+            return $this->cacheItemRenderer->render($cacheResult);
+        } catch (AccessDeniedException) {
             throw new AccessDeniedHttpException('Could not retrieve content items');
         }
-
-        $responseDTO = new CacheItemsResponse($cacheResult);
-
-        return $this->json($responseDTO);
     }
 }

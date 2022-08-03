@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\DTO\Request\PublishRequest;
-use App\DTO\Response\PublishResponse;
 use App\DTO\Token;
-use App\Interfaces\PublishInterface;
+use App\Exception\AccessDeniedException;
+use App\Interfaces\Renderer\PublishRendererInterface;
+use App\Interfaces\Service\PublishServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -16,7 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class PublishController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
-        private readonly PublishInterface $publishService,
+        private readonly PublishServiceInterface $publishService,
+        private readonly PublishRendererInterface $publishRenderer,
     ) {
     }
 
@@ -24,16 +25,14 @@ class PublishController extends AbstractController implements TokenAuthenticated
         path: '/publish',
         methods: [Request::METHOD_POST]
     )]
-    public function publish(Token $token, PublishRequest $publishRequest): JsonResponse
+    public function publish(Token $token, PublishRequest $publishRequest): Response
     {
-        $publishResult = $this->publishService->publishContent($token->value, $publishRequest->items);
+        try {
+            $this->publishService->publishContent($token->value, $publishRequest->items);
 
-        if (!$publishResult) {
+            return $this->publishRenderer->render();
+        } catch (AccessDeniedException) {
             throw new AccessDeniedHttpException('Could not publish content');
         }
-
-        $responseDTO = new PublishResponse(Response::HTTP_OK, 'Content successfully updated');
-
-        return $this->json($responseDTO);
     }
 }
