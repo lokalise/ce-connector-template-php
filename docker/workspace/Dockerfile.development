@@ -54,4 +54,4 @@ RUN ./vendor/bin/rr get-binary --location /usr/local/bin
 
 COPY ./docker/workspace/startup.sh /opt/startup.sh
 RUN chmod +x /opt/startup.sh
-CMD /opt/startup.sh
+CMD ["/opt/startup.sh"]
