@@ -79,8 +79,8 @@ services:
     App\Interfaces\Mapper\CacheMapperInterface:
         class: App\Integration\Mapper\CacheMapper
 
-    App\Interfaces\Mapper\ContentItemMapperInterface:
-        class: App\Integration\Mapper\ContentItemMapper
+    App\Interfaces\Mapper\TranslationItemMapperInterface:
+        class: App\Integration\Mapper\TranslationItemMapper
 
     App\Interfaces\Mapper\EnvItemMapperInterface:
         class: App\Integration\Mapper\EnvItemMapper

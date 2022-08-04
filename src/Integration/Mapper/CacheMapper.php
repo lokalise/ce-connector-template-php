@@ -16,11 +16,11 @@ class CacheMapper implements CacheMapperInterface
         ])]
         array $item,
     ): Identifier {
-        $uniqueItem = new Identifier();
-        $uniqueItem->uniqueId = $item['uniqueId'];
-        $uniqueItem->groupId = $item['groupId'];
-        $uniqueItem->metadata = $item['metadata'];
+        $identifier = new Identifier();
+        $identifier->uniqueId = $item['uniqueId'];
+        $identifier->groupId = $item['groupId'];
+        $identifier->metadata = $item['metadata'];
 
-        return $uniqueItem;
+        return $identifier;
     }
 }

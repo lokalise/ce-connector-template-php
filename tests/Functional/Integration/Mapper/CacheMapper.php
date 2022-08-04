@@ -13,12 +13,12 @@ class CacheMapper implements CacheMapperInterface
         'groupId' => 'string',
         'metadata' => 'string[]',
     ])]
-    public function mapCacheToArray(Identifier $uniqueItem): array
+    public function mapCacheToArray(Identifier $identifier): array
     {
         return [
-            'uniqueId' => $uniqueItem->uniqueId,
-            'groupId' => $uniqueItem->groupId,
-            'metadata' => $uniqueItem->metadata,
+            'uniqueId' => $identifier->uniqueId,
+            'groupId' => $identifier->groupId,
+            'metadata' => $identifier->metadata,
         ];
     }
 
@@ -30,11 +30,11 @@ class CacheMapper implements CacheMapperInterface
         ])]
         array $item,
     ): Identifier {
-        $uniqueItem = new Identifier();
-        $uniqueItem->uniqueId = $item['uniqueId'];
-        $uniqueItem->groupId = $item['groupId'];
-        $uniqueItem->metadata = $item['metadata'];
+        $identifier = new Identifier();
+        $identifier->uniqueId = $item['uniqueId'];
+        $identifier->groupId = $item['groupId'];
+        $identifier->metadata = $item['metadata'];
 
-        return $uniqueItem;
+        return $identifier;
     }
 }
