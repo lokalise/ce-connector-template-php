@@ -10,12 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class EnvironmentRenderer implements EnvironmentRendererInterface
 {
-    /**
-     * @param array<int, EnvItem> $environments
-     */
-    public function render(array $environments): Response
+    public function render(EnvItem $environments): Response
     {
-        $responseDTO = new EnvironmentResponse($environments);
+        $responseDTO = new EnvironmentResponse(
+            $environments->defaultLocale,
+            $environments->locales,
+            $environments->cacheItemStructure,
+        );
 
         return new JsonResponse($responseDTO);
     }

@@ -35,7 +35,7 @@ class ApiClient implements ApiClientInterface
 
     public function getEnvironments(string $accessToken): array
     {
-        return [[
+        return [
             'defaultLocale' => 'de',
             'locales' => [[
                 'code' => 'de',
@@ -44,7 +44,7 @@ class ApiClient implements ApiClientInterface
             'cacheItemStructure' => [
                 'title' => 'Title',
             ]
-        ]];
+        ];
     }
 
     public function publish(string $accessToken, array $translations): void

@@ -8,9 +8,7 @@ use App\Exception\AccessDeniedException;
 interface EnvironmentServiceInterface
 {
     /**
-     * @return array<int, EnvItem>
-     *
      * @throws AccessDeniedException
      */
-    public function getEnvironments(string $accessToken): array;
+    public function getEnvironments(string $accessToken): EnvItem;
 }

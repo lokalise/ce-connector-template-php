@@ -13,26 +13,20 @@ final class EnvironmentDataProvider
     ];
 
     public const ENVIRONMENTS = [
-        [
-            "defaultLocale" => self::LOCALE_CODE,
-            "locales" => [
-                [
-                    "name" => self::LOCALE_NAME,
-                    "code" => self::LOCALE_CODE,
-                ],
+        "defaultLocale" => self::LOCALE_CODE,
+        "locales" => [
+            [
+                "name" => self::LOCALE_NAME,
+                "code" => self::LOCALE_CODE,
             ],
-            "cacheItemStructure" => self::CACHE_ITEM_STRUCTURE,
         ],
+        "cacheItemStructure" => self::CACHE_ITEM_STRUCTURE,
     ];
 
     public static function environmentResponseProvider(): array
     {
         return [
-            [
-                [
-                    "items" => self::ENVIRONMENTS,
-                ]
-            ],
+            [self::ENVIRONMENTS],
         ];
     }
 }

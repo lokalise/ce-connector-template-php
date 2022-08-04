@@ -15,16 +15,10 @@ class EnvironmentService implements EnvironmentServiceInterface
     ) {
     }
 
-    /**
-     * @return array<int, EnvItem>
-     */
-    public function getEnvironments(string $accessToken): array
+    public function getEnvironments(string $accessToken): EnvItem
     {
         $environments = $this->apiClient->getEnvironments($accessToken);
 
-        return array_map(
-            fn (array $environment) => $this->envItemMapper->mapArrayToEnvItem($environment),
-            $environments,
-        );
+        return $this->envItemMapper->mapArrayToEnvItem($environments);
     }
 }

@@ -7,8 +7,5 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface EnvironmentRendererInterface
 {
-    /**
-     * @param array<int, EnvItem> $environments
-     */
-    public function render(array $environments): Response;
+    public function render(EnvItem $environments): Response;
 }
