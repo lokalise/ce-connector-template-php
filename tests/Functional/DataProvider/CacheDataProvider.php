@@ -4,17 +4,10 @@ namespace App\Tests\Functional\DataProvider;
 
 final class CacheDataProvider
 {
-    public const CACHE_ITEMS = [
-        [
-            'uniqueId' => UniqueItemIdentifierDataProvider::UNIQUE_ID,
-            'groupId' => UniqueItemIdentifierDataProvider::GROUP_ID,
-            'metadata' => UniqueItemIdentifierDataProvider::METADATA,
-            "fields" => UniqueItemIdentifierDataProvider::METADATA,
-        ],
-    ];
-
     public const CACHE_RESPONSE = [
-        'items' => [UniqueItemIdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER],
+        'items' => [
+            UniqueItemIdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
+        ],
     ];
 
     public const CACHE_ITEMS_REQUEST = self::CACHE_RESPONSE;
@@ -39,7 +32,12 @@ final class CacheDataProvider
             [
                 self::CACHE_ITEMS_REQUEST,
                 [
-                    'items' => self::CACHE_ITEMS,
+                    'items' => array_map(
+                        static fn (array $identifier) => array_merge($identifier, [
+                            "fields" => $identifier['metadata'],
+                        ]),
+                        self::CACHE_ITEMS_REQUEST['items'],
+                    ),
                 ],
             ],
         ];

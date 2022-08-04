@@ -4,9 +4,7 @@ namespace App\Tests\Functional\Integration;
 
 use App\Interfaces\ApiClientInterface;
 use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
-use App\Tests\Functional\DataProvider\CacheDataProvider;
 use App\Tests\Functional\DataProvider\EnvironmentDataProvider;
-use App\Tests\Functional\DataProvider\TranslationDataProvider;
 use App\Tests\Functional\DataProvider\UniqueItemIdentifierDataProvider;
 
 class ApiClient implements ApiClientInterface
@@ -28,7 +26,12 @@ class ApiClient implements ApiClientInterface
 
     public function getCacheItems(string $accessToken, array $identifiers): array
     {
-        return CacheDataProvider::CACHE_ITEMS;
+        return array_map(
+            static fn (array $identifier) => array_merge($identifier, [
+                'fields' => $identifier['metadata'],
+            ]),
+            $identifiers,
+        );
     }
 
     public function getEnvironments(string $accessToken): array
@@ -43,6 +46,11 @@ class ApiClient implements ApiClientInterface
 
     public function getTranslations(string $accessToken, array $locales, array $identifiers): array
     {
-        return TranslationDataProvider::TRANSLATIONS;
+        return array_map(
+            static fn (array $identifier) => array_merge($identifier, [
+                'translations' => array_combine($locales, $locales),
+            ]),
+            $identifiers,
+        );
     }
 }

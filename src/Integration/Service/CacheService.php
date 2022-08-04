@@ -7,6 +7,7 @@ use App\DTO\UniqueItemIdentifier;
 use App\Interfaces\ApiClientInterface;
 use App\Interfaces\Mapper\CacheItemMapperInterface;
 use App\Interfaces\Mapper\CacheMapperInterface;
+use App\Interfaces\Mapper\IdentifierMapperInterface;
 use App\Interfaces\Service\CacheServiceInterface;
 
 class CacheService implements CacheServiceInterface
@@ -15,6 +16,7 @@ class CacheService implements CacheServiceInterface
         private readonly ApiClientInterface $apiClient,
         private readonly CacheMapperInterface $cacheMapper,
         private readonly CacheItemMapperInterface $cacheItemMapper,
+        private readonly IdentifierMapperInterface $identifierMapper,
     ) {
     }
 
@@ -39,11 +41,7 @@ class CacheService implements CacheServiceInterface
     public function getCacheItems(string $accessToken, array $identifiers): array
     {
         $items = array_map(
-            static fn (UniqueItemIdentifier $identifier) => [
-                'uniqueId' => $identifier->uniqueId,
-                'groupId' => $identifier->groupId,
-                'metadata' => $identifier->metadata,
-            ],
+            fn (UniqueItemIdentifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
             $identifiers,
         );
 

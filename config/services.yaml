@@ -85,6 +85,9 @@ services:
     App\Interfaces\Mapper\EnvItemMapperInterface:
         class: App\Integration\Mapper\EnvItemMapper
 
+    App\Interfaces\Mapper\IdentifierMapperInterface:
+        class: App\Integration\Mapper\IdentifierMapper
+
     App\Interfaces\Mapper\LocaleItemMapperInterface:
         class: App\Integration\Mapper\LocaleItemMapper
 

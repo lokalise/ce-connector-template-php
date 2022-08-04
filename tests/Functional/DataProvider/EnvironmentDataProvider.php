@@ -5,10 +5,13 @@ namespace App\Tests\Functional\DataProvider;
 final class EnvironmentDataProvider
 {
     public const LOCALE_CODE = 'de';
+
     public const LOCALE_NAME = 'German';
+
     public const CACHE_ITEM_STRUCTURE = [
         "title" => "Title",
     ];
+
     public const ENVIRONMENTS = [
         [
             "defaultLocale" => self::LOCALE_CODE,

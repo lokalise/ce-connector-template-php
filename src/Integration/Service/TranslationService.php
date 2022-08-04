@@ -6,6 +6,7 @@ use App\DTO\ContentItem;
 use App\DTO\UniqueItemIdentifier;
 use App\Interfaces\ApiClientInterface;
 use App\Interfaces\Mapper\ContentItemMapperInterface;
+use App\Interfaces\Mapper\IdentifierMapperInterface;
 use App\Interfaces\Service\TranslationServiceInterface;
 
 class TranslationService implements TranslationServiceInterface
@@ -13,6 +14,7 @@ class TranslationService implements TranslationServiceInterface
     public function __construct(
         private readonly ApiClientInterface $apiClient,
         private readonly ContentItemMapperInterface $contentItemMapper,
+        private readonly IdentifierMapperInterface $identifierMapper,
     ) {
     }
 
@@ -25,11 +27,7 @@ class TranslationService implements TranslationServiceInterface
     public function getTranslations(string $accessToken, array $locales, array $identifiers): array
     {
         $items = array_map(
-            static fn (UniqueItemIdentifier $identifier) => [
-                'uniqueId' => $identifier->uniqueId,
-                'groupId' => $identifier->groupId,
-                'metadata' => $identifier->metadata,
-            ],
+            fn (UniqueItemIdentifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
             $identifiers,
         );
 

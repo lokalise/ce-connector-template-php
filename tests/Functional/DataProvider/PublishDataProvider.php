@@ -7,9 +7,7 @@ final class PublishDataProvider
     public const PUBLISH_REQUEST = [
         'items' =>  [
             [
-                'uniqueId' => UniqueItemIdentifierDataProvider::UNIQUE_ID,
-                'groupId' => UniqueItemIdentifierDataProvider::GROUP_ID,
-                'metadata' => UniqueItemIdentifierDataProvider::METADATA,
+                ...UniqueItemIdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
                 "translations" => [
                     "de" => "Hallo Welt!",
                 ],
