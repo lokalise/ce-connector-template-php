@@ -2,19 +2,21 @@
 
 namespace App\Controller;
 
-use App\DTO\Response\EnvironmentResponse;
 use App\DTO\Token;
-use App\Interfaces\EnvironmentInterface;
+use App\Exception\AccessDeniedException;
+use App\Interfaces\Renderer\EnvironmentRendererInterface;
+use App\Interfaces\Service\EnvironmentServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 class EnvironmentController extends AbstractController implements TokenAuthenticatedControllerInterface
 {
     public function __construct(
-        private readonly EnvironmentInterface $envService,
+        private readonly EnvironmentServiceInterface $envService,
+        private readonly EnvironmentRendererInterface $environmentRenderer,
     ) {
     }
 
@@ -22,16 +24,14 @@ class EnvironmentController extends AbstractController implements TokenAuthentic
         path: '/env',
         methods: [Request::METHOD_GET],
     )]
-    public function env(Token $token): JsonResponse
+    public function env(Token $token): Response
     {
-        $envResult = $this->envService->getEnv($token->value);
+        try {
+            $envResult = $this->envService->getEnvironments($token->value);
 
-        if (!$envResult) {
+            return $this->environmentRenderer->render($envResult);
+        } catch (AccessDeniedException) {
             throw new AccessDeniedHttpException('Could not retrieve content items');
         }
-
-        $responseDTO = new EnvironmentResponse($envResult);
-
-        return $this->json($responseDTO);
     }
 }

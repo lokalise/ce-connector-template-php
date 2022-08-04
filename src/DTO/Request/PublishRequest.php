@@ -2,13 +2,13 @@
 
 namespace App\DTO\Request;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PublishRequest implements RequestDTO
 {
     /**
-     * @var array<int, ContentItem>|null
+     * @var array<int, TranslationItem>|null
      */
     #[Assert\Valid()]
     #[Assert\NotBlank()]

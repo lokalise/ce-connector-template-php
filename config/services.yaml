@@ -37,17 +37,59 @@ services:
     App\TokenExtractor\TokenExtractorInterface:
         class: App\TokenExtractor\HeaderTokenExtractor
 
-    App\Interfaces\AuthenticationInterface:
-        class: App\Integration\AuthenticationService
+    App\Interfaces\Service\AuthenticationServiceInterface:
+        class: App\Integration\Service\AuthenticationService
 
-    App\Interfaces\CacheInterface:
-        class: App\Integration\CacheService
+    App\Interfaces\Service\CacheServiceInterface:
+        class: App\Integration\Service\CacheService
 
-    App\Interfaces\EnvironmentInterface:
-        class: App\Integration\EnvironmentService
+    App\Interfaces\Service\EnvironmentServiceInterface:
+        class: App\Integration\Service\EnvironmentService
 
-    App\Interfaces\PublishInterface:
-        class: App\Integration\PublishService
+    App\Interfaces\Service\PublishServiceInterface:
+        class: App\Integration\Service\PublishService
 
-    App\Interfaces\TranslationInterface:
-        class: App\Integration\TranslationService
+    App\Interfaces\Service\TranslationServiceInterface:
+        class: App\Integration\Service\TranslationService
+
+    App\Interfaces\Renderer\AuthRendererInterface:
+        class: App\Integration\Renderer\AuthRenderer
+
+    App\Interfaces\Renderer\RefreshRendererInterface:
+        class: App\Integration\Renderer\RefreshRenderer
+
+    App\Interfaces\Renderer\CacheRendererInterface:
+        class: App\Integration\Renderer\CacheRenderer
+
+    App\Interfaces\Renderer\CacheItemRendererInterface:
+        class: App\Integration\Renderer\CacheItemRenderer
+
+    App\Interfaces\Renderer\EnvironmentRendererInterface:
+        class: App\Integration\Renderer\EnvironmentRenderer
+
+    App\Interfaces\Renderer\PublishRendererInterface:
+        class: App\Integration\Renderer\PublishRenderer
+
+    App\Interfaces\Renderer\TranslationRendererInterface:
+        class: App\Integration\Renderer\TranslationRenderer
+
+    App\Interfaces\Mapper\CacheItemMapperInterface:
+        class: App\Integration\Mapper\CacheItemMapper
+
+    App\Interfaces\Mapper\CacheMapperInterface:
+        class: App\Integration\Mapper\CacheMapper
+
+    App\Interfaces\Mapper\TranslationItemMapperInterface:
+        class: App\Integration\Mapper\TranslationItemMapper
+
+    App\Interfaces\Mapper\EnvItemMapperInterface:
+        class: App\Integration\Mapper\EnvItemMapper
+
+    App\Interfaces\Mapper\IdentifierMapperInterface:
+        class: App\Integration\Mapper\IdentifierMapper
+
+    App\Interfaces\Mapper\LocaleItemMapperInterface:
+        class: App\Integration\Mapper\LocaleItemMapper
+
+    App\Interfaces\ApiClientInterface:
+        class: App\Integration\ApiClient

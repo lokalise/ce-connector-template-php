@@ -2,12 +2,12 @@
 
 namespace App\DTO\Response;
 
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\Identifier;
 
 class CacheResponse
 {
     /**
-     * @param array<int, UniqueItemIdentifier> $items
+     * @param array<int, Identifier> $items
      */
     public function __construct(
         public readonly array $items,
