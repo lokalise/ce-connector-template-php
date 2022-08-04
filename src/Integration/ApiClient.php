@@ -3,6 +3,7 @@
 namespace App\Integration;
 
 use App\Interfaces\ApiClientInterface;
+use JetBrains\PhpStorm\ArrayShape;
 
 class ApiClient implements ApiClientInterface
 {
@@ -33,6 +34,11 @@ class ApiClient implements ApiClientInterface
         return $identifiers;
     }
 
+    #[ArrayShape([
+        'defaultLocale' => 'string',
+        'locales' => 'string[][]',
+        'cacheItemStructure' => 'string[]',
+    ])]
     public function getEnvironments(string $accessToken): array
     {
         return [
