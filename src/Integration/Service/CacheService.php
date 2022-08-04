@@ -3,7 +3,7 @@
 namespace App\Integration\Service;
 
 use App\DTO\CacheItem;
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\Identifier;
 use App\Interfaces\ApiClientInterface;
 use App\Interfaces\Mapper\CacheItemMapperInterface;
 use App\Interfaces\Mapper\CacheMapperInterface;
@@ -21,7 +21,7 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @return array<int, UniqueItemIdentifier>
+     * @return array<int, Identifier>
      */
     public function getCache(string $accessToken): array
     {
@@ -34,14 +34,14 @@ class CacheService implements CacheServiceInterface
     }
 
     /**
-     * @param array<int, UniqueItemIdentifier> $identifiers
+     * @param array<int, Identifier> $identifiers
      *
      * @return array<int, CacheItem>
      */
     public function getCacheItems(string $accessToken, array $identifiers): array
     {
         $items = array_map(
-            fn (UniqueItemIdentifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
+            fn (Identifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
             $identifiers,
         );
 

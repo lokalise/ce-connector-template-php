@@ -2,7 +2,7 @@
 
 namespace App\Tests\Functional\Integration\Mapper;
 
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\Identifier;
 use App\Interfaces\Mapper\IdentifierMapperInterface;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -13,7 +13,7 @@ class IdentifierMapper implements IdentifierMapperInterface
         'groupId' => 'string',
         'metadata' => 'string[]',
     ])]
-    public function mapIdentifierToArray(UniqueItemIdentifier $identifier): array
+    public function mapIdentifierToArray(Identifier $identifier): array
     {
         return [
             'uniqueId' => $identifier->uniqueId,

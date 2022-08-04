@@ -2,9 +2,9 @@
 
 namespace App\Interfaces\Mapper;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 
 interface ContentItemMapperInterface
 {
-    public function mapArrayToContentItem(array $item): ContentItem;
+    public function mapArrayToContentItem(array $item): TranslationItem;
 }

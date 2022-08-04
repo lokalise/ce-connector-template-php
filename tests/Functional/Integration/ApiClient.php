@@ -3,25 +3,24 @@
 namespace App\Tests\Functional\Integration;
 
 use App\Interfaces\ApiClientInterface;
-use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use App\Tests\Functional\DataProvider\EnvironmentDataProvider;
-use App\Tests\Functional\DataProvider\UniqueItemIdentifierDataProvider;
+use App\Tests\Functional\DataProvider\IdentifierDataProvider;
 
 class ApiClient implements ApiClientInterface
 {
     public function auth(string $key): string
     {
-        return AuthenticationDataProvider::KEY;
+        return $key;
     }
 
     public function refresh(string $refreshKey): string
     {
-        return AuthenticationDataProvider::REFRESH_KEY;
+        return $refreshKey;
     }
 
     public function getCache(string $accessToken): array
     {
-        return [UniqueItemIdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER];
+        return [IdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER];
     }
 
     public function getCacheItems(string $accessToken, array $identifiers): array

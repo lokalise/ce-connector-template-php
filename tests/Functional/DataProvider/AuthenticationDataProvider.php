@@ -4,9 +4,9 @@ namespace App\Tests\Functional\DataProvider;
 
 final class AuthenticationDataProvider
 {
-    public const KEY = '';
+    public const KEY = 'irure dolor in';
 
-    public const REFRESH_KEY = '';
+    public const REFRESH_KEY = 'dolor Excepteur exercitation';
 
     public static function authProvider(): array
     {

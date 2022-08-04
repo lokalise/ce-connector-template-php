@@ -2,17 +2,17 @@
 
 namespace App\Interfaces\Service;
 
-use App\DTO\ContentItem;
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\TranslationItem;
+use App\DTO\Identifier;
 use App\Exception\AccessDeniedException;
 
 interface TranslationServiceInterface
 {
     /**
      * @param array<int, string> $locales
-     * @param array<int, UniqueItemIdentifier> $identifiers
+     * @param array<int, Identifier> $identifiers
      *
-     * @return array<int, ContentItem>
+     * @return array<int, TranslationItem>
      *
      * @throws AccessDeniedException
      */

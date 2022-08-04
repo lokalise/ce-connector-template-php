@@ -2,13 +2,13 @@
 
 namespace App\Interfaces\Service;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 use App\Exception\AccessDeniedException;
 
 interface PublishServiceInterface
 {
     /**
-     * @param array<int, ContentItem> $translations
+     * @param array<int, TranslationItem> $translations
      *
      * @throws AccessDeniedException
      */

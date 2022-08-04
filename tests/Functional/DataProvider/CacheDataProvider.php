@@ -6,7 +6,7 @@ final class CacheDataProvider
 {
     public const CACHE_RESPONSE = [
         'items' => [
-            UniqueItemIdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
+            IdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
         ],
     ];
 

@@ -7,7 +7,7 @@ final class PublishDataProvider
     public const PUBLISH_REQUEST = [
         'items' =>  [
             [
-                ...UniqueItemIdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
+                ...IdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
                 "translations" => [
                     "de" => "Hallo Welt!",
                 ],

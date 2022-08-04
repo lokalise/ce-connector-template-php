@@ -4,7 +4,7 @@ namespace App\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UniqueItemIdentifier
+class Identifier
 {
     #[Assert\NotBlank()]
     #[Assert\Length(min: 1, max: 256)]

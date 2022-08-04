@@ -17,7 +17,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             Request::METHOD_POST,
             '/auth',
             [
-                "key" => 'irure dolor in',
+                "key" => $key,
             ],
             [
                 "key" => $key,
@@ -44,7 +44,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             Request::METHOD_POST,
             '/auth/refresh',
             [
-                "refreshKey" => 'dolor Excepteur exercitation',
+                "refreshKey" => $refreshKey,
             ],
             [
                 'key' => $refreshKey,

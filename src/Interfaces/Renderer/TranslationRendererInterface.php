@@ -2,13 +2,13 @@
 
 namespace App\Interfaces\Renderer;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 use Symfony\Component\HttpFoundation\Response;
 
 interface TranslationRendererInterface
 {
     /**
-     * @param array<int, ContentItem> $items
+     * @param array<int, TranslationItem> $items
      */
     public function render(array $items): Response;
 }

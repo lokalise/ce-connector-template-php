@@ -2,8 +2,8 @@
 
 namespace App\Integration\Service;
 
-use App\DTO\ContentItem;
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\TranslationItem;
+use App\DTO\Identifier;
 use App\Interfaces\ApiClientInterface;
 use App\Interfaces\Mapper\ContentItemMapperInterface;
 use App\Interfaces\Mapper\IdentifierMapperInterface;
@@ -20,14 +20,14 @@ class TranslationService implements TranslationServiceInterface
 
     /**
      * @param array<int, string> $locales
-     * @param array<int, UniqueItemIdentifier> $identifiers
+     * @param array<int, Identifier> $identifiers
      *
-     * @return array<int, ContentItem>
+     * @return array<int, TranslationItem>
      */
     public function getTranslations(string $accessToken, array $locales, array $identifiers): array
     {
         $items = array_map(
-            fn (UniqueItemIdentifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
+            fn (Identifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
             $identifiers,
         );
 

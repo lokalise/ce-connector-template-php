@@ -2,9 +2,9 @@
 
 namespace App\Interfaces\Mapper;
 
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\Identifier;
 
 interface CacheMapperInterface
 {
-    public function mapArrayToCache(array $item): UniqueItemIdentifier;
+    public function mapArrayToCache(array $item): Identifier;
 }

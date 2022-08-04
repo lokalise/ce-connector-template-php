@@ -2,7 +2,7 @@
 
 namespace App\Integration\Service;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 use App\Interfaces\ApiClientInterface;
 use App\Interfaces\Service\PublishServiceInterface;
 
@@ -14,7 +14,7 @@ class PublishService implements PublishServiceInterface
     }
 
     /**
-     * @param array<int, ContentItem> $translations
+     * @param array<int, TranslationItem> $translations
      */
     public function publishContent(string $accessToken, array $translations): void
     {

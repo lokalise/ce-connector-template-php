@@ -2,9 +2,9 @@
 
 namespace App\Interfaces\Mapper;
 
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\Identifier;
 
 interface IdentifierMapperInterface
 {
-    public function mapIdentifierToArray(UniqueItemIdentifier $identifier): array;
+    public function mapIdentifierToArray(Identifier $identifier): array;
 }

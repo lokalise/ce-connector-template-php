@@ -2,7 +2,7 @@
 
 namespace App\Integration\Mapper;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 use App\Interfaces\Mapper\ContentItemMapperInterface;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -16,8 +16,8 @@ class ContentItemMapper implements ContentItemMapperInterface
             'translations' => 'string[]',
         ])]
         array $item,
-    ): ContentItem {
-        $contentItem = new ContentItem();
+    ): TranslationItem {
+        $contentItem = new TranslationItem();
         $contentItem->uniqueId = $item['uniqueId'];
         $contentItem->groupId = $item['groupId'];
         $contentItem->metadata = $item['metadata'];

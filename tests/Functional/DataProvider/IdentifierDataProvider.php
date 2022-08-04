@@ -2,7 +2,7 @@
 
 namespace App\Tests\Functional\DataProvider;
 
-final class UniqueItemIdentifierDataProvider
+final class IdentifierDataProvider
 {
     public const UNIQUE_ID = 'post:1:title';
 

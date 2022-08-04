@@ -2,12 +2,12 @@
 
 namespace App\DTO\Response;
 
-use App\DTO\ContentItem;
+use App\DTO\TranslationItem;
 
 class TranslationResponse
 {
     /**
-     * @param array<int, ContentItem> $items
+     * @param array<int, TranslationItem> $items
      */
     public function __construct(
         public readonly array $items,

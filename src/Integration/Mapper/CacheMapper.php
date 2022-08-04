@@ -2,7 +2,7 @@
 
 namespace App\Integration\Mapper;
 
-use App\DTO\UniqueItemIdentifier;
+use App\DTO\Identifier;
 use App\Interfaces\Mapper\CacheMapperInterface;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -15,8 +15,8 @@ class CacheMapper implements CacheMapperInterface
             'metadata' => 'string[]',
         ])]
         array $item,
-    ): UniqueItemIdentifier {
-        $uniqueItem = new UniqueItemIdentifier();
+    ): Identifier {
+        $uniqueItem = new Identifier();
         $uniqueItem->uniqueId = $item['uniqueId'];
         $uniqueItem->groupId = $item['groupId'];
         $uniqueItem->metadata = $item['metadata'];
