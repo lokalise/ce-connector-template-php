@@ -4,7 +4,7 @@ namespace App\Integration\Service;
 
 use App\DTO\TranslationItem;
 use App\DTO\Identifier;
-use App\Interfaces\ApiClientInterface;
+use App\Integration\ApiClient;
 use App\Interfaces\Mapper\TranslationItemMapperInterface;
 use App\Interfaces\Mapper\IdentifierMapperInterface;
 use App\Interfaces\Service\TranslationServiceInterface;
@@ -12,7 +12,7 @@ use App\Interfaces\Service\TranslationServiceInterface;
 class TranslationService implements TranslationServiceInterface
 {
     public function __construct(
-        private readonly ApiClientInterface $apiClient,
+        private readonly ApiClient $apiClient,
         private readonly TranslationItemMapperInterface $translationItemMapper,
         private readonly IdentifierMapperInterface $identifierMapper,
     ) {
@@ -27,14 +27,14 @@ class TranslationService implements TranslationServiceInterface
     public function getTranslations(string $accessToken, array $locales, array $identifiers): array
     {
         $items = array_map(
-            fn (Identifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
+            fn(Identifier $identifier) => $this->identifierMapper->mapIdentifierToArray($identifier),
             $identifiers,
         );
 
         $translations = $this->apiClient->getTranslations($accessToken, $locales, $items);
 
         return array_map(
-            fn (array $translation) => $this->translationItemMapper->mapArrayToTranslationItem($translation),
+            fn(array $translation) => $this->translationItemMapper->mapArrayToTranslationItem($translation),
             $translations,
         );
     }

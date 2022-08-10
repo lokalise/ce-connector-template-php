@@ -2,10 +2,9 @@
 
 namespace App\Integration;
 
-use App\Interfaces\ApiClientInterface;
 use JetBrains\PhpStorm\ArrayShape;
 
-class ApiClient implements ApiClientInterface
+class ApiClient
 {
     public function auth(string $key): string
     {
@@ -19,49 +18,64 @@ class ApiClient implements ApiClientInterface
 
     public function getCache(string $accessToken): array
     {
-        return [[
-            'uniqueId' => 'post:1:title',
-            'groupId' => 'post:1',
-            'metadata' => [
-                'contentType' => 'post',
-                'field' => 'title',
+        return [
+            [
+                'uniqueId' => 'post:1:title',
+                'groupId' => 'post:1',
+                'metadata' => [
+                    'contentType' => 'post',
+                    'field' => 'title',
+                ],
             ],
-        ]];
+        ];
     }
 
     public function getCacheItems(string $accessToken, array $identifiers): array
     {
-        return $identifiers;
+        $cacheItems = [];
+
+        foreach ($identifiers as $identifier) {
+            $cacheItems[] = [
+                'uniqueId' => $identifier['uniqueId'],
+                'groupId' => $identifier['groupId'],
+                'title' => $identifier['uniqueId'] . $identifier['groupId'],
+                'metadata' => $identifier['metadata'],
+                'fields' => $identifier['metadata']
+            ];
+        }
+
+        return $cacheItems;
     }
 
     #[ArrayShape([
         'defaultLocale' => 'string',
-        'locales' => 'string[][]',
-        'cacheItemStructure' => 'string[]',
+        'locales' => 'array',
+        'cacheItemStructure' => 'array',
     ])]
     public function getEnvironments(string $accessToken): array
     {
         return [
             'defaultLocale' => 'de',
-            'locales' => [[
-                'code' => 'de',
-                'name' => 'German',
-            ]],
+            'locales' => [
+                [
+                    'code' => 'de',
+                    'name' => 'German',
+                ],
+            ],
             'cacheItemStructure' => [
                 'title' => 'Title',
-            ]
+            ],
         ];
     }
 
     public function publish(string $accessToken, array $translations): void
     {
-
     }
 
     public function getTranslations(string $accessToken, array $locales, array $identifiers): array
     {
         return array_map(
-            static fn (array $item) => array_merge($item, [
+            static fn(array $item) => array_merge($item, [
                 'translations' => array_combine($locales, $locales),
             ]),
             $identifiers,

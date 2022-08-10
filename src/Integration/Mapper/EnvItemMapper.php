@@ -17,8 +17,8 @@ class EnvItemMapper implements EnvItemMapperInterface
     public function mapArrayToEnvItem(
         #[ArrayShape([
             'defaultLocale' => 'string',
-            'locales' => 'string[]',
-            'cacheItemStructure' => 'string[]',
+            'locales' => 'array',
+            'cacheItemStructure' => 'array',
         ])]
         array $environment
     ): EnvItem {

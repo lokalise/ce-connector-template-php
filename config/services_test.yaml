@@ -19,5 +19,5 @@ services:
     App\Interfaces\Mapper\IdentifierMapperInterface:
         class: App\Tests\Functional\Integration\Mapper\IdentifierMapper
 
-    App\Interfaces\ApiClientInterface:
+    App\Integration\ApiClient:
         class: App\Tests\Functional\Integration\ApiClient

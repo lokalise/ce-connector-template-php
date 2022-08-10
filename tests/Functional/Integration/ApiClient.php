@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional\Integration;
 
-use App\Interfaces\ApiClientInterface;
 use App\Tests\Functional\DataProvider\EnvironmentDataProvider;
 use App\Tests\Functional\DataProvider\IdentifierDataProvider;
+use App\Integration\ApiClient as BaseApiClient;
 
-class ApiClient implements ApiClientInterface
+class ApiClient extends BaseApiClient
 {
     public function auth(string $key): string
     {
@@ -26,8 +26,9 @@ class ApiClient implements ApiClientInterface
     public function getCacheItems(string $accessToken, array $identifiers): array
     {
         return array_map(
-            static fn (array $identifier) => array_merge($identifier, [
+            static fn(array $identifier) => array_merge($identifier, [
                 'fields' => $identifier['metadata'],
+                'title' => $identifier['uniqueId'] . $identifier['groupId'],
             ]),
             $identifiers,
         );
@@ -40,13 +41,12 @@ class ApiClient implements ApiClientInterface
 
     public function publish(string $accessToken, array $translations): void
     {
-
     }
 
     public function getTranslations(string $accessToken, array $locales, array $identifiers): array
     {
         return array_map(
-            static fn (array $identifier) => array_merge($identifier, [
+            static fn(array $identifier) => array_merge($identifier, [
                 'translations' => array_combine($locales, $locales),
             ]),
             $identifiers,

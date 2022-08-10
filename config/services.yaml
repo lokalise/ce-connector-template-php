@@ -90,6 +90,3 @@ services:
 
     App\Interfaces\Mapper\LocaleItemMapperInterface:
         class: App\Integration\Mapper\LocaleItemMapper
-
-    App\Interfaces\ApiClientInterface:
-        class: App\Integration\ApiClient

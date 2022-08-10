@@ -33,8 +33,9 @@ final class CacheDataProvider
                 self::CACHE_ITEMS_REQUEST,
                 [
                     'items' => array_map(
-                        static fn (array $identifier) => array_merge($identifier, [
-                            "fields" => $identifier['metadata'],
+                        static fn(array $identifier) => array_merge($identifier, [
+                            'fields' => $identifier['metadata'],
+                            'title' => $identifier['uniqueId'] . $identifier['groupId'],
                         ]),
                         self::CACHE_ITEMS_REQUEST['items'],
                     ),

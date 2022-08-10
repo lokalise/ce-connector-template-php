@@ -2,13 +2,13 @@
 
 namespace App\Integration\Service;
 
-use App\Interfaces\ApiClientInterface;
+use App\Integration\ApiClient;
 use App\Interfaces\Service\AuthenticationServiceInterface;
 
 class AuthenticationService implements AuthenticationServiceInterface
 {
     public function __construct(
-        private readonly ApiClientInterface $apiClient,
+        private readonly ApiClient $apiClient,
     ) {
     }
 
