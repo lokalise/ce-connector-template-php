@@ -19,4 +19,14 @@ class Identifier
      */
     #[Assert\NotNull()]
     public ?array $metadata = null;
+
+    public static function createFromIdentifier(Identifier $identifier): static
+    {
+        $cacheItem = new static();
+        $cacheItem->uniqueId = $identifier->uniqueId;
+        $cacheItem->groupId = $identifier->groupId;
+        $cacheItem->metadata = $identifier->metadata;
+
+        return $cacheItem;
+    }
 }

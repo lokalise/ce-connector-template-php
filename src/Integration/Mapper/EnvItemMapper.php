@@ -5,7 +5,6 @@ namespace App\Integration\Mapper;
 use App\DTO\EnvItem;
 use App\Interfaces\Mapper\EnvItemMapperInterface;
 use App\Interfaces\Mapper\LocaleItemMapperInterface;
-use JetBrains\PhpStorm\ArrayShape;
 
 class EnvItemMapper implements EnvItemMapperInterface
 {
@@ -14,19 +13,20 @@ class EnvItemMapper implements EnvItemMapperInterface
     ) {
     }
 
-    public function mapArrayToEnvItem(
-        #[ArrayShape([
-            'defaultLocale' => 'string',
-            'locales' => 'array',
-            'cacheItemStructure' => 'array',
-        ])]
-        array $environment
-    ): EnvItem {
+    /**
+     * @param array{
+     *     defaultLocale: string,
+     *     languages: array,
+     *     cacheItemStructure: array,
+     * } $environment
+     */
+    public function mapArrayToEnvItem(array $environment): EnvItem
+    {
         $item = new EnvItem();
         $item->defaultLocale = $environment['defaultLocale'];
         $item->locales = array_map(
-            fn (array $locale) => $this->localeItemMapper->mapArrayToLocaleItem($locale),
-            $environment['locales'],
+            fn (array $language) => $this->localeItemMapper->mapArrayToLocaleItem($language),
+            $environment['languages'],
         );
         $item->cacheItemStructure = $environment['cacheItemStructure'];
 

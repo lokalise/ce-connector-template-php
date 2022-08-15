@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Integration\Service;
+namespace App\Tests\Functional\Integration\Service;
 
 use App\Interfaces\Service\AuthenticationServiceInterface;
 

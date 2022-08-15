@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Integration\Service;
+namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\EnvItem;
 use App\Interfaces\Mapper\EnvItemMapperInterface;
 use App\Interfaces\Service\EnvironmentServiceInterface;
+use App\Tests\Functional\DataProvider\EnvironmentDataProvider;
 
 class EnvironmentService implements EnvironmentServiceInterface
 {
@@ -15,17 +16,9 @@ class EnvironmentService implements EnvironmentServiceInterface
 
     public function getEnvironments(string $accessToken): EnvItem
     {
-        return $this->envItemMapper->mapArrayToEnvItem([
-            'defaultLocale' => 'de',
-            'languages' => [
-                [
-                    'code' => 'de',
-                    'name' => 'German',
-                ],
-            ],
-            'cacheItemStructure' => [
-                'id' => 'ID',
-            ],
-        ]);
+        $environments = EnvironmentDataProvider::ENVIRONMENTS;
+        $environments['languages'] = $environments['locales'];
+
+        return $this->envItemMapper->mapArrayToEnvItem($environments);
     }
 }
