@@ -4,7 +4,9 @@ namespace App\DTO;
 
 class LocaleItem
 {
-    public string $name;
-
-    public string $code;
+    public function __construct(
+        public readonly string $name,
+        public readonly string $code,
+    ) {
+    }
 }

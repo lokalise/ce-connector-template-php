@@ -2,17 +2,17 @@
 
 namespace App\DTO;
 
+use App\Integration\DTO\CacheItemStructure;
+
 class EnvItem
 {
-    public ?string $defaultLocale = null;
-
     /**
-     * @var array<int, LocaleItem>|null
+     * @param array<int, LocaleItem> $locales
      */
-    public ?array $locales = null;
-
-    /**
-     * @var array<string, string>|null
-     */
-    public ?array $cacheItemStructure = null;
+    public function __construct(
+        public readonly string $defaultLocale,
+        public readonly array $locales,
+        public readonly CacheItemStructure $cacheItemStructure,
+    ) {
+    }
 }

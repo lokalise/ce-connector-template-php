@@ -4,6 +4,8 @@ namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
+use App\Integration\DTO\CacheItemFields;
+use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
 use App\Tests\Functional\DataProvider\CacheDataProvider;
 use App\Tests\Functional\DataProvider\IdentifierDataProvider;
@@ -15,12 +17,16 @@ class CacheService implements CacheServiceInterface
      */
     public function getCache(string $accessToken): array
     {
-        $identifier = new Identifier();
-        $identifier->uniqueId = IdentifierDataProvider::UNIQUE_ID;
-        $identifier->groupId = IdentifierDataProvider::GROUP_ID;
-        $identifier->metadata = IdentifierDataProvider::METADATA;
-
-        return [$identifier];
+        return [
+            new Identifier(
+                IdentifierDataProvider::UNIQUE_ID,
+                IdentifierDataProvider::GROUP_ID,
+                new Metadata(
+                    IdentifierDataProvider::METADATA['contentType'],
+                    IdentifierDataProvider::METADATA['field'],
+                )
+            ),
+        ];
     }
 
     /**
@@ -31,7 +37,7 @@ class CacheService implements CacheServiceInterface
         return array_map(static function (Identifier $translatableItem) {
             $cacheItem = CacheItem::createFromIdentifier($translatableItem);
             $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
-            $cacheItem->fields = $cacheItem->metadata;
+            $cacheItem->fields = new CacheItemFields(CacheDataProvider::CACHE_ITEM_FIELD_ID);
 
             return $cacheItem;
         }, $identifiers);

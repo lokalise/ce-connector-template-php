@@ -3,29 +3,20 @@
 namespace App\Integration\Service;
 
 use App\DTO\EnvItem;
-use App\Interfaces\Mapper\EnvItemMapperInterface;
+use App\DTO\LocaleItem;
+use App\Integration\DTO\CacheItemStructure;
 use App\Interfaces\Service\EnvironmentServiceInterface;
 
 class EnvironmentService implements EnvironmentServiceInterface
 {
-    public function __construct(
-        private readonly EnvItemMapperInterface $envItemMapper,
-    ) {
-    }
-
     public function getEnvironments(string $accessToken): EnvItem
     {
-        return $this->envItemMapper->mapArrayToEnvItem([
-            'defaultLocale' => 'de',
-            'languages' => [
-                [
-                    'code' => 'de',
-                    'name' => 'German',
-                ],
+        return new EnvItem(
+            'de',
+            [
+                new LocaleItem('German', 'de'),
             ],
-            'cacheItemStructure' => [
-                'id' => 'ID',
-            ],
-        ]);
+            new CacheItemStructure(),
+        );
     }
 }

@@ -7,8 +7,6 @@ services:
 
     App\Interfaces\Service\EnvironmentServiceInterface:
         class: App\Tests\Functional\Integration\Service\EnvironmentService
-        arguments:
-            - '@App\Interfaces\Mapper\EnvItemMapperInterface'
 
     App\Interfaces\Service\TranslationServiceInterface:
         class: App\Tests\Functional\Integration\Service\TranslationService

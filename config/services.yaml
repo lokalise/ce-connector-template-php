@@ -72,9 +72,3 @@ services:
 
     App\Interfaces\Renderer\TranslationRendererInterface:
         class: App\Integration\Renderer\TranslationRenderer
-
-    App\Interfaces\Mapper\EnvItemMapperInterface:
-        class: App\Integration\Mapper\EnvItemMapper
-
-    App\Interfaces\Mapper\LocaleItemMapperInterface:
-        class: App\Integration\Mapper\LocaleItemMapper
