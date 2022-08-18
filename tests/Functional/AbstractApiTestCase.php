@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional;
 
-use JetBrains\PhpStorm\ArrayShape;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -110,9 +109,11 @@ abstract class AbstractApiTestCase extends KernelTestCase
         return json_decode($response->getContent(), true);
     }
 
-    #[ArrayShape([
-        'HTTP_x-api-token' => 'string',
-    ])]
+    /**
+     * @return array{
+     *     HTTP_x-api-token: string,
+     * }
+     */
     public static function getTestTokenHeader(): array
     {
         return [

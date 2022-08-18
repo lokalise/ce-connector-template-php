@@ -5,12 +5,10 @@ namespace App\Tests\Functional\DataProvider;
 final class TranslationDataProvider
 {
     public const TRANSLATION_REQUEST = [
-        "locales" => [
-            "en",
-            "en_US",
-            "ru",
+        'locales' => [
+            EnvironmentDataProvider::LOCALE_CODE
         ],
-        "items" => [
+        'items' => [
             IdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
         ],
     ];
@@ -28,7 +26,7 @@ final class TranslationDataProvider
             [
                 self::TRANSLATION_REQUEST,
                 [
-                    "items" => array_map(
+                    'items' => array_map(
                         static fn (array $identifier) => array_merge($identifier, [
                             "translations" => array_combine(
                                 self::TRANSLATION_REQUEST['locales'],

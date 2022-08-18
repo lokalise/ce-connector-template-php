@@ -3,17 +3,17 @@
 namespace App\DTO\Response;
 
 use App\DTO\LocaleItem;
+use App\Integration\DTO\CacheItemStructure;
 
 class EnvironmentResponse
 {
     /**
-     * @param array<int, LocaleItem>|null $locales
-     * @param array<string, string>|null $cacheItemStructure
+     * @param array<int, LocaleItem> $locales
      */
     public function __construct(
         public readonly string $defaultLocale,
         public readonly array $locales,
-        public readonly array $cacheItemStructure,
+        public readonly CacheItemStructure $cacheItemStructure,
     ) {
     }
 }

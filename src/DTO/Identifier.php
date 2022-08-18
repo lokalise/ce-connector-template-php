@@ -2,21 +2,31 @@
 
 namespace App\DTO;
 
+use App\Integration\DTO\Metadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class Identifier
 {
-    #[Assert\NotBlank()]
-    #[Assert\Length(min: 1, max: 256)]
-    public ?string $uniqueId = null;
+    public function __construct(
+        #[Assert\NotBlank()]
+        #[Assert\Length(min: 1, max: 256)]
+        public readonly string $uniqueId,
 
-    #[Assert\NotBlank()]
-    #[Assert\Length(min: 1, max: 256)]
-    public ?string $groupId = null;
+        #[Assert\NotBlank()]
+        #[Assert\Length(min: 1, max: 256)]
+        public readonly string $groupId,
 
-    /**
-     * @var array<string, string>|null
-     */
-    #[Assert\NotNull()]
-    public ?array $metadata = null;
+        #[Assert\NotNull()]
+        public readonly Metadata $metadata,
+    ) {
+    }
+
+    public static function createFromIdentifier(Identifier $identifier): static
+    {
+        return new static(
+            $identifier->uniqueId,
+            $identifier->groupId,
+            $identifier->metadata,
+        );
+    }
 }

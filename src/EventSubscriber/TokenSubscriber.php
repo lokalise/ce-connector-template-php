@@ -4,7 +4,6 @@ namespace App\EventSubscriber;
 
 use App\Controller\TokenAuthenticatedControllerInterface;
 use App\TokenExtractor\TokenExtractorInterface;
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -17,9 +16,9 @@ class TokenSubscriber implements EventSubscriberInterface
     ) {
     }
 
-    #[ArrayShape([
-        KernelEvents::CONTROLLER => 'string',
-    ])]
+    /**
+     * @return array<string, string>
+     */
     public static function getSubscribedEvents(): array
     {
         return [

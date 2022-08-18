@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Integration\Service;
+namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
 use App\Integration\DTO\CacheItemFields;
 use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
+use App\Tests\Functional\DataProvider\CacheDataProvider;
+use App\Tests\Functional\DataProvider\IdentifierDataProvider;
 
 class CacheService implements CacheServiceInterface
 {
@@ -17,9 +19,12 @@ class CacheService implements CacheServiceInterface
     {
         return [
             new Identifier(
-                'post:1:title',
-                'post:1',
-                new Metadata('post', 'title'),
+                IdentifierDataProvider::UNIQUE_ID,
+                IdentifierDataProvider::GROUP_ID,
+                new Metadata(
+                    IdentifierDataProvider::METADATA['contentType'],
+                    IdentifierDataProvider::METADATA['field'],
+                )
             ),
         ];
     }
@@ -31,8 +36,8 @@ class CacheService implements CacheServiceInterface
     {
         return array_map(static function (Identifier $translatableItem) {
             $cacheItem = CacheItem::createFromIdentifier($translatableItem);
-            $cacheItem->title = 'title';
-            $cacheItem->fields = new CacheItemFields('id');
+            $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
+            $cacheItem->fields = new CacheItemFields(CacheDataProvider::CACHE_ITEM_FIELD_ID);
 
             return $cacheItem;
         }, $identifiers);

@@ -9,18 +9,18 @@ final class EnvironmentDataProvider
     public const LOCALE_NAME = 'German';
 
     public const CACHE_ITEM_STRUCTURE = [
-        "title" => "Title",
+        'id' => 'ID',
     ];
 
     public const ENVIRONMENTS = [
-        "defaultLocale" => self::LOCALE_CODE,
-        "locales" => [
+        'defaultLocale' => self::LOCALE_CODE,
+        'locales' => [
             [
-                "name" => self::LOCALE_NAME,
-                "code" => self::LOCALE_CODE,
+                'name' => self::LOCALE_NAME,
+                'code' => self::LOCALE_CODE,
             ],
         ],
-        "cacheItemStructure" => self::CACHE_ITEM_STRUCTURE,
+        'cacheItemStructure' => self::CACHE_ITEM_STRUCTURE,
     ];
 
     public static function environmentResponseProvider(): array

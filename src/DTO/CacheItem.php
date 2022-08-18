@@ -2,10 +2,11 @@
 
 namespace App\DTO;
 
+use App\Integration\DTO\CacheItemFields;
+
 class CacheItem extends Identifier
 {
-    /**
-     * @var array<string, string>|null
-     */
-    public ?array $fields = null;
+    public ?string $title = null;
+
+    public ?CacheItemFields $fields = null;
 }

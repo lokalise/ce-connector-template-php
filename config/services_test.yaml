@@ -1,23 +1,12 @@
 services:
-    App\Interfaces\Mapper\CacheItemMapperInterface:
-        class: App\Tests\Functional\Integration\Mapper\CacheItemMapper
+    App\Interfaces\Service\AuthenticationServiceInterface:
+        class: App\Tests\Functional\Integration\Service\AuthenticationService
 
-    App\Interfaces\Mapper\CacheMapperInterface:
-        class: App\Tests\Functional\Integration\Mapper\CacheMapper
+    App\Interfaces\Service\CacheServiceInterface:
+        class: App\Tests\Functional\Integration\Service\CacheService
 
-    App\Interfaces\Mapper\TranslationItemMapperInterface:
-        class: App\Tests\Functional\Integration\Mapper\TranslationItemMapper
+    App\Interfaces\Service\EnvironmentServiceInterface:
+        class: App\Tests\Functional\Integration\Service\EnvironmentService
 
-    App\Interfaces\Mapper\LocaleItemMapperInterface:
-        class: App\Tests\Functional\Integration\Mapper\LocaleItemMapper
-
-    App\Interfaces\Mapper\EnvItemMapperInterface:
-        class: App\Tests\Functional\Integration\Mapper\EnvItemMapper
-        arguments:
-            - '@App\Interfaces\Mapper\LocaleItemMapperInterface'
-
-    App\Interfaces\Mapper\IdentifierMapperInterface:
-        class: App\Tests\Functional\Integration\Mapper\IdentifierMapper
-
-    App\Interfaces\ApiClientInterface:
-        class: App\Tests\Functional\Integration\ApiClient
+    App\Interfaces\Service\TranslationServiceInterface:
+        class: App\Tests\Functional\Integration\Service\TranslationService
