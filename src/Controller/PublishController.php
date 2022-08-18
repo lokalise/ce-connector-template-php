@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\DTO\Request\PublishRequest;
-use App\DTO\Token;
 use App\Exception\AccessDeniedException;
+use App\Integration\DTO\AuthCredential;
 use App\Interfaces\Renderer\PublishRendererInterface;
 use App\Interfaces\Service\PublishServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PublishController extends AbstractController implements TokenAuthenticatedControllerInterface
+class PublishController extends AbstractController implements AuthenticatedControllerInterface
 {
     public function __construct(
         private readonly PublishServiceInterface $publishService,
@@ -25,10 +25,10 @@ class PublishController extends AbstractController implements TokenAuthenticated
         path: '/publish',
         methods: [Request::METHOD_POST]
     )]
-    public function publish(Token $token, PublishRequest $publishRequest): Response
+    public function publish(AuthCredential $authCredential, PublishRequest $publishRequest): Response
     {
         try {
-            $this->publishService->publishContent($token->value, $publishRequest->items);
+            $this->publishService->publishContent($authCredential, $publishRequest->items);
 
             return $this->publishRenderer->render();
         } catch (AccessDeniedException) {

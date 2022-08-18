@@ -2,17 +2,17 @@
 
 namespace App\EventSubscriber;
 
-use App\Controller\TokenAuthenticatedControllerInterface;
-use App\TokenExtractor\TokenExtractorInterface;
+use App\Controller\AuthenticatedControllerInterface;
+use App\RequestValueExtractor\RequestValueExtractorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class TokenSubscriber implements EventSubscriberInterface
+class AuthCredentialSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly TokenExtractorInterface $tokenExtractor,
+        private readonly RequestValueExtractorInterface $apiKeyExtractor,
     ) {
     }
 
@@ -34,13 +34,13 @@ class TokenSubscriber implements EventSubscriberInterface
             $controller = $controller[0];
         }
 
-        if (!$controller instanceof TokenAuthenticatedControllerInterface) {
+        if (!$controller instanceof AuthenticatedControllerInterface) {
             return;
         }
 
-        $accessToken = $this->tokenExtractor->extract($event->getRequest());
+        $apiKey = $this->apiKeyExtractor->extract($event->getRequest());
 
-        if (!$accessToken) {
+        if (!$apiKey) {
             throw new AccessDeniedHttpException('Not authorised');
         }
     }

@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\DTO\Request\CacheRequest;
-use App\DTO\Token;
 use App\Exception\AccessDeniedException;
+use App\Integration\DTO\AuthCredential;
 use App\Interfaces\Renderer\CacheItemRendererInterface;
 use App\Interfaces\Renderer\CacheRendererInterface;
 use App\Interfaces\Service\CacheServiceInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CacheController extends AbstractController implements TokenAuthenticatedControllerInterface
+class CacheController extends AbstractController implements AuthenticatedControllerInterface
 {
     public function __construct(
         private readonly CacheServiceInterface $cacheService,
@@ -27,10 +27,10 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache',
         methods: [Request::METHOD_GET],
     )]
-    public function cache(Token $token): Response
+    public function cache(AuthCredential $authCredential): Response
     {
         try {
-            $cacheResult = $this->cacheService->getCache($token->value);
+            $cacheResult = $this->cacheService->getCache($authCredential);
 
             return $this->cacheRenderer->render($cacheResult);
         } catch (AccessDeniedException) {
@@ -42,10 +42,10 @@ class CacheController extends AbstractController implements TokenAuthenticatedCo
         path: '/cache/items',
         methods: [Request::METHOD_POST],
     )]
-    public function cacheItems(Token $token, CacheRequest $cacheRequest): Response
+    public function cacheItems(AuthCredential $authCredential, CacheRequest $cacheRequest): Response
     {
         try {
-            $cacheResult = $this->cacheService->getCacheItems($token->value, $cacheRequest->items);
+            $cacheResult = $this->cacheService->getCacheItems($authCredential, $cacheRequest->items);
 
             return $this->cacheItemRenderer->render($cacheResult);
         } catch (AccessDeniedException) {
