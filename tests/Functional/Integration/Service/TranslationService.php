@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\TranslationItem;
 use App\DTO\Identifier;
-use App\Integration\DTO\AuthCredential;
+use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\Service\TranslationServiceInterface;
 
 class TranslationService implements TranslationServiceInterface
@@ -15,7 +15,7 @@ class TranslationService implements TranslationServiceInterface
      *
      * @return array<int, TranslationItem>
      */
-    public function getTranslations(AuthCredential $authCredential, array $locales, array $identifiers): array
+    public function getTranslations(AuthCredentials $authCredential, array $locales, array $identifiers): array
     {
         return array_map(static function (Identifier $translation) use ($locales) {
             $translationItem = TranslationItem::createFromIdentifier($translation);

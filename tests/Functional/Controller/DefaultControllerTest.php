@@ -13,7 +13,7 @@ class DefaultControllerTest extends AbstractApiTestCase
             Request::METHOD_GET,
             '/',
             [],
-            "OK"
+            'OK'
         );
     }
 }
