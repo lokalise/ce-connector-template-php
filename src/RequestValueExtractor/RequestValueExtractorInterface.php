@@ -1,10 +1,10 @@
 <?php
 
-namespace App\TokenExtractor;
+namespace App\RequestValueExtractor;
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface TokenExtractorInterface
+interface RequestValueExtractorInterface
 {
     public function extract(Request $request): ?string;
 }

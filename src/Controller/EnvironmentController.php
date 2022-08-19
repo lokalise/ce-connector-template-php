@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\DTO\Token;
 use App\Exception\AccessDeniedException;
+use App\Integration\DTO\AuthCredential;
 use App\Interfaces\Renderer\EnvironmentRendererInterface;
 use App\Interfaces\Service\EnvironmentServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class EnvironmentController extends AbstractController implements TokenAuthenticatedControllerInterface
+class EnvironmentController extends AbstractController implements AuthenticatedControllerInterface
 {
     public function __construct(
         private readonly EnvironmentServiceInterface $envService,
@@ -24,10 +24,10 @@ class EnvironmentController extends AbstractController implements TokenAuthentic
         path: '/env',
         methods: [Request::METHOD_GET],
     )]
-    public function env(Token $token): Response
+    public function env(AuthCredential $authCredential): Response
     {
         try {
-            $envResult = $this->envService->getEnvironments($token->value);
+            $envResult = $this->envService->getEnvironments($authCredential);
 
             return $this->environmentRenderer->render($envResult);
         } catch (AccessDeniedException) {

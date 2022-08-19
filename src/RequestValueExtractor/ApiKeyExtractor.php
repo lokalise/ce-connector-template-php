@@ -1,10 +1,10 @@
 <?php
 
-namespace App\TokenExtractor;
+namespace App\RequestValueExtractor;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class HeaderTokenExtractor implements TokenExtractorInterface
+class ApiKeyExtractor implements RequestValueExtractorInterface
 {
     public const API_TOKEN_HEADER = 'X-Api-Token';
 

@@ -27,15 +27,15 @@ services:
         tags:
             - { name: controller.argument_value_resolver, priority: 50 }
 
-    App\ArgumentResolver\TokenResolver:
+    App\ArgumentResolver\AuthCredentialResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 50 }
 
     error_handler.error_renderer.serializer:
         alias: App\Renderer\ApiErrorRenderer
 
-    App\TokenExtractor\TokenExtractorInterface:
-        class: App\TokenExtractor\HeaderTokenExtractor
+    App\RequestValueExtractor\RequestValueExtractorInterface:
+        class: App\RequestValueExtractor\ApiKeyExtractor
 
     App\Interfaces\Service\AuthenticationServiceInterface:
         class: App\Integration\Service\AuthenticationService
@@ -72,3 +72,6 @@ services:
 
     App\Interfaces\Renderer\TranslationRendererInterface:
         class: App\Integration\Renderer\TranslationRenderer
+
+    App\Interfaces\DataTransformer\AuthCredentialTransformerInterface:
+        class: App\Integration\DataTransformer\AuthCredentialTransformer

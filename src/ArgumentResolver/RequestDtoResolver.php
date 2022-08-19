@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -26,11 +27,16 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $requestDTO = $this->serializer->denormalize($request->toArray(), $argument->getType(), JsonEncoder::FORMAT);
+        try {
+            $requestDTO = $this->serializer->denormalize($request->toArray(), $argument->getType(), JsonEncoder::FORMAT);
+        } catch (MissingConstructorArgumentsException) {
+            throw new BadRequestHttpException('Bad request');
+        }
+
         $violations = $this->validator->validate($requestDTO);
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string)$violations);
+            throw new BadRequestHttpException((string) $violations);
         }
 
         yield $requestDTO;
