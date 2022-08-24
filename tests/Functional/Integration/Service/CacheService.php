@@ -4,7 +4,7 @@ namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
-use App\Integration\DTO\AuthCredential;
+use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\CacheItemFields;
 use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
@@ -16,7 +16,7 @@ class CacheService implements CacheServiceInterface
     /**
      * @return array<int, Identifier>
      */
-    public function getCache(AuthCredential $authCredential): array
+    public function getCache(AuthCredentials $authCredential): array
     {
         return [
             new Identifier(
@@ -33,7 +33,7 @@ class CacheService implements CacheServiceInterface
     /**
      * @param array<int, Identifier> $identifiers
      */
-    public function getCacheItems(AuthCredential $authCredential, array $identifiers): array
+    public function getCacheItems(AuthCredentials $authCredential, array $identifiers): array
     {
         return array_map(static function (Identifier $translatableItem) {
             $cacheItem = CacheItem::createFromIdentifier($translatableItem);

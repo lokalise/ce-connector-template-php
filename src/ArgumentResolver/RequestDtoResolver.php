@@ -28,7 +28,11 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         try {
-            $requestDTO = $this->serializer->denormalize($request->toArray(), $argument->getType(), JsonEncoder::FORMAT);
+            $requestDTO = $this->serializer->denormalize(
+                $request->toArray(),
+                $argument->getType(),
+                JsonEncoder::FORMAT
+            );
         } catch (MissingConstructorArgumentsException) {
             throw new BadRequestHttpException('Bad request');
         }
@@ -36,7 +40,7 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($requestDTO);
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string) $violations);
+            throw new BadRequestHttpException((string)$violations);
         }
 
         yield $requestDTO;

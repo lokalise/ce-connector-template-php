@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Exception\AccessDeniedException;
-use App\Integration\DTO\AuthCredential;
+use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\Renderer\EnvironmentRendererInterface;
 use App\Interfaces\Service\EnvironmentServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,10 +24,10 @@ class EnvironmentController extends AbstractController implements AuthenticatedC
         path: '/env',
         methods: [Request::METHOD_GET],
     )]
-    public function env(AuthCredential $authCredential): Response
+    public function env(AuthCredentials $credentials): Response
     {
         try {
-            $envResult = $this->envService->getEnvironments($authCredential);
+            $envResult = $this->envService->getEnvironments($credentials);
 
             return $this->environmentRenderer->render($envResult);
         } catch (AccessDeniedException) {

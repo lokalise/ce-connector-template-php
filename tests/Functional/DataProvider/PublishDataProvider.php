@@ -5,11 +5,11 @@ namespace App\Tests\Functional\DataProvider;
 final class PublishDataProvider
 {
     public const PUBLISH_REQUEST = [
-        'items' =>  [
+        'items' => [
             [
                 ...IdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,
-                "translations" => [
-                    "de" => "Hallo Welt!",
+                'translations' => [
+                    'de' => 'Hallo Welt!',
                 ],
             ],
         ],
@@ -28,8 +28,8 @@ final class PublishDataProvider
             [
                 self::PUBLISH_REQUEST,
                 [
-                    "code" => "200",
-                    "message" => "Content successfully updated"
+                    'code' => '200',
+                    'message' => 'Content successfully updated',
                 ],
             ],
         ];

@@ -27,7 +27,7 @@ services:
         tags:
             - { name: controller.argument_value_resolver, priority: 50 }
 
-    App\ArgumentResolver\AuthCredentialResolver:
+    App\ArgumentResolver\AuthCredentialsResolver:
         tags:
             - { name: controller.argument_value_resolver, priority: 50 }
 
@@ -73,5 +73,5 @@ services:
     App\Interfaces\Renderer\TranslationRendererInterface:
         class: App\Integration\Renderer\TranslationRenderer
 
-    App\Interfaces\DataTransformer\AuthCredentialTransformerInterface:
-        class: App\Integration\DataTransformer\AuthCredentialTransformer
+    App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface:
+        class: App\Integration\DataTransformer\AuthCredentialsTransformer

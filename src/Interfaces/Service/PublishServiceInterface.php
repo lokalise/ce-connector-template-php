@@ -4,7 +4,7 @@ namespace App\Interfaces\Service;
 
 use App\DTO\TranslationItem;
 use App\Exception\AccessDeniedException;
-use App\Integration\DTO\AuthCredential;
+use App\Integration\DTO\AuthCredentials;
 
 interface PublishServiceInterface
 {
@@ -13,5 +13,5 @@ interface PublishServiceInterface
      *
      * @throws AccessDeniedException
      */
-    public function publishContent(AuthCredential $authCredential, array $translations): void;
+    public function publishContent(AuthCredentials $credentials, array $translations): void;
 }

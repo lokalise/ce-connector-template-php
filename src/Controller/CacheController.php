@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\DTO\Request\CacheRequest;
 use App\Exception\AccessDeniedException;
-use App\Integration\DTO\AuthCredential;
+use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\Renderer\CacheItemRendererInterface;
 use App\Interfaces\Renderer\CacheRendererInterface;
 use App\Interfaces\Service\CacheServiceInterface;
@@ -27,10 +27,10 @@ class CacheController extends AbstractController implements AuthenticatedControl
         path: '/cache',
         methods: [Request::METHOD_GET],
     )]
-    public function cache(AuthCredential $authCredential): Response
+    public function cache(AuthCredentials $credentials): Response
     {
         try {
-            $cacheResult = $this->cacheService->getCache($authCredential);
+            $cacheResult = $this->cacheService->getCache($credentials);
 
             return $this->cacheRenderer->render($cacheResult);
         } catch (AccessDeniedException) {
@@ -42,10 +42,10 @@ class CacheController extends AbstractController implements AuthenticatedControl
         path: '/cache/items',
         methods: [Request::METHOD_POST],
     )]
-    public function cacheItems(AuthCredential $authCredential, CacheRequest $cacheRequest): Response
+    public function cacheItems(AuthCredentials $credentials, CacheRequest $cacheRequest): Response
     {
         try {
-            $cacheResult = $this->cacheService->getCacheItems($authCredential, $cacheRequest->items);
+            $cacheResult = $this->cacheService->getCacheItems($credentials, $cacheRequest->items);
 
             return $this->cacheItemRenderer->render($cacheResult);
         } catch (AccessDeniedException) {

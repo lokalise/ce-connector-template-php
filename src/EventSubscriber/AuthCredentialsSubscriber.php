@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class AuthCredentialSubscriber implements EventSubscriberInterface
+class AuthCredentialsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private readonly RequestValueExtractorInterface $apiKeyExtractor,
