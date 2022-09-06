@@ -35,12 +35,16 @@ class CacheService implements CacheServiceInterface
      */
     public function getCacheItems(AuthCredentials $authCredential, array $identifiers): array
     {
-        return array_map(static function (Identifier $translatableItem) {
-            $cacheItem = CacheItem::createFromIdentifier($translatableItem);
-            $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
-            $cacheItem->fields = new CacheItemFields(CacheDataProvider::CACHE_ITEM_FIELD_ID);
+        return array_map(
+            static function (Identifier $translatableItem) {
+                $cacheItem = CacheItem::createFromIdentifier($translatableItem);
+                $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
+                $cacheItem->groupTitle = CacheDataProvider::CACHE_ITEM_GROUP_TITLE;
+                $cacheItem->fields = new CacheItemFields(CacheDataProvider::CACHE_ITEM_FIELD_ID);
 
-            return $cacheItem;
-        }, $identifiers);
+                return $cacheItem;
+            },
+            $identifiers
+        );
     }
 }

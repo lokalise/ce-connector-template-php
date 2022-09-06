@@ -14,6 +14,8 @@ final class CacheDataProvider
 
     public const CACHE_ITEM_TITLE = 'title';
 
+    public const CACHE_ITEM_GROUP_TITLE = 'groupTitle';
+
     public const CACHE_ITEM_FIELD_ID = 'id';
 
     public static function cacheResponseProvider(): array
@@ -37,12 +39,16 @@ final class CacheDataProvider
                 self::CACHE_ITEMS_REQUEST,
                 [
                     'items' => array_map(
-                        static fn(array $identifier) => array_merge($identifier, [
-                            'title' => 'title',
-                            'fields' => [
-                                'id' => self::CACHE_ITEM_FIELD_ID,
-                            ],
-                        ]),
+                        static fn(array $identifier) => array_merge(
+                            $identifier,
+                            [
+                                'title' => self::CACHE_ITEM_TITLE,
+                                'groupTitle' => self::CACHE_ITEM_GROUP_TITLE,
+                                'fields' => [
+                                    'id' => self::CACHE_ITEM_FIELD_ID,
+                                ],
+                            ]
+                        ),
                         self::CACHE_ITEMS_REQUEST['items'],
                     ),
                 ],

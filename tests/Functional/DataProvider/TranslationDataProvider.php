@@ -28,12 +28,15 @@ final class TranslationDataProvider
                 self::TRANSLATION_REQUEST,
                 [
                     'items' => array_map(
-                        static fn(array $identifier) => array_merge($identifier, [
-                            'translations' => array_combine(
-                                self::TRANSLATION_REQUEST['locales'],
-                                self::TRANSLATION_REQUEST['locales'],
-                            ),
-                        ]),
+                        static fn(array $identifier) => array_merge(
+                            $identifier,
+                            [
+                                'translations' => array_combine(
+                                    self::TRANSLATION_REQUEST['locales'],
+                                    self::TRANSLATION_REQUEST['locales'],
+                                ),
+                            ]
+                        ),
                         self::TRANSLATION_REQUEST['items'],
                     ),
                 ],

@@ -8,5 +8,7 @@ class CacheItem extends Identifier
 {
     public ?string $title = null;
 
+    public ?string $groupTitle = null;
+
     public ?CacheItemFields $fields = null;
 }

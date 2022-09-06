@@ -20,11 +20,14 @@ class TranslationService implements TranslationServiceInterface
     {
         $locales = $translateRequest->locales;
 
-        return array_map(static function (Identifier $translation) use ($locales) {
-            $translationItem = TranslationItem::createFromIdentifier($translation);
-            $translationItem->translations = array_combine($locales, $locales);
+        return array_map(
+            static function (Identifier $translation) use ($locales) {
+                $translationItem = TranslationItem::createFromIdentifier($translation);
+                $translationItem->translations = array_combine($locales, $locales);
 
-            return $translationItem;
-        }, $translateRequest->items);
+                return $translationItem;
+            },
+            $translateRequest->items
+        );
     }
 }
