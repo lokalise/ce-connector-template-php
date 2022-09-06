@@ -4,74 +4,29 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    env(CONST_DEFAULT_AUTH_TYPE): 'App\Enum\AuthTypeEnum::%env(DEFAULT_AUTH_TYPE)%'
+    env(CONST_DEFAULT_OAUTH_RESPONSE_PARAMS): 'App\Enum\OAuthResponseParamsEnum::%env(DEFAULT_OAUTH_RESPONSE_PARAMS)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            App\Enum\AuthTypeEnum $defaultAuthType: '%env(const:CONST_DEFAULT_AUTH_TYPE)%'
+            App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: '%env(const:CONST_DEFAULT_OAUTH_RESPONSE_PARAMS)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
+            - '../src/DTO/'
+            - '../src/Integration/DTO/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\ArgumentResolver\RequestDtoResolver:
-        tags:
-            - { name: controller.argument_value_resolver, priority: 50 }
-
-    App\ArgumentResolver\AuthCredentialsResolver:
-        tags:
-            - { name: controller.argument_value_resolver, priority: 50 }
-
     error_handler.error_renderer.serializer:
         alias: App\Renderer\ApiErrorRenderer
-
-    App\RequestValueExtractor\RequestValueExtractorInterface:
-        class: App\RequestValueExtractor\ApiKeyExtractor
-
-    App\Interfaces\Service\AuthenticationServiceInterface:
-        class: App\Integration\Service\AuthenticationService
-
-    App\Interfaces\Service\CacheServiceInterface:
-        class: App\Integration\Service\CacheService
-
-    App\Interfaces\Service\EnvironmentServiceInterface:
-        class: App\Integration\Service\EnvironmentService
-
-    App\Interfaces\Service\PublishServiceInterface:
-        class: App\Integration\Service\PublishService
-
-    App\Interfaces\Service\TranslationServiceInterface:
-        class: App\Integration\Service\TranslationService
-
-    App\Interfaces\Renderer\AuthRendererInterface:
-        class: App\Integration\Renderer\AuthRenderer
-
-    App\Interfaces\Renderer\RefreshRendererInterface:
-        class: App\Integration\Renderer\RefreshRenderer
-
-    App\Interfaces\Renderer\CacheRendererInterface:
-        class: App\Integration\Renderer\CacheRenderer
-
-    App\Interfaces\Renderer\CacheItemRendererInterface:
-        class: App\Integration\Renderer\CacheItemRenderer
-
-    App\Interfaces\Renderer\EnvironmentRendererInterface:
-        class: App\Integration\Renderer\EnvironmentRenderer
-
-    App\Interfaces\Renderer\PublishRendererInterface:
-        class: App\Integration\Renderer\PublishRenderer
-
-    App\Interfaces\Renderer\TranslationRendererInterface:
-        class: App\Integration\Renderer\TranslationRenderer
-
-    App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface:
-        class: App\Integration\DataTransformer\AuthCredentialsTransformer

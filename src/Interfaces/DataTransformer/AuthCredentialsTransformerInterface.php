@@ -8,5 +8,5 @@ interface AuthCredentialsTransformerInterface
 {
     public function transform(string $apiKey): AuthCredentials;
 
-    public function reverseTransform(AuthCredentials $authCredential): string;
+    public function reverseTransform(AuthCredentials $credentials): string;
 }

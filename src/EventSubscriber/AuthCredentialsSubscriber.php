@@ -3,7 +3,9 @@
 namespace App\EventSubscriber;
 
 use App\Controller\AuthenticatedControllerInterface;
-use App\RequestValueExtractor\RequestValueExtractorInterface;
+use App\Exception\ExtractorNotExistException;
+use App\Integration\DTO\AuthCredentials;
+use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -12,7 +14,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class AuthCredentialsSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly RequestValueExtractorInterface $apiKeyExtractor,
+        private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
     ) {
     }
 
@@ -26,6 +28,9 @@ class AuthCredentialsSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * @throws ExtractorNotExistException
+     */
     public function onKernelController(ControllerEvent $event): void
     {
         $controller = $event->getController();
@@ -38,7 +43,8 @@ class AuthCredentialsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $apiKey = $this->apiKeyExtractor->extract($event->getRequest());
+        $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
+        $apiKey = $apiKeyExtractor->extract($event->getRequest());
 
         if (!$apiKey) {
             throw new AccessDeniedHttpException('Not authorised');

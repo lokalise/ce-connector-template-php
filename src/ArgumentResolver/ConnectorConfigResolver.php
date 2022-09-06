@@ -2,31 +2,28 @@
 
 namespace App\ArgumentResolver;
 
-use App\Enum\AuthTypeEnum;
 use App\Exception\ExtractorNotExistException;
-use App\Integration\DTO\AuthCredentials;
-use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
+use App\Integration\DTO\ConnectorConfig;
+use App\Interfaces\DataTransformer\ConnectorConfigTransformerInterface;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class AuthCredentialsResolver implements ArgumentValueResolverInterface
+class ConnectorConfigResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
-        private readonly AuthCredentialsTransformerInterface $authCredentialsDataTransformer,
+        private readonly ConnectorConfigTransformerInterface $connectorConfigTransformer,
         private readonly ValidatorInterface $validator,
-        private readonly AuthTypeEnum $defaultAuthType,
     ) {
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return $argument->getType() === AuthCredentials::class;
+        return $argument->getType() === ConnectorConfig::class;
     }
 
     /**
@@ -34,23 +31,17 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
-        $apiKey = $apiKeyExtractor->extract($request);
+        $connectorConfigExtractor = $this->requestValueExtractorFactory->factory(ConnectorConfig::class);
+        $encodedConnectorConfig = $connectorConfigExtractor->extract($request);
 
-        $authCredentials = $this->authCredentialsDataTransformer->transform($apiKey);
+        $connectorConfig = $this->connectorConfigTransformer->transform($encodedConnectorConfig);
 
-        $violations = $this->validator->validate(
-            value: $authCredentials,
-            groups: [
-                Constraint::DEFAULT_GROUP,
-                $this->defaultAuthType->value,
-            ],
-        );
+        $violations = $this->validator->validate($connectorConfig);
 
         if (count($violations) > 0) {
             throw new BadRequestHttpException((string) $violations);
         }
 
-        yield $authCredentials;
+        yield $connectorConfig;
     }
 }

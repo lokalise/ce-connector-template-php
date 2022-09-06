@@ -2,10 +2,10 @@
 
 namespace App\DTO\Response;
 
-class AuthResponse
+class AuthKeyResponse
 {
     public function __construct(
-        public readonly string $key,
+        public readonly string $apiKey,
     ) {
     }
 }
