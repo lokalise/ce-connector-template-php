@@ -28,11 +28,7 @@ class TranslationController extends AbstractController implements AuthenticatedC
     public function translate(AuthCredentials $credentials, TranslateRequest $translateRequest): Response
     {
         try {
-            $items = $this->translationService->getTranslations(
-                $credentials,
-                $translateRequest->locales,
-                $translateRequest->items,
-            );
+            $items = $this->translationService->getTranslations($credentials, $translateRequest);
 
             return $this->translationRenderer->render($items);
         } catch (AccessDeniedException) {

@@ -10,7 +10,7 @@ class CacheRequest implements RequestDTO
     /**
      * @var array<int, Identifier>|null
      */
-    #[Assert\Valid()]
-    #[Assert\NotBlank()]
+    #[Assert\Valid]
+    #[Assert\NotBlank]
     public ?array $items = null;
 }

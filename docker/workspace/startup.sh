@@ -6,6 +6,6 @@ composer install --no-interaction
 
 composer dump-autoload --optimize
 composer check-platform-reqs
-php "$APP_CODE_PATH_CONTAINER/bin/console" cache:warmup
+php bin/console cache:warmup
 
 rr serve

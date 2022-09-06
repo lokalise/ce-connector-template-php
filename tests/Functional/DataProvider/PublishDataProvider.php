@@ -5,6 +5,7 @@ namespace App\Tests\Functional\DataProvider;
 final class PublishDataProvider
 {
     public const PUBLISH_REQUEST = [
+        'defaultLocale' => 'en',
         'items' => [
             [
                 ...IdentifierDataProvider::UNIQUE_ITEM_IDENTIFIER,

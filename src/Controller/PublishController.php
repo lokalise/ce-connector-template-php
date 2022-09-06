@@ -28,7 +28,7 @@ class PublishController extends AbstractController implements AuthenticatedContr
     public function publish(AuthCredentials $credentials, PublishRequest $publishRequest): Response
     {
         try {
-            $this->publishService->publishContent($credentials, $publishRequest->items);
+            $this->publishService->publishContent($credentials, $publishRequest);
 
             return $this->publishRenderer->render();
         } catch (AccessDeniedException) {
