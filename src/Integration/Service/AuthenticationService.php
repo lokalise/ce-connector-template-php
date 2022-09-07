@@ -9,6 +9,11 @@ use App\Interfaces\Service\AuthenticationServiceInterface;
 
 class AuthenticationService implements AuthenticationServiceInterface
 {
+    public function __construct(
+        private readonly string $platformClientId = '',
+    ) {
+    }
+
     public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string
     {
         return $apiKey;
@@ -22,7 +27,8 @@ class AuthenticationService implements AuthenticationServiceInterface
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string
     {
         return sprintf(
-            "https://authorization-server.com/auth?response_type=code&client_id=CLIENT_ID&redirect_uri=%s&scope=scope&state=",
+            "https://authorization-server.com/auth?response_type=code&client_id=%s&redirect_uri=%s&scope=scope&state=",
+            $this->platformClientId,
             $redirectUrl,
         );
     }

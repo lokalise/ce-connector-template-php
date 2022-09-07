@@ -120,7 +120,7 @@ class AuthenticationController extends AbstractController
      */
     private function refreshByApiKey(RefreshRequest $refreshRequest, ConnectorConfig $connectorConfig): Response
     {
-        $refreshKey = $this->authenticationService->refreshApiKey($refreshRequest->refreshToken, $connectorConfig);
+        $refreshKey = $this->authenticationService->refreshApiKey($refreshRequest->apiKey, $connectorConfig);
 
         return $this->refreshRenderer->render($refreshKey);
     }

@@ -4,7 +4,7 @@ namespace App\Integration\Service;
 
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
-use App\Integration\DTO\AuthCredentials;
+use App\Integration\DTO\AccessCredentials;
 use App\Integration\DTO\CacheItemFields;
 use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
@@ -14,7 +14,7 @@ class CacheService implements CacheServiceInterface
     /**
      * @return array<int, Identifier>
      */
-    public function getCache(AuthCredentials $credentials): array
+    public function getCache(AccessCredentials $credentials): array
     {
         return [
             new Identifier(
@@ -28,7 +28,7 @@ class CacheService implements CacheServiceInterface
     /**
      * @param array<int, Identifier> $identifiers
      */
-    public function getCacheItems(AuthCredentials $credentials, array $identifiers): array
+    public function getCacheItems(AccessCredentials $credentials, array $identifiers): array
     {
         return array_map(
             static function (Identifier $translatableItem) {

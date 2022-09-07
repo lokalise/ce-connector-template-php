@@ -2,12 +2,8 @@
 
 namespace App\DTO\Request;
 
-use App\Enum\AuthTypeEnum;
-use App\Integration\DTO\ConnectorConfig;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Integration\DTO\AccessCredentials;
 
-class RefreshRequest implements RequestDTO
+class RefreshRequest extends AccessCredentials implements RequestDTO
 {
-    #[Assert\NotBlank()]
-    public ?string $refreshToken = null;
 }

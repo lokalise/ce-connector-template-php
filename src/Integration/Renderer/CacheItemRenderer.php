@@ -5,11 +5,16 @@ namespace App\Integration\Renderer;
 use App\DTO\CacheItem;
 use App\DTO\Response\CacheItemsResponse;
 use App\Interfaces\Renderer\CacheItemRendererInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class CacheItemRenderer implements CacheItemRendererInterface
 {
+    public function __construct(
+        private readonly JsonResponseRenderer $jsonResponseRenderer,
+    ) {
+    }
+
     /**
      * @param array<int, CacheItem> $items
      */
@@ -17,6 +22,6 @@ class CacheItemRenderer implements CacheItemRendererInterface
     {
         $responseDTO = new CacheItemsResponse($items);
 
-        return new JsonResponse($responseDTO);
+        return $this->jsonResponseRenderer->render($responseDTO);
     }
 }

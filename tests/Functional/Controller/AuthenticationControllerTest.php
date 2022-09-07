@@ -145,6 +145,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testRefresh(AuthTypeEnum $authType, array $request, array $response): void
     {
+        $this->setRequestDtoResolver($authType);
         $this->setAuthenticationController($authType);
 
         static::checkRequest(
@@ -171,7 +172,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             Request::METHOD_POST,
             '/auth/refresh',
             [
-                'refreshToken' => AuthenticationDataProvider::FAILED_API_KEY,
+                'apiKey' => AuthenticationDataProvider::FAILED_API_KEY,
             ],
         );
     }

@@ -29,6 +29,9 @@ final class AuthenticationDataProvider
     {
         return base64_encode(json_encode([
             'apiKey' => self::API_KEY,
+            'accessToken' => self::ACCESS_TOKEN,
+            'refreshToken' => self::REFRESH_TOKEN,
+            'expiresIn' => self::EXPIRES_IN,
         ], JSON_THROW_ON_ERROR));
     }
 
@@ -146,7 +149,7 @@ final class AuthenticationDataProvider
             'refresh_api_key' => [
                 AuthTypeEnum::apiKey,
                 [
-                    'refreshToken' => self::REFRESH_TOKEN,
+                    'apiKey' => self::REFRESH_TOKEN,
                 ],
                 [
                     'apiKey' => self::REFRESH_TOKEN,
@@ -155,7 +158,9 @@ final class AuthenticationDataProvider
             'refresh_access_token' => [
                 AuthTypeEnum::OAuth,
                 [
+                    'accessToken' => self::ACCESS_TOKEN,
                     'refreshToken' => self::REFRESH_TOKEN,
+                    'expiresIn' => self::EXPIRES_IN,
                 ],
                 [
                     'accessToken' => self::ACCESS_TOKEN,

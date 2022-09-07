@@ -5,7 +5,7 @@ namespace App\DTO\Response;
 use App\DTO\LocaleItem;
 use App\Integration\DTO\CacheItemStructure;
 
-class EnvironmentResponse
+class EnvironmentResponse implements ResponseDTO
 {
     /**
      * @param array<int, LocaleItem> $locales

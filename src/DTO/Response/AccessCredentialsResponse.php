@@ -2,12 +2,8 @@
 
 namespace App\DTO\Response;
 
-class AccessCredentialsResponse
+use App\Integration\DTO\AccessCredentials;
+
+class AccessCredentialsResponse extends AccessCredentials implements ResponseDTO
 {
-    public function __construct(
-        public readonly string $accessToken,
-        public readonly string $refreshToken,
-        public readonly ?int $expiresIn = null,
-    ) {
-    }
 }

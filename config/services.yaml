@@ -6,6 +6,8 @@
 parameters:
     env(CONST_DEFAULT_AUTH_TYPE): 'App\Enum\AuthTypeEnum::%env(DEFAULT_AUTH_TYPE)%'
     env(CONST_DEFAULT_OAUTH_RESPONSE_PARAMS): 'App\Enum\OAuthResponseParamsEnum::%env(DEFAULT_OAUTH_RESPONSE_PARAMS)%'
+    platform_client_id: '%env(PLATFORM_CLIENT_ID)%'
+    platform_client_secret: '%env(PLATFORM_CLIENT_SECRET)%'
 
 services:
     # default configuration for services in *this* file
@@ -15,6 +17,7 @@ services:
         bind:
             App\Enum\AuthTypeEnum $defaultAuthType: '%env(const:CONST_DEFAULT_AUTH_TYPE)%'
             App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: '%env(const:CONST_DEFAULT_OAUTH_RESPONSE_PARAMS)%'
+            string $platformClientId: '%platform_client_id%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

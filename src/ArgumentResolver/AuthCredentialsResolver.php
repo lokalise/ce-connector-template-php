@@ -4,7 +4,7 @@ namespace App\ArgumentResolver;
 
 use App\Enum\AuthTypeEnum;
 use App\Exception\ExtractorNotExistException;
-use App\Integration\DTO\AuthCredentials;
+use App\Integration\DTO\AccessCredentials;
 use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +26,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return $argument->getType() === AuthCredentials::class;
+        return $argument->getType() === AccessCredentials::class;
     }
 
     /**
@@ -34,7 +34,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
+        $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AccessCredentials::class);
         $apiKey = $apiKeyExtractor->extract($request);
 
         $authCredentials = $this->authCredentialsDataTransformer->transform($apiKey);

@@ -4,7 +4,7 @@ namespace App\DTO\Response;
 
 use App\DTO\CacheItem;
 
-class CacheItemsResponse
+class CacheItemsResponse implements ResponseDTO
 {
     /**
      * @param array<int, CacheItem> $items
