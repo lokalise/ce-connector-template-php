@@ -13,7 +13,7 @@ class PublishRequest implements RequestDTO
     /**
      * @var array<int, TranslationItem>|null
      */
-    #[Assert\Valid]
-    #[Assert\NotBlank]
+    #[Assert\Valid()]
+    #[Assert\NotBlank()]
     public ?array $items = null;
 }
