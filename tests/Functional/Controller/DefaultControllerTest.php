@@ -3,11 +3,15 @@
 namespace App\Tests\Functional\Controller;
 
 use App\Tests\Functional\AbstractApiTestCase;
+use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultControllerTest extends AbstractApiTestCase
 {
-    public function testAuth(): void
+    /**
+     * @throws JsonException
+     */
+    public function testHealthEndpoint(): void
     {
         static::checkRequest(
             Request::METHOD_GET,

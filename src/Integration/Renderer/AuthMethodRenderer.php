@@ -10,14 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthMethodRenderer implements AuthMethodRendererInterface
 {
-    public function __construct(
-        private readonly AuthTypeEnum $defaultAuthType,
-    ) {
-    }
-
-    public function render(): Response
+    public function render(AuthTypeEnum $authType): Response
     {
-        $responseDTO = new AuthMethodResponse($this->defaultAuthType);
+        $responseDTO = new AuthMethodResponse($authType);
 
         return new JsonResponse($responseDTO);
     }

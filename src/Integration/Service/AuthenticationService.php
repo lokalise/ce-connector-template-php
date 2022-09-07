@@ -9,9 +9,9 @@ use App\Interfaces\Service\AuthenticationServiceInterface;
 
 class AuthenticationService implements AuthenticationServiceInterface
 {
-    public function authByApiKey(string $key, ConnectorConfig $connectorConfig): string
+    public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string
     {
-        return $key;
+        return $apiKey;
     }
 
     public function refreshApiKey(string $refreshKey, ConnectorConfig $connectorConfig): string

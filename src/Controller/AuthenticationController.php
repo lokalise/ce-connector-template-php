@@ -35,7 +35,7 @@ class AuthenticationController extends AbstractController
     )]
     public function getMethod(): Response
     {
-        return $this->authMethodRenderer->render();
+        return $this->authMethodRenderer->render($this->defaultAuthType);
     }
 
     #[Route(

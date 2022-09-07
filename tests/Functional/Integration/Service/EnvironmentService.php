@@ -11,7 +11,7 @@ use App\Tests\Functional\DataProvider\EnvironmentDataProvider;
 
 class EnvironmentService implements EnvironmentServiceInterface
 {
-    public function getEnvironments(AuthCredentials $authCredential): EnvItem
+    public function getEnvironments(AuthCredentials $credentials): EnvItem
     {
         return new EnvItem(
             EnvironmentDataProvider::LOCALE_CODE,
