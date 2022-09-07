@@ -32,6 +32,7 @@ class TranslationController extends AbstractController implements AuthenticatedC
                 $credentials,
                 $translateRequest->locales,
                 $translateRequest->items,
+                $translateRequest->defaultLocale
             );
 
             return $this->translationRenderer->render($items);

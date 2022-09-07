@@ -13,5 +13,5 @@ interface PublishServiceInterface
      *
      * @throws AccessDeniedException
      */
-    public function publishContent(AuthCredentials $credentials, array $translations): void;
+    public function publishContent(AuthCredentials $credentials, array $translations, string $defaultLocale): void;
 }

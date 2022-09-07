@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TranslateRequest implements RequestDTO
 {
+    #[Assert\NotBlank]
+    public string $defaultLocale;
+
     /**
      * @var array<int, string>|null
      */

@@ -2,8 +2,8 @@
 
 namespace App\Interfaces\Service;
 
-use App\DTO\TranslationItem;
 use App\DTO\Identifier;
+use App\DTO\TranslationItem;
 use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
 
@@ -17,5 +17,10 @@ interface TranslationServiceInterface
      *
      * @throws AccessDeniedException
      */
-    public function getTranslations(AuthCredentials $credentials, array $locales, array $identifiers): array;
+    public function getTranslations(
+        AuthCredentials $credentials,
+        array $locales,
+        array $identifiers,
+        string $defaultLocale
+    ): array;
 }

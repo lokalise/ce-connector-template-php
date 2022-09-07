@@ -5,6 +5,7 @@ namespace App\Tests\Functional\DataProvider;
 final class TranslationDataProvider
 {
     public const TRANSLATION_REQUEST = [
+        'defaultLocale' => 'en',
         'locales' => [
             EnvironmentDataProvider::LOCALE_CODE,
         ],

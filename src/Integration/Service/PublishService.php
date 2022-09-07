@@ -11,7 +11,7 @@ class PublishService implements PublishServiceInterface
     /**
      * @param array<int, TranslationItem> $translations
      */
-    public function publishContent(AuthCredentials $credentials, array $translations): void
+    public function publishContent(AuthCredentials $credentials, array $translations, string $defaultLocale): void
     {
     }
 }
