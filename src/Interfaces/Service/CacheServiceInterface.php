@@ -5,7 +5,7 @@ namespace App\Interfaces\Service;
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
 use App\Exception\AccessDeniedException;
-use App\Integration\DTO\AccessCredentials;
+use App\Integration\DTO\AuthCredentials;
 
 interface CacheServiceInterface
 {
@@ -14,7 +14,7 @@ interface CacheServiceInterface
      *
      * @throws AccessDeniedException
      */
-    public function getCache(AccessCredentials $credentials): array;
+    public function getCache(AuthCredentials $credentials): array;
 
     /**
      * @param array<int, Identifier> $identifiers
@@ -23,5 +23,5 @@ interface CacheServiceInterface
      *
      * @throws AccessDeniedException
      */
-    public function getCacheItems(AccessCredentials $credentials, array $identifiers): array;
+    public function getCacheItems(AuthCredentials $credentials, array $identifiers): array;
 }

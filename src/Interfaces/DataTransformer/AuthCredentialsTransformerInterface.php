@@ -2,11 +2,11 @@
 
 namespace App\Interfaces\DataTransformer;
 
-use App\Integration\DTO\AccessCredentials;
+use App\Integration\DTO\AuthCredentials;
 
 interface AuthCredentialsTransformerInterface
 {
-    public function transform(string $apiKey): AccessCredentials;
+    public function transform(string $apiKey): AuthCredentials;
 
-    public function reverseTransform(AccessCredentials $credentials): string;
+    public function reverseTransform(AuthCredentials $credentials): string;
 }

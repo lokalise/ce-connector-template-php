@@ -5,7 +5,7 @@ namespace App\Integration\DTO;
 use App\Enum\AuthTypeEnum;
 use App\Validator\NotBlank;
 
-class AccessCredentials
+class AuthCredentials
 {
     public function __construct(
         #[NotBlank(groups: [AuthTypeEnum::apiKey])]

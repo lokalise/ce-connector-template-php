@@ -3,7 +3,7 @@
 namespace App\RequestValueExtractor;
 
 use App\Exception\ExtractorNotExistException;
-use App\Integration\DTO\AccessCredentials;
+use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
 
 final class RequestValueExtractorFactory
@@ -20,7 +20,7 @@ final class RequestValueExtractorFactory
     public function factory(string $dtoClass): RequestValueExtractorInterface
     {
         return match ($dtoClass) {
-            AccessCredentials::class => $this->apiKeyExtractor,
+            AuthCredentials::class => $this->apiKeyExtractor,
             ConnectorConfig::class => $this->connectorConfigExtractor,
             default => throw new ExtractorNotExistException(),
         };

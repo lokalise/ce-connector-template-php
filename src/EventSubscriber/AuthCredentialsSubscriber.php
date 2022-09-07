@@ -4,7 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Controller\AuthenticatedControllerInterface;
 use App\Exception\ExtractorNotExistException;
-use App\Integration\DTO\AccessCredentials;
+use App\Integration\DTO\AuthCredentials;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -43,7 +43,7 @@ class AuthCredentialsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AccessCredentials::class);
+        $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
         $apiKey = $apiKeyExtractor->extract($event->getRequest());
 
         if (!$apiKey) {

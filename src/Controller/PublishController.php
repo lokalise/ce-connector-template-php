@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\DTO\Request\PublishRequest;
 use App\Exception\AccessDeniedException;
-use App\Integration\DTO\AccessCredentials;
+use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\Renderer\PublishRendererInterface;
 use App\Interfaces\Service\PublishServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +25,7 @@ class PublishController extends AbstractController implements AuthenticatedContr
         path: '/publish',
         methods: [Request::METHOD_POST]
     )]
-    public function publish(AccessCredentials $credentials, PublishRequest $publishRequest): Response
+    public function publish(AuthCredentials $credentials, PublishRequest $publishRequest): Response
     {
         try {
             $this->publishService->publishContent($credentials, $publishRequest->items, $publishRequest->defaultLocale);
