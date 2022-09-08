@@ -2,10 +2,14 @@
 
 namespace App\DTO\Request;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Enum\AuthTypeEnum;
+use App\Validator\NotBlank;
 
 class AuthenticationRequest implements RequestDTO
 {
-    #[Assert\NotBlank]
-    public string $key;
+    #[NotBlank(groups: [AuthTypeEnum::apiKey])]
+    public ?string $key = null;
+
+    #[NotBlank(groups: [AuthTypeEnum::OAuth])]
+    public ?string $redirectUrl = null;
 }

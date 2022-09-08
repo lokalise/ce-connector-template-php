@@ -1,4 +1,14 @@
 services:
+    App\ArgumentResolver\RequestDtoResolver:
+        public: true
+        tags:
+            - { name: controller.argument_value_resolver, priority: 50 }
+        arguments:
+            - '@serializer'
+            - '@validator'
+            - !php/const App\Enum\AuthTypeEnum::apiKey
+            - !php/const App\Enum\OAuthResponseParamsEnum::query
+
     App\Interfaces\Service\AuthenticationServiceInterface:
         class: App\Tests\Functional\Integration\Service\AuthenticationService
 

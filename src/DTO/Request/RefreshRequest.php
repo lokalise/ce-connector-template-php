@@ -2,10 +2,8 @@
 
 namespace App\DTO\Request;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Integration\DTO\AuthCredentials;
 
-class RefreshRequest implements RequestDTO
+class RefreshRequest extends AuthCredentials implements RequestDTO
 {
-    #[Assert\NotBlank]
-    public string $refreshKey;
 }

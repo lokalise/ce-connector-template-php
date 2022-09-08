@@ -2,7 +2,7 @@
 
 namespace App\DTO\Response;
 
-class PublishResponse
+class PublishResponse implements ResponseDTO
 {
     public function __construct(
         public readonly string $code,

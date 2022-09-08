@@ -4,7 +4,7 @@ namespace App\DTO\Response;
 
 use App\DTO\TranslationItem;
 
-class TranslationResponse
+class TranslationResponse implements ResponseDTO
 {
     /**
      * @param array<int, TranslationItem> $items

@@ -2,10 +2,10 @@
 
 namespace App\DTO\Response;
 
-class RefreshResponse
+class RefreshResponse implements ResponseDTO
 {
     public function __construct(
-        public readonly string $key,
+        public readonly string $apiKey,
     ) {
     }
 }

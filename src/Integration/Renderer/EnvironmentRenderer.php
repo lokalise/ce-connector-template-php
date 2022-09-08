@@ -5,11 +5,16 @@ namespace App\Integration\Renderer;
 use App\DTO\EnvItem;
 use App\DTO\Response\EnvironmentResponse;
 use App\Interfaces\Renderer\EnvironmentRendererInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnvironmentRenderer implements EnvironmentRendererInterface
 {
+    public function __construct(
+        private readonly JsonResponseRenderer $jsonResponseRenderer,
+    ) {
+    }
+
     public function render(EnvItem $environments): Response
     {
         $responseDTO = new EnvironmentResponse(
@@ -18,6 +23,6 @@ class EnvironmentRenderer implements EnvironmentRendererInterface
             $environments->cacheItemStructure,
         );
 
-        return new JsonResponse($responseDTO);
+        return $this->jsonResponseRenderer->render($responseDTO);
     }
 }

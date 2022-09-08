@@ -2,10 +2,10 @@
 
 namespace App\DTO\Response;
 
-class AuthResponse
+class AuthUrlResponse implements ResponseDTO
 {
     public function __construct(
-        public readonly string $key,
+        public readonly string $url,
     ) {
     }
 }
