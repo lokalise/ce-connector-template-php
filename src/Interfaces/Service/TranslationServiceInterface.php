@@ -6,6 +6,7 @@ use App\DTO\Identifier;
 use App\DTO\TranslationItem;
 use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
+use App\Integration\DTO\ConnectorConfig;
 
 interface TranslationServiceInterface
 {
@@ -19,6 +20,7 @@ interface TranslationServiceInterface
      */
     public function getTranslations(
         AuthCredentials $credentials,
+        ConnectorConfig $connectorConfig,
         array $locales,
         array $identifiers,
         string $defaultLocale

@@ -4,12 +4,11 @@ namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
-use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\CacheItemFields;
+use App\Integration\DTO\ConnectorConfig;
 use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
-use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use App\Tests\Functional\DataProvider\CacheDataProvider;
 use App\Tests\Functional\DataProvider\IdentifierDataProvider;
 
@@ -18,7 +17,7 @@ class CacheService implements CacheServiceInterface
     /**
      * @return array<int, Identifier>
      */
-    public function getCache(AuthCredentials $credentials): array
+    public function getCache(AuthCredentials $credentials, ConnectorConfig $connectorConfig): array
     {
         return [
             new Identifier(
@@ -35,8 +34,11 @@ class CacheService implements CacheServiceInterface
     /**
      * @param array<int, Identifier> $identifiers
      */
-    public function getCacheItems(AuthCredentials $credentials, array $identifiers): array
-    {
+    public function getCacheItems(
+        AuthCredentials $credentials,
+        ConnectorConfig $connectorConfig,
+        array $identifiers,
+    ): array {
         return array_map(
             static function (Identifier $translatableItem) {
                 $cacheItem = CacheItem::createFromIdentifier($translatableItem);

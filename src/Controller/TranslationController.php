@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\DTO\Request\TranslateRequest;
 use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
+use App\Integration\DTO\ConnectorConfig;
 use App\Interfaces\Renderer\TranslationRendererInterface;
 use App\Interfaces\Service\TranslationServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,11 +26,15 @@ class TranslationController extends AbstractController implements AuthenticatedC
         path: '/translate',
         methods: [Request::METHOD_POST]
     )]
-    public function translate(AuthCredentials $credentials, TranslateRequest $translateRequest): Response
-    {
+    public function translate(
+        AuthCredentials $credentials,
+        ConnectorConfig $connectorConfig,
+        TranslateRequest $translateRequest,
+    ): Response {
         try {
             $items = $this->translationService->getTranslations(
                 $credentials,
+                $connectorConfig,
                 $translateRequest->locales,
                 $translateRequest->items,
                 $translateRequest->defaultLocale

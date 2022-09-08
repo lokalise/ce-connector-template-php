@@ -112,7 +112,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
             $method,
             $uri,
             [],
-            $server
+            array_merge($server, static::getTestConnectorConfigHeader()),
         );
 
         $response = $client->getResponse();

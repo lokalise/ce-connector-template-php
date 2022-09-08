@@ -10,14 +10,15 @@ class Identifier
     public function __construct(
         #[Assert\NotBlank()]
         #[Assert\Length(min: 1, max: 256)]
-        public readonly string $uniqueId,
+        public readonly ?string $uniqueId = null,
 
         #[Assert\NotBlank()]
         #[Assert\Length(min: 1, max: 256)]
-        public readonly string $groupId,
+        public readonly ?string $groupId = null,
 
+        #[Assert\Valid()]
         #[Assert\NotNull()]
-        public readonly Metadata $metadata,
+        public readonly ?Metadata $metadata = null,
     ) {
     }
 
