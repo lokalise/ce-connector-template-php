@@ -157,8 +157,6 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::refreshProvider
-     *
      * @throws JsonException
      * @throws Exception
      */
@@ -196,11 +194,24 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     public function setAuthenticationController(AuthTypeEnum $authType): void
     {
         $container = static::getContainer();
+
+        /** @var AuthenticationServiceInterface $authenticationService */
+        $authenticationService = $container->get(AuthenticationServiceInterface::class);
+
+        /** @var AuthMethodRendererInterface $authMethodRenderer */
+        $authMethodRenderer = $container->get(AuthMethodRendererInterface::class);
+
+        /** @var AuthRendererInterface $authRenderer */
+        $authRenderer = $container->get(AuthRendererInterface::class);
+
+        /** @var RefreshRendererInterface $refreshRenderer */
+        $refreshRenderer = $container->get(RefreshRendererInterface::class);
+
         $controller = new AuthenticationController(
-            $container->get(AuthenticationServiceInterface::class),
-            $container->get(AuthMethodRendererInterface::class),
-            $container->get(AuthRendererInterface::class),
-            $container->get(RefreshRendererInterface::class),
+            $authenticationService,
+            $authMethodRenderer,
+            $authRenderer,
+            $refreshRenderer,
             $authType,
         );
         $controller->setContainer($container);
@@ -216,12 +227,14 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         OAuthResponseParamsEnum $oAuthResponseParams = OAuthResponseParamsEnum::query,
     ): void {
         $container = static::getContainer();
-        $requestDtoResolver = new RequestDtoResolver(
-            $container->get(SerializerInterface::class),
-            $container->get(ValidatorInterface::class),
-            $authType,
-            $oAuthResponseParams,
-        );
+
+        /** @var SerializerInterface $serializer */
+        $serializer = $container->get(SerializerInterface::class);
+
+        /** @var ValidatorInterface $validator */
+        $validator = $container->get(ValidatorInterface::class);
+
+        $requestDtoResolver = new RequestDtoResolver($serializer, $validator, $authType, $oAuthResponseParams);
 
         $container->set(RequestDtoResolver::class, $requestDtoResolver);
     }
