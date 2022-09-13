@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\DTO\Request\CacheRequest;
-use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
 use App\Interfaces\Renderer\CacheItemRendererInterface;
@@ -12,7 +11,6 @@ use App\Interfaces\Service\CacheServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/v2')]
@@ -31,13 +29,9 @@ class CacheController extends AbstractController implements AuthenticatedControl
     )]
     public function cache(AuthCredentials $credentials, ConnectorConfig $connectorConfig): Response
     {
-        try {
-            $cacheResult = $this->cacheService->getCache($credentials, $connectorConfig);
+        $cacheResult = $this->cacheService->getCache($credentials, $connectorConfig);
 
-            return $this->cacheRenderer->render($cacheResult);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not retrieve content items');
-        }
+        return $this->cacheRenderer->render($cacheResult);
     }
 
     #[Route(
@@ -49,12 +43,12 @@ class CacheController extends AbstractController implements AuthenticatedControl
         ConnectorConfig $connectorConfig,
         CacheRequest $cacheRequest,
     ): Response {
-        try {
-            $cacheResult = $this->cacheService->getCacheItems($credentials, $connectorConfig, $cacheRequest->items);
+        $identifiersList = $this->cacheService->getCacheItems($credentials, $connectorConfig, $cacheRequest->items);
 
-            return $this->cacheItemRenderer->render($cacheResult);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not retrieve content items');
-        }
+        return $this->cacheItemRenderer->render(
+            $identifiersList->items,
+            $identifiersList->errorMessage,
+            $identifiersList->errors,
+        );
     }
 }

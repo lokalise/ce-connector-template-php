@@ -2,6 +2,8 @@
 
 namespace App\Renderer;
 
+use App\DTO\ErrorItem;
+use App\DTO\TranslationItem;
 use App\DTO\Response\TranslationResponse;
 use App\DTO\TranslationItem;
 use App\Interfaces\Renderer\TranslationRendererInterface;
@@ -16,11 +18,12 @@ class TranslationRenderer implements TranslationRendererInterface
 
     /**
      * @param array<int, TranslationItem> $items
+     * @param array<int, array<string, ErrorItem>> $errors
      */
-    public function render(array $items): Response
+    public function render(array $items, ?string $errorMessage = null, array $errors = []): Response
     {
         $responseDTO = new TranslationResponse($items);
 
-        return $this->jsonResponseRenderer->render($responseDTO);
+        return $this->jsonResponseRenderer->render($responseDTO, $errorMessage, $errors);
     }
 }

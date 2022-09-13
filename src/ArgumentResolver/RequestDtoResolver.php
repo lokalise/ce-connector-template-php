@@ -2,13 +2,16 @@
 
 namespace App\ArgumentResolver;
 
+use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\DTO\Request\RequestDTO;
 use App\Enum\AuthTypeEnum;
+use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
+use App\Exception\BadRequestHttpException;
+use App\Formatter\BadRequestErrorsFormatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\MissingConstructorArgumentsException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -20,6 +23,7 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
+        private readonly BadRequestErrorsFormatter $badRequestErrorsFormatter,
         private readonly OAuthResponseParamsEnum $defaultOAuthResponseParams,
     ) {
     }
@@ -32,15 +36,26 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         try {
+            /** @var RequestDTO $requestDTO */
             $requestDTO = $this->serializer->denormalize(
                 $request->toArray(),
                 $argument->getType(),
                 JsonEncoder::FORMAT,
             );
         } catch (MissingConstructorArgumentsException) {
-            throw new BadRequestHttpException('Bad request');
+            throw new BadRequestHttpException(
+                message: 'Bad request',
+                errorCode: ErrorCodeEnum::UNKNOWN_ERROR,
+            );
         }
 
+        $this->validateRequest($requestDTO);
+
+        yield $requestDTO;
+    }
+
+    private function validateRequest(RequestDTO $requestDTO): void
+    {
         $violations = $this->validator->validate(
             value: $requestDTO,
             groups: [
@@ -50,9 +65,13 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
         );
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string) $violations);
-        }
+            $errors = $this->badRequestErrorsFormatter->format($violations);
 
-        yield $requestDTO;
+            throw new BadRequestHttpException(
+                'Bad request',
+                new BadRequestErrorDetails([$errors]),
+                ErrorCodeEnum::UNKNOWN_ERROR,
+            );
+        }
     }
 }

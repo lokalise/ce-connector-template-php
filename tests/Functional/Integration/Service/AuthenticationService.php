@@ -13,12 +13,6 @@ class AuthenticationService implements AuthenticationServiceInterface
 {
     public function authByApiKey(ConnectorConfig $connectorConfig): AuthCredentials
     {
-        $apiKey = $connectorConfig->apiKey;
-
-        if ($apiKey === AuthenticationDataProvider::FAILED_API_KEY) {
-            throw new AccessDeniedException();
-        }
-
         return new AuthCredentials($apiKey);
     }
 

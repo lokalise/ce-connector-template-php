@@ -2,10 +2,10 @@
 
 namespace App\Tests\Functional\Controller;
 
+use App\Exception\UnauthorizedHttpException;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class EnvironmentControllerTest extends AbstractApiTestCase
 {
@@ -30,7 +30,7 @@ class EnvironmentControllerTest extends AbstractApiTestCase
      */
     public function testEnvNotAuthorised(): void
     {
-        $this->expectException(AccessDeniedHttpException::class);
+        $this->expectException(UnauthorizedHttpException::class);
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_GET,

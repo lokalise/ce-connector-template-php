@@ -4,6 +4,7 @@ namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
 use App\DTO\Identifier;
+use App\DTO\IdentifiersList;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\CacheItemFields;
 use App\Integration\DTO\ConnectorConfig;
@@ -38,17 +39,19 @@ class CacheService implements CacheServiceInterface
         AuthCredentials $credentials,
         ConnectorConfig $connectorConfig,
         array $identifiers,
-    ): array {
-        return array_map(
-            static function (Identifier $translatableItem) {
-                $cacheItem = CacheItem::createFromIdentifier($translatableItem);
-                $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
-                $cacheItem->groupTitle = CacheDataProvider::CACHE_ITEM_GROUP_TITLE;
-                $cacheItem->fields = new CacheItemFields(CacheDataProvider::CACHE_ITEM_FIELD_ID);
+    ): IdentifiersList {
+        return new IdentifiersList(
+            array_map(
+                static function (Identifier $translatableItem) {
+                    $cacheItem = CacheItem::createFromIdentifier($translatableItem);
+                    $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
+                    $cacheItem->groupTitle = CacheDataProvider::CACHE_ITEM_GROUP_TITLE;
+                    $cacheItem->fields = new CacheItemFields(CacheDataProvider::CACHE_ITEM_FIELD_ID);
 
-                return $cacheItem;
-            },
-            $identifiers
+                    return $cacheItem;
+                },
+                $identifiers,
+            ),
         );
     }
 }

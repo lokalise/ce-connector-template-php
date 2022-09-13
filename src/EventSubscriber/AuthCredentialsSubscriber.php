@@ -3,12 +3,13 @@
 namespace App\EventSubscriber;
 
 use App\Controller\AuthenticatedControllerInterface;
+use App\DTO\ErrorDetails\InvalidApiKeyErrorDetails;
 use App\Exception\ExtractorNotExistException;
+use App\Exception\UnauthorizedHttpException;
 use App\Integration\DTO\AuthCredentials;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class AuthCredentialsSubscriber implements EventSubscriberInterface
@@ -47,7 +48,10 @@ class AuthCredentialsSubscriber implements EventSubscriberInterface
         $apiKey = $apiKeyExtractor->extract($event->getRequest());
 
         if (!$apiKey) {
-            throw new AccessDeniedHttpException('Not authorised');
+            throw new UnauthorizedHttpException(
+                'Authorization failed',
+                new InvalidApiKeyErrorDetails(),
+            );
         }
     }
 }

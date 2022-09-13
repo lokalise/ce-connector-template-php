@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional\Controller;
 
+use App\Exception\BadRequestHttpException;
+use App\Exception\UnauthorizedHttpException;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PublishControllerTest extends AbstractApiTestCase
 {
@@ -33,7 +33,7 @@ class PublishControllerTest extends AbstractApiTestCase
      */
     public function testPublishNotAuthorised(array $parameters): void
     {
-        $this->expectException(AccessDeniedHttpException::class);
+        $this->expectException(UnauthorizedHttpException::class);
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,

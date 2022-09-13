@@ -2,6 +2,7 @@
 
 namespace App\Integration\Service;
 
+use App\DTO\IdentifiersList;
 use App\DTO\TranslationItem;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
@@ -17,6 +18,7 @@ class PublishService implements PublishServiceInterface
         ConnectorConfig $connectorConfig,
         array $translations,
         string $defaultLocale,
-    ): void {
+    ): IdentifiersList {
+        return new IdentifiersList();
     }
 }
