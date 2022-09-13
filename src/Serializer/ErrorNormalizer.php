@@ -3,7 +3,7 @@
 namespace App\Serializer;
 
 use App\Enum\ErrorCodeEnum;
-use App\Exception\PublicNonRecoverableException;
+use App\Exception\HttpException;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,9 +23,9 @@ class ErrorNormalizer implements NormalizerInterface
 
         ['exception' => $exception] = $context;
 
-        $payload = $exception instanceof PublicNonRecoverableException ? [
+        $payload = $exception instanceof HttpException ? [
             'errorCode' => $exception->getErrorCode()->value,
-            'details' => $exception->getDetails(),
+            'details' => $exception->getDetails()->toArray(),
         ] : [
             'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR,
             'details' => [],
