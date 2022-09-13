@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
-use App\DTO\Response\CacheResponse;
 use App\DTO\Identifier;
+use App\DTO\Response\CacheResponse;
 use App\Interfaces\Renderer\CacheRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class CacheRenderer implements CacheRendererInterface

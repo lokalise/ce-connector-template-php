@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
 use App\DTO\Response\RefreshResponse;
 use App\Interfaces\Renderer\RefreshRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class RefreshRenderer implements RefreshRendererInterface

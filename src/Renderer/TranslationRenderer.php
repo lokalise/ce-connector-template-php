@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
-use App\DTO\TranslationItem;
 use App\DTO\Response\TranslationResponse;
+use App\DTO\TranslationItem;
 use App\Interfaces\Renderer\TranslationRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class TranslationRenderer implements TranslationRendererInterface

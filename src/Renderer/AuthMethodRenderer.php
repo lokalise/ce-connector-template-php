@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
 use App\DTO\Response\AuthMethodResponse;
 use App\Enum\AuthTypeEnum;
 use App\Interfaces\Renderer\AuthMethodRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthMethodRenderer implements AuthMethodRendererInterface

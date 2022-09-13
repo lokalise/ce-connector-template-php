@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
 use App\DTO\Response\AccessCredentialsResponse;
 use App\DTO\Response\AuthCredentialsResponse;
 use App\DTO\Response\AuthUrlResponse;
 use App\Integration\DTO\OAuthClientToken;
 use App\Interfaces\Renderer\AuthRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthRenderer implements AuthRendererInterface

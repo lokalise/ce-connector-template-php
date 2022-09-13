@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
 use App\DTO\EnvItem;
 use App\DTO\Response\EnvironmentResponse;
 use App\Interfaces\Renderer\EnvironmentRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnvironmentRenderer implements EnvironmentRendererInterface
