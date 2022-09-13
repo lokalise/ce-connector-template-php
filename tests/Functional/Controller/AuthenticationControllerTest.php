@@ -60,10 +60,12 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::encodedConnectorConfigWithFailedRefreshToken
+     *
      * @throws JsonException
      * @throws Exception
      */
-    public function testAuthByFailedApiKey(): void
+    public function testAuthByFailedApiKey(array $connectorConfigHeader): void
     {
         $this->setRequestDtoResolver(AuthTypeEnum::apiKey);
         $this->setAuthenticationController(AuthTypeEnum::apiKey);
@@ -73,19 +75,18 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/auth',
-            [
-                'key' => AuthenticationDataProvider::FAILED_API_KEY,
-            ],
+            [],
+            $connectorConfigHeader
         );
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authProviderWithConnectorConfigWithoutApiKey
      *
      * @throws JsonException
      * @throws Exception
      */
-    public function testAuthWithEmptyRequest(AuthTypeEnum $authType): void
+    public function testAuthWithEmptyRequest(AuthTypeEnum $authType, array $connectorConfigHeader): void
     {
         $this->setRequestDtoResolver($authType);
         $this->setAuthenticationController($authType);
@@ -94,7 +95,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/auth'
+            '/auth',
+            $connectorConfigHeader
         );
     }
 
@@ -157,12 +159,12 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::refreshProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::encodedConnectorConfigWithFailedRefreshToken
      *
      * @throws JsonException
      * @throws Exception
      */
-    public function testRefreshWithFailedRefreshToken(): void
+    public function testRefreshWithFailedRefreshToken(array $connectorConfigHeader): void
     {
         $this->setAuthenticationController(AuthTypeEnum::apiKey);
 
@@ -171,22 +173,25 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
             '/auth/refresh',
-            [
-                'apiKey' => AuthenticationDataProvider::FAILED_API_KEY,
-            ],
+            [],
+            $connectorConfigHeader
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::encodedConnectorConfigWithoutApiKey
+     *
      * @throws JsonException
+     * @throws Exception
      */
-    public function testRefreshEmptyRequest(): void
+    public function testRefreshWithoutApiKey(array $connectorConfigHeader): void
     {
         $this->expectException(BadRequestHttpException::class);
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/auth/refresh'
+            '/auth/refresh',
+            $connectorConfigHeader
         );
     }
 

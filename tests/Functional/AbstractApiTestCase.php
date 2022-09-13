@@ -69,8 +69,12 @@ abstract class AbstractApiTestCase extends KernelTestCase
     /**
      * @throws JsonException
      */
-    public static function checkNotAuthorisedRequest(string $method, string $uri, array $parameters = []): array
-    {
+    public static function checkNotAuthorisedRequest(
+        string $method,
+        string $uri,
+        array $parameters = [],
+        array $server = []
+    ): array {
         $client = static::createClient();
 
         $client->catchExceptions(false);
@@ -79,7 +83,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
             $method,
             $uri,
             $parameters,
-            static::getTestConnectorConfigHeader(),
+            array_merge(static::getTestConnectorConfigHeader(), $server),
         );
 
         $response = $client->getResponse();
@@ -112,7 +116,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
             $method,
             $uri,
             [],
-            array_merge($server, static::getTestConnectorConfigHeader()),
+            array_merge(static::getTestConnectorConfigHeader(), $server),
         );
 
         $response = $client->getResponse();
@@ -138,7 +142,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
 
     /**
      * @return array{
-     *     HTTP_x-api-token: string,
+     *     HTTP_ce-config: string,
      * }
      *
      * @throws JsonException

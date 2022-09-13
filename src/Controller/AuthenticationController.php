@@ -46,7 +46,7 @@ class AuthenticationController extends AbstractController
     {
         try {
             return match ($this->defaultAuthType) {
-                AuthTypeEnum::apiKey => $this->authByApiKey($authenticationRequest, $connectorConfig),
+                AuthTypeEnum::apiKey => $this->authByApiKey($connectorConfig),
                 AuthTypeEnum::OAuth => $this->generateAuthUrl($authenticationRequest, $connectorConfig),
             };
         } catch (AccessDeniedException) {
@@ -58,10 +58,9 @@ class AuthenticationController extends AbstractController
      * @throws AccessDeniedException
      */
     private function authByApiKey(
-        AuthenticationRequest $authenticationRequest,
         ConnectorConfig $connectorConfig,
     ): Response {
-        $key = $this->authenticationService->authByApiKey($authenticationRequest->key, $connectorConfig);
+        $key = $this->authenticationService->authByApiKey($connectorConfig);
 
         return $this->authRenderer->renderKey($key);
     }
@@ -107,7 +106,7 @@ class AuthenticationController extends AbstractController
     {
         try {
             return match ($this->defaultAuthType) {
-                AuthTypeEnum::apiKey => $this->refreshByApiKey($refreshRequest, $connectorConfig),
+                AuthTypeEnum::apiKey => $this->refreshByApiKey($connectorConfig),
                 AuthTypeEnum::OAuth => $this->refreshByOAuth($refreshRequest, $connectorConfig),
             };
         } catch (AccessDeniedException) {
@@ -118,9 +117,9 @@ class AuthenticationController extends AbstractController
     /**
      * @throws AccessDeniedException
      */
-    private function refreshByApiKey(RefreshRequest $refreshRequest, ConnectorConfig $connectorConfig): Response
+    private function refreshByApiKey(ConnectorConfig $connectorConfig): Response
     {
-        $refreshKey = $this->authenticationService->refreshApiKey($refreshRequest->apiKey, $connectorConfig);
+        $refreshKey = $this->authenticationService->refreshApiKey($connectorConfig);
 
         return $this->refreshRenderer->render($refreshKey);
     }

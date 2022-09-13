@@ -9,7 +9,7 @@ class PublishRequest implements RequestDTO
 {
     #[Assert\NotBlank]
     public string $defaultLocale;
-    
+
     /**
      * @var array<int, TranslationItem>|null
      */

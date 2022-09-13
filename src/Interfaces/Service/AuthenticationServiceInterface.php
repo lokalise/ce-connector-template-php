@@ -12,12 +12,12 @@ interface AuthenticationServiceInterface
     /**
      * @throws AccessDeniedException
      */
-    public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string;
+    public function authByApiKey(ConnectorConfig $connectorConfig): string;
 
     /**
      * @throws AccessDeniedException
      */
-    public function refreshApiKey(string $refreshKey, ConnectorConfig $connectorConfig): string;
+    public function refreshApiKey(ConnectorConfig $connectorConfig): string;
 
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string;
 

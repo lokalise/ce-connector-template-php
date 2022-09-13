@@ -2,6 +2,7 @@
 
 namespace App\Integration\Renderer;
 
+use App\DTO\Response\AccessCredentialsResponse;
 use App\DTO\Response\AuthCredentialsResponse;
 use App\DTO\Response\AuthUrlResponse;
 use App\Integration\DTO\OAuthClientToken;
@@ -18,7 +19,7 @@ class AuthRenderer implements AuthRendererInterface
 
     public function renderKey(string $key): Response
     {
-        $responseDTO = new AuthCredentialsResponse($key);
+        $responseDTO = new AuthCredentialsResponse(apiKey: $key);
 
         return $this->jsonResponseRenderer->render($responseDTO);
     }
@@ -32,7 +33,7 @@ class AuthRenderer implements AuthRendererInterface
 
     public function renderAccessCredentials(OAuthClientToken $token): Response
     {
-        $responseDTO = new AuthCredentialsResponse(
+        $responseDTO = new AccessCredentialsResponse(
             accessToken: $token->accessToken,
             refreshToken: $token->refreshToken,
             expiresIn: $token->expiresIn,

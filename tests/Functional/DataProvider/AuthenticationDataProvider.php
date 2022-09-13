@@ -22,17 +22,35 @@ final class AuthenticationDataProvider
 
     public const EXPIRES_IN = 3600;
 
+    public const ACCESS_CREDENTIALS = [
+        'accessToken' => self::ACCESS_TOKEN,
+        'refreshToken' => self::REFRESH_TOKEN,
+        'expiresIn' => self::EXPIRES_IN,
+    ];
+
+    private static function encoding(array $data): string
+    {
+        return base64_encode(
+            json_encode(
+                $data,
+                JSON_THROW_ON_ERROR
+            )
+        );
+    }
+
     /**
      * @throws JsonException
      */
     public static function encodedApiKey(): string
     {
-        return base64_encode(json_encode([
-            'apiKey' => self::API_KEY,
-            'accessToken' => self::ACCESS_TOKEN,
-            'refreshToken' => self::REFRESH_TOKEN,
-            'expiresIn' => self::EXPIRES_IN,
-        ], JSON_THROW_ON_ERROR));
+        return self::encoding(
+            array_merge(
+                [
+                    'apiKey' => self::API_KEY,
+                ],
+                self::ACCESS_CREDENTIALS
+            )
+        );
     }
 
     /**
@@ -41,6 +59,40 @@ final class AuthenticationDataProvider
     public static function encodedConnectorConfig(): string
     {
         return self::encodedApiKey();
+    }
+
+    private static function encodedConnectorConfigHeaderWithoutApiKey(): array
+    {
+        return [
+            'HTTP_ce-config' => self::encoding(self::ACCESS_CREDENTIALS),
+        ];
+    }
+
+    public static function encodedConnectorConfigWithoutApiKey(): array
+    {
+        return [
+            [
+                self::encodedConnectorConfigHeaderWithoutApiKey(),
+            ],
+        ];
+    }
+
+    public static function encodedConnectorConfigWithFailedRefreshToken(): array
+    {
+        return [
+            [
+                [
+                    'HTTP_ce-config' => self::encoding(
+                        array_merge(
+                            [
+                                'apiKey' => AuthenticationDataProvider::FAILED_API_KEY,
+                            ],
+                            self::ACCESS_CREDENTIALS
+                        )
+                    ),
+                ],
+            ],
+        ];
     }
 
     public static function getMethodProvider(): array
@@ -81,6 +133,20 @@ final class AuthenticationDataProvider
                 [
                     'url' => self::AUTH_URL,
                 ],
+            ],
+        ];
+    }
+
+    public static function authProviderWithConnectorConfigWithoutApiKey(): array
+    {
+        return [
+            'auth_by_api_key' => [
+                AuthTypeEnum::apiKey,
+                self::encodedConnectorConfigHeaderWithoutApiKey(),
+            ],
+            'generate_auth_utl' => [
+                AuthTypeEnum::OAuth,
+                self::encodedConnectorConfigHeaderWithoutApiKey(),
             ],
         ];
     }
@@ -149,10 +215,10 @@ final class AuthenticationDataProvider
             'refresh_api_key' => [
                 AuthTypeEnum::apiKey,
                 [
-                    'apiKey' => self::REFRESH_TOKEN,
+                    'apiKey' => self::API_KEY,
                 ],
                 [
-                    'apiKey' => self::REFRESH_TOKEN,
+                    'apiKey' => self::API_KEY,
                 ],
             ],
             'refresh_access_token' => [

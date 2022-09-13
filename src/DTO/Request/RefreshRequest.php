@@ -2,8 +2,8 @@
 
 namespace App\DTO\Request;
 
-use App\Integration\DTO\AuthCredentials;
+use App\DTO\AccessCredentials;
 
-class RefreshRequest extends AuthCredentials implements RequestDTO
+class RefreshRequest extends AccessCredentials implements RequestDTO
 {
 }

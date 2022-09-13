@@ -14,14 +14,14 @@ class AuthenticationService implements AuthenticationServiceInterface
     ) {
     }
 
-    public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string
+    public function authByApiKey(ConnectorConfig $connectorConfig): string
     {
-        return $apiKey;
+        return $connectorConfig->apiKey;
     }
 
-    public function refreshApiKey(string $refreshKey, ConnectorConfig $connectorConfig): string
+    public function refreshApiKey(ConnectorConfig $connectorConfig): string
     {
-        return $this->authByApiKey($refreshKey, $connectorConfig);
+        return $this->authByApiKey($connectorConfig);
     }
 
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string

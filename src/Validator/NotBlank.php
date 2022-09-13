@@ -14,7 +14,7 @@ class NotBlank extends BaseNotBlank
     public function __set(string $option, mixed $value): void
     {
         if ('groups' === $option) {
-            $this->groups = $this->normalizeGroups((array) $value);
+            $this->groups = $this->normalizeGroups((array)$value);
 
             return;
         }
