@@ -39,7 +39,7 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($connectorConfig);
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string)$violations);
+            throw new BadRequestHttpException((string) $violations);
         }
 
         yield $connectorConfig;

@@ -48,7 +48,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         );
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string)$violations);
+            throw new BadRequestHttpException((string) $violations);
         }
 
         yield $authCredentials;
