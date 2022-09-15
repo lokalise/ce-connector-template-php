@@ -128,7 +128,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
 
     /**
      * @return array{
-     *     HTTP_x-api-token: string,
+     *     HTTP_ce-auth: string,
      * }
      *
      * @throws JsonException
@@ -136,7 +136,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
     public static function getTestTokenHeader(): array
     {
         return [
-            'HTTP_x-api-token' => AuthenticationDataProvider::encodedApiKey(),
+            'HTTP_ce-auth' => AuthenticationDataProvider::encodedApiKey(),
         ];
     }
 

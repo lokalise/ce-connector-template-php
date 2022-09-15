@@ -2,10 +2,9 @@
 
 namespace App\Renderer;
 
-use App\DTO\Response\AccessCredentialsResponse;
 use App\DTO\Response\AuthCredentialsResponse;
 use App\DTO\Response\AuthUrlResponse;
-use App\Integration\DTO\OAuthClientToken;
+use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\Renderer\AuthRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,13 +15,6 @@ class AuthRenderer implements AuthRendererInterface
     ) {
     }
 
-    public function renderKey(string $key): Response
-    {
-        $responseDTO = new AuthCredentialsResponse(apiKey: $key);
-
-        return $this->jsonResponseRenderer->render($responseDTO);
-    }
-
     public function renderUrl(string $url): Response
     {
         $responseDTO = new AuthUrlResponse($url);
@@ -30,13 +22,9 @@ class AuthRenderer implements AuthRendererInterface
         return $this->jsonResponseRenderer->render($responseDTO);
     }
 
-    public function renderAccessCredentials(OAuthClientToken $token): Response
+    public function renderAuthCredentials(AuthCredentials $credentials): Response
     {
-        $responseDTO = new AccessCredentialsResponse(
-            accessToken: $token->accessToken,
-            refreshToken: $token->refreshToken,
-            expiresIn: $token->expiresIn,
-        );
+        $responseDTO = AuthCredentialsResponse::createFromAuthCredentials($credentials);
 
         return $this->jsonResponseRenderer->render($responseDTO);
     }

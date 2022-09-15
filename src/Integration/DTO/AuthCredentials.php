@@ -2,14 +2,20 @@
 
 namespace App\Integration\DTO;
 
-use App\Enum\AuthTypeEnum;
-use App\Validator\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class AuthCredentials
 {
     public function __construct(
-        #[NotBlank(groups: [AuthTypeEnum::apiKey])]
+        #[Assert\NotBlank]
         public readonly ?string $apiKey = null,
     ) {
+    }
+
+    public static function createFromAuthCredentials(AuthCredentials $credentials): static
+    {
+        return new static(
+            $credentials->apiKey,
+        );
     }
 }

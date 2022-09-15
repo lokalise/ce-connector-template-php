@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     #[Route(
-        path: '/',
+        path: ['/', '/health'],
         methods: [Request::METHOD_GET]
     )]
     public function index(): JsonResponse
