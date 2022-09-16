@@ -3,13 +3,11 @@
 namespace App\Tests\Functional\Controller;
 
 use App\ArgumentResolver\RequestDtoResolver;
-use App\Controller\AuthenticationController;
 use App\Enum\AuthTypeEnum;
 use App\Enum\OAuthResponseParamsEnum;
-use App\Interfaces\Renderer\AuthMethodRendererInterface;
-use App\Interfaces\Renderer\AuthRendererInterface;
-use App\Interfaces\Renderer\RefreshRendererInterface;
-use App\Interfaces\Service\AuthenticationServiceInterface;
+use App\Renderer\AuthMethodRenderer;
+use App\Renderer\JsonResponseRenderer;
+use App\Service\AuthTypeService;
 use App\Tests\Functional\AbstractApiTestCase;
 use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use Exception;
@@ -17,6 +15,7 @@ use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -30,7 +29,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testGetMethod(AuthTypeEnum $authType, array $response): void
     {
-        $this->setAuthenticationController($authType);
+        $this->setAuthMethodRenderer($authType);
 
         static::checkRequest(
             Request::METHOD_GET,
@@ -48,8 +47,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testAuth(AuthTypeEnum $authType, array $request, array $response): void
     {
-        $this->setRequestDtoResolver($authType);
-        $this->setAuthenticationController($authType);
+        $this->setRequestDtoResolver();
+        $this->setAuthTypeService($authType);
 
         static::checkRequest(
             Request::METHOD_POST,
@@ -67,8 +66,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testAuthByFailedApiKey(array $connectorConfigHeader): void
     {
-        $this->setRequestDtoResolver(AuthTypeEnum::apiKey);
-        $this->setAuthenticationController(AuthTypeEnum::apiKey);
+        $this->setRequestDtoResolver();
+        $this->setAuthTypeService(AuthTypeEnum::apiKey);
 
         $this->expectException(AccessDeniedHttpException::class);
 
@@ -88,8 +87,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testAuthWithEmptyRequest(AuthTypeEnum $authType, array $connectorConfigHeader): void
     {
-        $this->setRequestDtoResolver($authType);
-        $this->setAuthenticationController($authType);
+        $this->setRequestDtoResolver();
+        $this->setAuthTypeService($authType);
 
         $this->expectException(BadRequestHttpException::class);
 
@@ -108,8 +107,8 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testAuthByOAuth(OAuthResponseParamsEnum $oAuthResponseParams, array $request, array $response): void
     {
-        $this->setRequestDtoResolver(AuthTypeEnum::OAuth, $oAuthResponseParams);
-        $this->setAuthenticationController(AuthTypeEnum::OAuth);
+        $this->setRequestDtoResolver($oAuthResponseParams);
+        $this->setAuthTypeService(AuthTypeEnum::OAuth);
 
         static::checkRequest(
             Request::METHOD_POST,
@@ -127,10 +126,10 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testAuthByOAuthUsingApiKey(OAuthResponseParamsEnum $oAuthResponseParams, array $request): void
     {
-        $this->setRequestDtoResolver(AuthTypeEnum::apiKey, $oAuthResponseParams);
-        $this->setAuthenticationController(AuthTypeEnum::apiKey);
+        $this->setRequestDtoResolver($oAuthResponseParams);
+        $this->setAuthTypeService(AuthTypeEnum::apiKey);
 
-        $this->expectException(AccessDeniedHttpException::class);
+        $this->expectException(NotFoundHttpException::class);
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
@@ -145,16 +144,17 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      * @throws JsonException
      * @throws Exception
      */
-    public function testRefresh(AuthTypeEnum $authType, array $request, array $response): void
+    public function testRefresh(AuthTypeEnum $authType, array $response): void
     {
-        $this->setRequestDtoResolver($authType);
-        $this->setAuthenticationController($authType);
+        $this->setRequestDtoResolver();
+        $this->setAuthTypeService($authType);
 
         static::checkRequest(
             Request::METHOD_POST,
             '/auth/refresh',
-            $request,
+            [],
             $response,
+            static::getTestTokenHeader()
         );
     }
 
@@ -166,7 +166,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      */
     public function testRefreshWithFailedRefreshToken(array $connectorConfigHeader): void
     {
-        $this->setAuthenticationController(AuthTypeEnum::apiKey);
+        $this->setAuthTypeService(AuthTypeEnum::apiKey);
 
         $this->expectException(AccessDeniedHttpException::class);
 
@@ -191,41 +191,46 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         static::checkEmptyRequest(
             Request::METHOD_POST,
             '/auth/refresh',
-            $connectorConfigHeader
+            array_merge($connectorConfigHeader, static::getTestTokenHeader())
         );
     }
 
     /**
      * @throws Exception
      */
-    public function setAuthenticationController(AuthTypeEnum $authType): void
+    public function setAuthTypeService(AuthTypeEnum $authType): void
     {
         $container = static::getContainer();
-        $controller = new AuthenticationController(
-            $container->get(AuthenticationServiceInterface::class),
-            $container->get(AuthMethodRendererInterface::class),
-            $container->get(AuthRendererInterface::class),
-            $container->get(RefreshRendererInterface::class),
-            $authType,
-        );
-        $controller->setContainer($container);
+        $service = new AuthTypeService($authType);
 
-        $container->set(AuthenticationController::class, $controller);
+        $container->set(AuthTypeService::class, $service);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setAuthMethodRenderer(AuthTypeEnum $authType): void
+    {
+        $container = static::getContainer();
+        $renderer = new AuthMethodRenderer(
+            $container->get(JsonResponseRenderer::class),
+            $authType
+        );
+
+        $container->set(AuthMethodRenderer::class, $renderer);
     }
 
     /**
      * @throws Exception
      */
     public function setRequestDtoResolver(
-        AuthTypeEnum $authType,
         OAuthResponseParamsEnum $oAuthResponseParams = OAuthResponseParamsEnum::query,
     ): void {
         $container = static::getContainer();
         $requestDtoResolver = new RequestDtoResolver(
             $container->get(SerializerInterface::class),
             $container->get(ValidatorInterface::class),
-            $authType,
-            $oAuthResponseParams,
+            $oAuthResponseParams
         );
 
         $container->set(RequestDtoResolver::class, $requestDtoResolver);

@@ -20,7 +20,6 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-        private readonly AuthTypeEnum $defaultAuthType,
         private readonly OAuthResponseParamsEnum $defaultOAuthResponseParams,
     ) {
     }
@@ -46,7 +45,6 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
             value: $requestDTO,
             groups: [
                 Constraint::DEFAULT_GROUP,
-                $this->defaultAuthType->value,
                 $this->defaultOAuthResponseParams->value,
             ],
         );

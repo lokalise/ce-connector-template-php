@@ -1,4 +1,17 @@
 services:
+    App\Service\AuthTypeService:
+        public: true
+        tags:
+            - { name: routing.condition_service, priority: 50 }
+        arguments:
+            - !php/const App\Enum\AuthTypeEnum::apiKey
+
+    App\Renderer\AuthMethodRenderer:
+        public: true
+        arguments:
+            - '@App\Renderer\JsonResponseRenderer'
+            - !php/const App\Enum\AuthTypeEnum::apiKey
+
     App\ArgumentResolver\RequestDtoResolver:
         public: true
         tags:
@@ -6,7 +19,6 @@ services:
         arguments:
             - '@serializer'
             - '@validator'
-            - !php/const App\Enum\AuthTypeEnum::apiKey
             - !php/const App\Enum\OAuthResponseParamsEnum::query
 
     App\Interfaces\Service\AuthenticationServiceInterface:

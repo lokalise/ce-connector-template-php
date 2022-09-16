@@ -22,7 +22,6 @@ class AuthenticationController extends AbstractController
         private readonly AuthenticationServiceInterface $authenticationService,
         private readonly AuthMethodRendererInterface $authMethodRenderer,
         private readonly AuthRendererInterface $authRenderer,
-        private readonly AuthTypeEnum $defaultAuthType,
     ) {
     }
 
@@ -32,13 +31,13 @@ class AuthenticationController extends AbstractController
     )]
     public function getMethod(): Response
     {
-        return $this->authMethodRenderer->render($this->defaultAuthType);
+        return $this->authMethodRenderer->render();
     }
 
     #[Route(
         path: '/auth',
         methods: [Request::METHOD_POST],
-        condition: "env('DEFAULT_AUTH_TYPE') == 'apiKey'"
+        condition: "service('App\\\Service\\\AuthTypeService').isApiKey()"
     )]
     public function authByApiKey(ConnectorConfig $connectorConfig): Response
     {
@@ -54,7 +53,7 @@ class AuthenticationController extends AbstractController
     #[Route(
         path: '/auth',
         methods: [Request::METHOD_POST],
-        condition: "env('DEFAULT_AUTH_TYPE') == 'OAuth'"
+        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()"
     )]
     public function generateAuthUrl(
         AuthenticationRequest $authenticationRequest,
@@ -72,7 +71,7 @@ class AuthenticationController extends AbstractController
     #[Route(
         path: '/auth/response',
         methods: [Request::METHOD_POST],
-        condition: "env('DEFAULT_AUTH_TYPE') == 'OAuth'"
+        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()"
     )]
     public function authByOAuth(OAuthRequest $oAuthRequest, ConnectorConfig $connectorConfig): Response
     {

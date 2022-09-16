@@ -24,7 +24,7 @@ class AuthenticationRefreshController extends AbstractController implements Auth
     #[Route(
         path: '/auth/refresh',
         methods: [Request::METHOD_POST],
-        condition: "env('DEFAULT_AUTH_TYPE') == 'apiKey'"
+        condition: "service('App\\\Service\\\AuthTypeService').isApiKey()"
     )]
     public function refreshByApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): Response
     {
@@ -40,7 +40,7 @@ class AuthenticationRefreshController extends AbstractController implements Auth
     #[Route(
         path: '/auth/refresh',
         methods: [Request::METHOD_POST],
-        condition: "env('DEFAULT_AUTH_TYPE') == 'OAuth'"
+        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()"
     )]
     public function refreshByOAuth(AuthCredentials $credentials, ConnectorConfig $connectorConfig): Response
     {

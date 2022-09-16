@@ -7,5 +7,5 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface AuthMethodRendererInterface
 {
-    public function render(AuthTypeEnum $authType): Response;
+    public function render(): Response;
 }

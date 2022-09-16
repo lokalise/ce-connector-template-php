@@ -11,12 +11,13 @@ class AuthMethodRenderer implements AuthMethodRendererInterface
 {
     public function __construct(
         private readonly JsonResponseRenderer $jsonResponseRenderer,
+        private readonly AuthTypeEnum $defaultAuthType,
     ) {
     }
 
-    public function render(AuthTypeEnum $authType): Response
+    public function render(): Response
     {
-        $responseDTO = new AuthMethodResponse($authType);
+        $responseDTO = new AuthMethodResponse($this->defaultAuthType);
 
         return $this->jsonResponseRenderer->render($responseDTO);
     }
