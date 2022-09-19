@@ -13,6 +13,7 @@ class RefreshRenderer implements RefreshRendererInterface
         private readonly JsonResponseRenderer $jsonResponseRenderer,
     ) {
     }
+
     public function render(string $refreshKey): Response
     {
         $responseDTO = new RefreshResponse($refreshKey);

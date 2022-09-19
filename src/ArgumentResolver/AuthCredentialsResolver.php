@@ -37,6 +37,10 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
         $apiKey = $apiKeyExtractor->extract($request);
 
+        if ($apiKey === null) {
+            throw new BadRequestHttpException('Authentication header should not be blank.');
+        }
+
         $authCredentials = $this->authCredentialsDataTransformer->transform($apiKey);
 
         $violations = $this->validator->validate(

@@ -34,6 +34,10 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $connectorConfigExtractor = $this->requestValueExtractorFactory->factory(ConnectorConfig::class);
         $encodedConnectorConfig = $connectorConfigExtractor->extract($request);
 
+        if ($encodedConnectorConfig === null) {
+            throw new BadRequestHttpException('Configuration header should not be blank.');
+        }
+
         $connectorConfig = $this->connectorConfigTransformer->transform($encodedConnectorConfig);
 
         $violations = $this->validator->validate($connectorConfig);
