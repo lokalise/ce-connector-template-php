@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional;
 
-use App\Enum\AuthTypeEnum;
 use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use JsonException;
 use LogicException;

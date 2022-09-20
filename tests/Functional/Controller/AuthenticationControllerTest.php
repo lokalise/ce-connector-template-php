@@ -212,12 +212,13 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     public function setAuthMethodRenderer(AuthTypeEnum $authType): void
     {
         $container = static::getContainer();
-        $renderer = new AuthMethodRenderer(
-            $container->get(JsonResponseRenderer::class),
-            $authType
-        );
 
-        $container->set(AuthMethodRenderer::class, $renderer);
+        /** @var JsonResponseRenderer $jsonResponseRenderer */
+        $jsonResponseRenderer = $container->get(JsonResponseRenderer::class);
+
+        $authMethodRenderer = new AuthMethodRenderer($jsonResponseRenderer, $authType);
+
+        $container->set(AuthMethodRenderer::class, $authMethodRenderer);
     }
 
     /**
@@ -227,11 +228,14 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         OAuthResponseParamsEnum $oAuthResponseParams = OAuthResponseParamsEnum::query,
     ): void {
         $container = static::getContainer();
-        $requestDtoResolver = new RequestDtoResolver(
-            $container->get(SerializerInterface::class),
-            $container->get(ValidatorInterface::class),
-            $oAuthResponseParams
-        );
+
+        /** @var SerializerInterface $serializer */
+        $serializer = $container->get(SerializerInterface::class);
+
+        /** @var ValidatorInterface $validator */
+        $validator = $container->get(ValidatorInterface::class);
+
+        $requestDtoResolver = new RequestDtoResolver($serializer, $validator, $oAuthResponseParams);
 
         $container->set(RequestDtoResolver::class, $requestDtoResolver);
     }
