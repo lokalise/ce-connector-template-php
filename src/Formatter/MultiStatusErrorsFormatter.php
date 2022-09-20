@@ -14,11 +14,23 @@ class MultiStatusErrorsFormatter
     {
         $errors = [];
         foreach ($violations as $violation) {
-            $errors[] = [
-                $violation->getPropertyPath() => new ErrorItem($violation->getMessage()),
-            ];
+            $uniqueId = $violation->getCause();
+            $fieldPath = $violation->getPropertyPath();
+
+            $errorItem = new ErrorItem(
+                $violation->getInvalidValue(),
+                $violation->getMessage(),
+                $violation->getCode(),
+            );
+
+            if ($fieldPath === 'uniqueId') {
+                $errors[$uniqueId]['uniqueId'] = $errorItem;
+            } else {
+                $errors[$uniqueId]['uniqueId'] = $uniqueId;
+                $errors[$uniqueId]['translations'][$fieldPath] = $errorItem;
+            }
         }
 
-        return $errors;
+        return array_values($errors);
     }
 }

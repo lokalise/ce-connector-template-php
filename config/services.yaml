@@ -1,23 +1,15 @@
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-parameters:
-    env(CONST_DEFAULT_AUTH_TYPE): 'App\Enum\AuthTypeEnum::%env(DEFAULT_AUTH_TYPE)%'
-    env(CONST_DEFAULT_OAUTH_RESPONSE_PARAMS): 'App\Enum\OAuthResponseParamsEnum::%env(DEFAULT_OAUTH_RESPONSE_PARAMS)%'
-    platform_client_id: '%env(PLATFORM_CLIENT_ID)%'
-    platform_client_secret: '%env(PLATFORM_CLIENT_SECRET)%'
-
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
-            App\Enum\AuthTypeEnum $defaultAuthType: '%env(const:CONST_DEFAULT_AUTH_TYPE)%'
-            App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: '%env(const:CONST_DEFAULT_OAUTH_RESPONSE_PARAMS)%'
-            string $platformClientId: '%platform_client_id%'
+            App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::apiKey
+            App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: !php/const App\Enum\OAuthResponseParamsEnum::query
+            string $platformClientId: '%env(PLATFORM_CLIENT_ID)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
