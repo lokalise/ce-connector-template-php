@@ -4,7 +4,6 @@ namespace App\ArgumentResolver;
 
 use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\DTO\Request\RequestDTO;
-use App\Enum\AuthTypeEnum;
 use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
 use App\Exception\BadRequestHttpException;

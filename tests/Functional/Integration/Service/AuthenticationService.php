@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional\Integration\Service;
 
-use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
 use App\Integration\DTO\OAuthParams;
@@ -13,7 +12,7 @@ class AuthenticationService implements AuthenticationServiceInterface
 {
     public function authByApiKey(ConnectorConfig $connectorConfig): AuthCredentials
     {
-        return new AuthCredentials($apiKey);
+        return new AuthCredentials($connectorConfig->apiKey);
     }
 
     public function refreshApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials

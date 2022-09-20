@@ -8,12 +8,11 @@ use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
 use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
-use App\RequestValueExtractor\ApiKeyExtractor;
+use App\RequestValueExtractor\AuthCredentialsExtractor;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -46,7 +45,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
                 'Invalid authentication data',
                 new BadRequestErrorDetails([
                     [
-                        ApiKeyExtractor::API_TOKEN_HEADER => ['Authentication header should not be blank.'],
+                        AuthCredentialsExtractor::AUTH_CREDENTIALS_HEADER => ['Authentication header should not be blank.'],
                     ],
                 ]),
             );

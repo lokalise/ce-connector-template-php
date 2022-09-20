@@ -4,10 +4,9 @@ namespace App\Renderer;
 
 use App\DTO\ErrorItem;
 use App\DTO\Response\PublishResponse;
-use App\Interfaces\Renderer\PublishRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class PublishRenderer implements PublishRendererInterface
+class PublishRenderer
 {
     public function __construct(
         private readonly JsonResponseRenderer $jsonResponseRenderer,

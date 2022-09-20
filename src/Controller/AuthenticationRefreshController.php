@@ -2,15 +2,13 @@
 
 namespace App\Controller;
 
-use App\Exception\AccessDeniedException;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\AuthRendererInterface;
 use App\Interfaces\Service\AuthenticationServiceInterface;
+use App\Renderer\AuthRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/v2')]
@@ -18,7 +16,7 @@ class AuthenticationRefreshController extends AbstractController implements Auth
 {
     public function __construct(
         private readonly AuthenticationServiceInterface $authenticationService,
-        private readonly AuthRendererInterface $authRenderer,
+        private readonly AuthRenderer $authRenderer,
     ) {
     }
 
@@ -29,13 +27,9 @@ class AuthenticationRefreshController extends AbstractController implements Auth
     )]
     public function refreshByApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): Response
     {
-        try {
-            $authCredentials = $this->authenticationService->refreshApiKey($credentials, $connectorConfig);
+        $authCredentials = $this->authenticationService->refreshApiKey($credentials, $connectorConfig);
 
-            return $this->authRenderer->renderAuthCredentials($authCredentials);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not authenticate to 3rd party using the provided key.');
-        }
+        return $this->authRenderer->renderAuthCredentials($authCredentials);
     }
 
     #[Route(
@@ -45,12 +39,8 @@ class AuthenticationRefreshController extends AbstractController implements Auth
     )]
     public function refreshByOAuth(AuthCredentials $credentials, ConnectorConfig $connectorConfig): Response
     {
-        try {
-            $authCredentials = $this->authenticationService->refreshAccessToken($credentials, $connectorConfig);
+        $authCredentials = $this->authenticationService->refreshAccessToken($credentials, $connectorConfig);
 
-            return $this->authRenderer->renderAuthCredentials($authCredentials);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not authenticate to 3rd party using the provided key.');
-        }
+        return $this->authRenderer->renderAuthCredentials($authCredentials);
     }
 }

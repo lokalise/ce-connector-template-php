@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\EnvironmentRendererInterface;
 use App\Interfaces\Service\EnvironmentServiceInterface;
+use App\Renderer\EnvironmentRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class EnvironmentController extends AbstractController implements AuthenticatedC
 {
     public function __construct(
         private readonly EnvironmentServiceInterface $envService,
-        private readonly EnvironmentRendererInterface $environmentRenderer,
+        private readonly EnvironmentRenderer $environmentRenderer,
     ) {
     }
 

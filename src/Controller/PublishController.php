@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\DTO\Request\PublishRequest;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\PublishRendererInterface;
 use App\Interfaces\Service\PublishServiceInterface;
+use App\Renderer\PublishRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ class PublishController extends AbstractController implements AuthenticatedContr
 {
     public function __construct(
         private readonly PublishServiceInterface $publishService,
-        private readonly PublishRendererInterface $publishRenderer,
+        private readonly PublishRenderer $publishRenderer,
     ) {
     }
 

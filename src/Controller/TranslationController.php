@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\DTO\Request\TranslateRequest;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\TranslationRendererInterface;
 use App\Interfaces\Service\TranslationServiceInterface;
+use App\Renderer\TranslationRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +17,7 @@ class TranslationController extends AbstractController implements AuthenticatedC
 {
     public function __construct(
         private readonly TranslationServiceInterface $translationService,
-        private readonly TranslationRendererInterface $translationRenderer,
+        private readonly TranslationRenderer $translationRenderer,
     ) {
     }
 

@@ -5,10 +5,9 @@ namespace App\Renderer;
 use App\DTO\CacheItem;
 use App\DTO\ErrorItem;
 use App\DTO\Response\CacheItemsResponse;
-use App\Interfaces\Renderer\CacheItemRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class CacheItemRenderer implements CacheItemRendererInterface
+class CacheItemRenderer
 {
     public function __construct(
         private readonly JsonResponseRenderer $jsonResponseRenderer,

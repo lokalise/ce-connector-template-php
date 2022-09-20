@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\DTO\Request\CacheRequest;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\CacheItemRendererInterface;
-use App\Interfaces\Renderer\CacheRendererInterface;
 use App\Interfaces\Service\CacheServiceInterface;
+use App\Renderer\CacheItemRenderer;
+use App\Renderer\CacheRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +18,8 @@ class CacheController extends AbstractController implements AuthenticatedControl
 {
     public function __construct(
         private readonly CacheServiceInterface $cacheService,
-        private readonly CacheRendererInterface $cacheRenderer,
-        private readonly CacheItemRendererInterface $cacheItemRenderer,
+        private readonly CacheRenderer $cacheRenderer,
+        private readonly CacheItemRenderer $cacheItemRenderer,
     ) {
     }
 

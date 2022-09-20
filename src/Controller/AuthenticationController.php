@@ -4,15 +4,13 @@ namespace App\Controller;
 
 use App\DTO\Request\AuthenticationRequest;
 use App\DTO\Request\OAuthRequest;
-use App\Enum\AuthTypeEnum;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\AuthMethodRendererInterface;
-use App\Interfaces\Renderer\AuthRendererInterface;
 use App\Interfaces\Service\AuthenticationServiceInterface;
+use App\Renderer\AuthMethodRenderer;
+use App\Renderer\AuthRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/v2')]
@@ -20,8 +18,8 @@ class AuthenticationController extends AbstractController
 {
     public function __construct(
         private readonly AuthenticationServiceInterface $authenticationService,
-        private readonly AuthMethodRendererInterface $authMethodRenderer,
-        private readonly AuthRendererInterface $authRenderer,
+        private readonly AuthMethodRenderer $authMethodRenderer,
+        private readonly AuthRenderer $authRenderer,
     ) {
     }
 
