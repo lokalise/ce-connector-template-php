@@ -2,7 +2,6 @@
 
 namespace App\ArgumentResolver;
 
-use App\Enum\AuthTypeEnum;
 use App\Exception\ExtractorNotExistException;
 use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
@@ -11,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AuthCredentialsResolver implements ArgumentValueResolverInterface
@@ -20,7 +18,6 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
         private readonly AuthCredentialsTransformerInterface $authCredentialsDataTransformer,
         private readonly ValidatorInterface $validator,
-        private readonly AuthTypeEnum $defaultAuthType,
     ) {
     }
 
@@ -43,13 +40,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
 
         $authCredentials = $this->authCredentialsDataTransformer->transform($apiKey);
 
-        $violations = $this->validator->validate(
-            value: $authCredentials,
-            groups: [
-                Constraint::DEFAULT_GROUP,
-                $this->defaultAuthType->value,
-            ],
-        );
+        $violations = $this->validator->validate($authCredentials);
 
         if (count($violations) > 0) {
             throw new BadRequestHttpException((string) $violations);

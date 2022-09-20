@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Integration\DataTransformer;
+namespace App\DataTransformer;
 
 use App\Integration\DTO\AuthCredentials;
 use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;

@@ -3,8 +3,8 @@
 namespace App\Interfaces\Service;
 
 use App\Exception\AccessDeniedException;
+use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Integration\DTO\OAuthClientToken;
 use App\Integration\DTO\OAuthParams;
 
 interface AuthenticationServiceInterface
@@ -12,19 +12,19 @@ interface AuthenticationServiceInterface
     /**
      * @throws AccessDeniedException
      */
-    public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string;
+    public function authByApiKey(ConnectorConfig $connectorConfig): AuthCredentials;
 
     /**
      * @throws AccessDeniedException
      */
-    public function refreshApiKey(string $refreshKey, ConnectorConfig $connectorConfig): string;
+    public function refreshApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials;
 
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string;
 
     /**
      * @throws AccessDeniedException
      */
-    public function refreshAccessToken(string $refreshToken, ConnectorConfig $connectorConfig): OAuthClientToken;
+    public function refreshAccessToken(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials;
 
     /**
      * @throws AccessDeniedException
@@ -34,5 +34,5 @@ interface AuthenticationServiceInterface
         ?OAuthParams $body,
         string $redirectUrl,
         ConnectorConfig $connectorConfig,
-    ): OAuthClientToken;
+    ): AuthCredentials;
 }

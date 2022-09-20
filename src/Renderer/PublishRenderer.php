@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Integration\Renderer;
+namespace App\Renderer;
 
 use App\DTO\Response\PublishResponse;
 use App\Interfaces\Renderer\PublishRendererInterface;
-use App\Renderer\JsonResponseRenderer;
 use Symfony\Component\HttpFoundation\Response;
 
 class PublishRenderer implements PublishRendererInterface

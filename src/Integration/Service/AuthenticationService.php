@@ -2,8 +2,8 @@
 
 namespace App\Integration\Service;
 
+use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Integration\DTO\OAuthClientToken;
 use App\Integration\DTO\OAuthParams;
 use App\Interfaces\Service\AuthenticationServiceInterface;
 
@@ -14,14 +14,14 @@ class AuthenticationService implements AuthenticationServiceInterface
     ) {
     }
 
-    public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string
+    public function authByApiKey(ConnectorConfig $connectorConfig): AuthCredentials
     {
-        return $apiKey;
+        return new AuthCredentials($connectorConfig->apiKey);
     }
 
-    public function refreshApiKey(string $refreshKey, ConnectorConfig $connectorConfig): string
+    public function refreshApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials
     {
-        return $this->authByApiKey($refreshKey, $connectorConfig);
+        return $this->authByApiKey($connectorConfig);
     }
 
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string
@@ -33,9 +33,9 @@ class AuthenticationService implements AuthenticationServiceInterface
         );
     }
 
-    public function refreshAccessToken(string $refreshToken, ConnectorConfig $connectorConfig): OAuthClientToken
+    public function refreshAccessToken(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials
     {
-        return new OAuthClientToken('access_token', $refreshToken, 3600);
+        return $this->authByApiKey($connectorConfig);
     }
 
     public function authByOAuth(
@@ -43,7 +43,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         ?OAuthParams $body,
         string $redirectUrl,
         ConnectorConfig $connectorConfig,
-    ): OAuthClientToken {
-        return new OAuthClientToken('access_token', 'refresh_token', 3600);
+    ): AuthCredentials {
+        return $this->authByApiKey($connectorConfig);
     }
 }

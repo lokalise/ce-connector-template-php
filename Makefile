@@ -17,7 +17,7 @@ init: build up
 
 .PHONY: tests
 tests: init
-	docker-compose exec development_workspace bin/phpunit $(c)
+	docker-compose exec development_workspace php bin/phpunit $(c)
 
 build-prod:
 	docker-compose -f docker-compose.yml --env-file .env.local build production_workspace $(c)

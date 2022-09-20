@@ -3,26 +3,28 @@
 namespace App\Tests\Functional\Integration\Service;
 
 use App\Exception\AccessDeniedException;
+use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
-use App\Integration\DTO\OAuthClientToken;
 use App\Integration\DTO\OAuthParams;
 use App\Interfaces\Service\AuthenticationServiceInterface;
 use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 
 class AuthenticationService implements AuthenticationServiceInterface
 {
-    public function authByApiKey(string $apiKey, ConnectorConfig $connectorConfig): string
+    public function authByApiKey(ConnectorConfig $connectorConfig): AuthCredentials
     {
+        $apiKey = $connectorConfig->apiKey;
+
         if ($apiKey === AuthenticationDataProvider::FAILED_API_KEY) {
             throw new AccessDeniedException();
         }
 
-        return $apiKey;
+        return new AuthCredentials($apiKey);
     }
 
-    public function refreshApiKey(string $refreshKey, ConnectorConfig $connectorConfig): string
+    public function refreshApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials
     {
-        return $this->authByApiKey($refreshKey, $connectorConfig);
+        return $this->authByApiKey($connectorConfig);
     }
 
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string
@@ -30,13 +32,9 @@ class AuthenticationService implements AuthenticationServiceInterface
         return AuthenticationDataProvider::AUTH_URL;
     }
 
-    public function refreshAccessToken(string $refreshToken, ConnectorConfig $connectorConfig): OAuthClientToken
+    public function refreshAccessToken(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials
     {
-        return new OAuthClientToken(
-            AuthenticationDataProvider::ACCESS_TOKEN,
-            AuthenticationDataProvider::REFRESH_TOKEN,
-            AuthenticationDataProvider::EXPIRES_IN,
-        );
+        return $this->authByApiKey($connectorConfig);
     }
 
     public function authByOAuth(
@@ -44,11 +42,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         ?OAuthParams $body,
         string $redirectUrl,
         ConnectorConfig $connectorConfig,
-    ): OAuthClientToken {
-        return new OAuthClientToken(
-            AuthenticationDataProvider::ACCESS_TOKEN,
-            AuthenticationDataProvider::REFRESH_TOKEN,
-            AuthenticationDataProvider::EXPIRES_IN,
-        );
+    ): AuthCredentials {
+        return $this->authByApiKey($connectorConfig);
     }
 }
