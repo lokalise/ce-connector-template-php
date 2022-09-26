@@ -19,7 +19,7 @@ class PublishControllerTest extends AbstractApiTestCase
     {
         static::checkRequest(
             Request::METHOD_POST,
-            '/publish',
+            '/v2/publish',
             $parameters,
             $expectedResponse,
             static::getTestTokenHeader()
@@ -37,7 +37,7 @@ class PublishControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
-            '/publish',
+            '/v2/publish',
             $parameters
         );
     }
@@ -51,7 +51,7 @@ class PublishControllerTest extends AbstractApiTestCase
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/publish',
+            '/v2/publish',
             static::getTestTokenHeader()
         );
     }

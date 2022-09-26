@@ -18,7 +18,7 @@ class EnvironmentControllerTest extends AbstractApiTestCase
     {
         static::checkRequest(
             Request::METHOD_GET,
-            '/env',
+            '/v2/env',
             [],
             $expectedResponse,
             static::getTestTokenHeader()
@@ -34,7 +34,7 @@ class EnvironmentControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_GET,
-            '/env'
+            '/v2/env'
         );
     }
 }

@@ -19,7 +19,7 @@ class CacheControllerTest extends AbstractApiTestCase
     {
         static::checkRequest(
             Request::METHOD_GET,
-            '/cache',
+            '/v2/cache',
             [],
             $expectedResponse,
             static::getTestTokenHeader()
@@ -35,7 +35,7 @@ class CacheControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_GET,
-            '/cache'
+            '/v2/cache'
         );
     }
 
@@ -48,7 +48,7 @@ class CacheControllerTest extends AbstractApiTestCase
     {
         static::checkRequest(
             Request::METHOD_POST,
-            '/cache/items',
+            '/v2/cache/items',
             $parameters,
             $expectedResponse,
             static::getTestTokenHeader()
@@ -66,7 +66,7 @@ class CacheControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
-            '/cache/items',
+            '/v2/cache/items',
             $parameters
         );
     }
@@ -80,7 +80,7 @@ class CacheControllerTest extends AbstractApiTestCase
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/cache/items',
+            '/v2/cache/items',
             static::getTestTokenHeader()
         );
     }

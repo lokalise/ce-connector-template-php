@@ -19,7 +19,7 @@ class TranslationControllerTest extends AbstractApiTestCase
     {
         static::checkRequest(
             Request::METHOD_POST,
-            '/translate',
+            '/v2/translate',
             $parameters,
             $expectedResponse,
             static::getTestTokenHeader()
@@ -37,7 +37,7 @@ class TranslationControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
-            '/translate',
+            '/v2/translate',
             $parameters
         );
     }
@@ -51,7 +51,7 @@ class TranslationControllerTest extends AbstractApiTestCase
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/translate',
+            '/v2/translate',
             static::getTestTokenHeader()
         );
     }

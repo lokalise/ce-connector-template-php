@@ -33,7 +33,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkRequest(
             Request::METHOD_GET,
-            '/auth',
+            '/v2/auth',
             [],
             $response,
         );
@@ -52,7 +52,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkRequest(
             Request::METHOD_POST,
-            '/auth',
+            '/v2/auth',
             $request,
             $response,
         );
@@ -73,7 +73,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
-            '/auth',
+            '/v2/auth',
             [],
             $connectorConfigHeader
         );
@@ -94,7 +94,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/auth',
+            '/v2/auth',
             $connectorConfigHeader
         );
     }
@@ -112,7 +112,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkRequest(
             Request::METHOD_POST,
-            '/auth/response',
+            '/v2/auth/response',
             $request,
             $response,
         );
@@ -133,7 +133,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
-            '/auth/response',
+            '/v2/auth/response',
             $request,
         );
     }
@@ -151,7 +151,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkRequest(
             Request::METHOD_POST,
-            '/auth/refresh',
+            '/v2/auth/refresh',
             [],
             $response,
             static::getTestTokenHeader()
@@ -172,7 +172,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkNotAuthorisedRequest(
             Request::METHOD_POST,
-            '/auth/refresh',
+            '/v2/auth/refresh',
             [],
             $connectorConfigHeader
         );
@@ -190,7 +190,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
 
         static::checkEmptyRequest(
             Request::METHOD_POST,
-            '/auth/refresh',
+            '/v2/auth/refresh',
             array_merge($connectorConfigHeader, static::getTestTokenHeader())
         );
     }
