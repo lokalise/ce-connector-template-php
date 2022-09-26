@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path: '/v2')]
 class AuthenticationController extends AbstractController
 {
     public function __construct(

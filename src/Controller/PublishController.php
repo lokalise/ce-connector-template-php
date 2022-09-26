@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path: '/v2')]
 class PublishController extends AbstractController implements AuthenticatedControllerInterface
 {
     public function __construct(
