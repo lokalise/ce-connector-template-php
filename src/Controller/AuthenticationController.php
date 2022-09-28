@@ -4,16 +4,13 @@ namespace App\Controller;
 
 use App\DTO\Request\AuthenticationRequest;
 use App\DTO\Request\OAuthRequest;
-use App\Enum\AuthTypeEnum;
-use App\Exception\AccessDeniedException;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\Renderer\AuthMethodRendererInterface;
-use App\Interfaces\Renderer\AuthRendererInterface;
 use App\Interfaces\Service\AuthenticationServiceInterface;
+use App\Renderer\AuthMethodRenderer;
+use App\Renderer\AuthRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/v2')]
@@ -21,8 +18,8 @@ class AuthenticationController extends AbstractController
 {
     public function __construct(
         private readonly AuthenticationServiceInterface $authenticationService,
-        private readonly AuthMethodRendererInterface $authMethodRenderer,
-        private readonly AuthRendererInterface $authRenderer,
+        private readonly AuthMethodRenderer $authMethodRenderer,
+        private readonly AuthRenderer $authRenderer,
     ) {
     }
 
@@ -42,13 +39,9 @@ class AuthenticationController extends AbstractController
     )]
     public function authByApiKey(ConnectorConfig $connectorConfig): Response
     {
-        try {
-            $credentials = $this->authenticationService->authByApiKey($connectorConfig);
+        $credentials = $this->authenticationService->authByApiKey($connectorConfig);
 
-            return $this->authRenderer->renderAuthCredentials($credentials);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not authenticate to 3rd party using the provided key.');
-        }
+        return $this->authRenderer->renderAuthCredentials($credentials);
     }
 
     #[Route(
@@ -58,15 +51,11 @@ class AuthenticationController extends AbstractController
     )]
     public function generateAuthUrl(
         AuthenticationRequest $authenticationRequest,
-        ConnectorConfig $connectorConfig
+        ConnectorConfig $connectorConfig,
     ): Response {
-        try {
-            $url = $this->authenticationService->generateAuthUrl($authenticationRequest->redirectUrl, $connectorConfig);
+        $url = $this->authenticationService->generateAuthUrl($authenticationRequest->redirectUrl, $connectorConfig);
 
-            return $this->authRenderer->renderUrl($url);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not authenticate to 3rd party using the provided key.');
-        }
+        return $this->authRenderer->renderUrl($url);
     }
 
     #[Route(
@@ -76,17 +65,13 @@ class AuthenticationController extends AbstractController
     )]
     public function authByOAuth(OAuthRequest $oAuthRequest, ConnectorConfig $connectorConfig): Response
     {
-        try {
-            $credentials = $this->authenticationService->authByOAuth(
-                $oAuthRequest->query,
-                $oAuthRequest->body,
-                $oAuthRequest->redirectUrl,
-                $connectorConfig,
-            );
+        $credentials = $this->authenticationService->authByOAuth(
+            $oAuthRequest->query,
+            $oAuthRequest->body,
+            $oAuthRequest->redirectUrl,
+            $connectorConfig,
+        );
 
-            return $this->authRenderer->renderAuthCredentials($credentials);
-        } catch (AccessDeniedException) {
-            throw new AccessDeniedHttpException('Could not authenticate to 3rd party using the provided key.');
-        }
+        return $this->authRenderer->renderAuthCredentials($credentials);
     }
 }

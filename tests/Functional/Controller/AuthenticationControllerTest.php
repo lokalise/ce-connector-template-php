@@ -5,6 +5,9 @@ namespace App\Tests\Functional\Controller;
 use App\ArgumentResolver\RequestDtoResolver;
 use App\Enum\AuthTypeEnum;
 use App\Enum\OAuthResponseParamsEnum;
+use App\Exception\BadRequestHttpException;
+use App\Exception\UnauthorizedHttpException;
+use App\Formatter\BadRequestErrorsFormatter;
 use App\Renderer\AuthMethodRenderer;
 use App\Renderer\JsonResponseRenderer;
 use App\Service\AuthTypeService;
@@ -13,8 +16,6 @@ use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use Exception;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -59,44 +60,21 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::encodedConnectorConfigWithFailedRefreshToken
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authProviderWithoutRequest
      *
      * @throws JsonException
      * @throws Exception
      */
-    public function testAuthByFailedApiKey(array $connectorConfigHeader): void
-    {
-        $this->setRequestDtoResolver();
-        $this->setAuthTypeService(AuthTypeEnum::apiKey);
-
-        $this->expectException(AccessDeniedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
-            Request::METHOD_POST,
-            '/v2/auth',
-            [],
-            $connectorConfigHeader
-        );
-    }
-
-    /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authProviderWithConnectorConfigWithoutApiKey
-     *
-     * @throws JsonException
-     * @throws Exception
-     */
-    public function testAuthWithEmptyRequest(AuthTypeEnum $authType, array $connectorConfigHeader): void
+    public function testAuthWithEmptyRequest(AuthTypeEnum $authType): void
     {
         $this->setRequestDtoResolver();
         $this->setAuthTypeService($authType);
 
         $this->expectException(BadRequestHttpException::class);
 
-        static::checkEmptyRequest(
-            Request::METHOD_POST,
-            '/v2/auth',
-            $connectorConfigHeader
-        );
+        static::checkEmptyRequest(Request::METHOD_POST, '/v2/auth', [
+            'HTTP_ce-config' => null,
+        ]);
     }
 
     /**
@@ -159,40 +137,16 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::encodedConnectorConfigWithFailedRefreshToken
-     *
      * @throws JsonException
      * @throws Exception
      */
-    public function testRefreshWithFailedRefreshToken(array $connectorConfigHeader): void
+    public function testRefreshWithoutApiKey(): void
     {
-        $this->setAuthTypeService(AuthTypeEnum::apiKey);
+        $this->expectException(UnauthorizedHttpException::class);
 
-        $this->expectException(AccessDeniedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
-            Request::METHOD_POST,
-            '/v2/auth/refresh',
-            [],
-            $connectorConfigHeader
-        );
-    }
-
-    /**
-     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::encodedConnectorConfigWithoutApiKey
-     *
-     * @throws JsonException
-     * @throws Exception
-     */
-    public function testRefreshWithoutApiKey(array $connectorConfigHeader): void
-    {
-        $this->expectException(BadRequestHttpException::class);
-
-        static::checkEmptyRequest(
-            Request::METHOD_POST,
-            '/v2/auth/refresh',
-            array_merge($connectorConfigHeader, static::getTestTokenHeader())
-        );
+        static::checkEmptyRequest(Request::METHOD_POST, '/v2/auth/refresh', [
+            'HTTP_ce-auth' => null,
+        ]);
     }
 
     /**
@@ -235,7 +189,15 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         /** @var ValidatorInterface $validator */
         $validator = $container->get(ValidatorInterface::class);
 
-        $requestDtoResolver = new RequestDtoResolver($serializer, $validator, $oAuthResponseParams);
+        /** @var BadRequestErrorsFormatter $badRequestErrorsFormatter */
+        $badRequestErrorsFormatter = $container->get(BadRequestErrorsFormatter::class);
+
+        $requestDtoResolver = new RequestDtoResolver(
+            $serializer,
+            $validator,
+            $badRequestErrorsFormatter,
+            $oAuthResponseParams,
+        );
 
         $container->set(RequestDtoResolver::class, $requestDtoResolver);
     }

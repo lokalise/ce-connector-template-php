@@ -4,10 +4,9 @@ namespace App\Renderer;
 
 use App\DTO\Response\AuthMethodResponse;
 use App\Enum\AuthTypeEnum;
-use App\Interfaces\Renderer\AuthMethodRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthMethodRenderer implements AuthMethodRendererInterface
+class AuthMethodRenderer
 {
     public function __construct(
         private readonly JsonResponseRenderer $jsonResponseRenderer,

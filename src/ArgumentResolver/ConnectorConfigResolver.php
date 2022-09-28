@@ -2,14 +2,19 @@
 
 namespace App\ArgumentResolver;
 
+use App\DTO\ErrorDetails\BadRequestErrorDetails;
+use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
+use App\Formatter\BadRequestErrorsFormatter;
 use App\Integration\DTO\ConnectorConfig;
 use App\Interfaces\DataTransformer\ConnectorConfigTransformerInterface;
+use App\RequestValueExtractor\ConnectorConfigExtractor;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ConnectorConfigResolver implements ArgumentValueResolverInterface
@@ -18,6 +23,7 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
         private readonly ConnectorConfigTransformerInterface $connectorConfigTransformer,
         private readonly ValidatorInterface $validator,
+        private readonly BadRequestErrorsFormatter $badRequestErrorsFormatter,
     ) {
     }
 
@@ -35,17 +41,37 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $encodedConnectorConfig = $connectorConfigExtractor->extract($request);
 
         if ($encodedConnectorConfig === null) {
-            throw new BadRequestHttpException('Configuration header should not be blank.');
+            throw new BadRequestHttpException(
+                'Invalid configuration data',
+                new BadRequestErrorDetails([
+                    [
+                        ConnectorConfigExtractor::CONNECTOR_CONFIG_HEADER => [
+                            'Configuration header should not be blank',
+                        ],
+                    ],
+                ]),
+            );
         }
 
         $connectorConfig = $this->connectorConfigTransformer->transform($encodedConnectorConfig);
 
+        $this->validateConnectorConfig($connectorConfig);
+
+        yield $connectorConfig;
+    }
+
+    private function validateConnectorConfig(ConnectorConfig $connectorConfig): void
+    {
+        /** @var ConstraintViolationListInterface|array<int, ConstraintViolationInterface> $violations */
         $violations = $this->validator->validate($connectorConfig);
 
         if (count($violations) > 0) {
-            throw new BadRequestHttpException((string) $violations);
-        }
+            $errors = $this->badRequestErrorsFormatter->format($violations);
 
-        yield $connectorConfig;
+            throw new BadRequestHttpException(
+                'Invalid configuration data',
+                new BadRequestErrorDetails([$errors]),
+            );
+        }
     }
 }

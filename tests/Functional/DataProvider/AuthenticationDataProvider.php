@@ -12,17 +12,18 @@ final class AuthenticationDataProvider
         'apiKey' => 'api_key',
     ];
 
-    public const FAILED_API_KEY = 'failed_api_key';
-
     public const REDIRECT_URL = 'redirect_url';
 
     public const AUTH_URL = 'auth_url';
 
-    private static function encoding(array $data): string
+    /**
+     * @throws JsonException
+     */
+    public static function encodedApiKey(): string
     {
         return base64_encode(
             json_encode(
-                $data,
+                self::API_KEY,
                 JSON_THROW_ON_ERROR
             )
         );
@@ -31,48 +32,9 @@ final class AuthenticationDataProvider
     /**
      * @throws JsonException
      */
-    public static function encodedApiKey(): string
-    {
-        return self::encoding(self::API_KEY);
-    }
-
-    /**
-     * @throws JsonException
-     */
     public static function encodedConnectorConfig(): string
     {
         return self::encodedApiKey();
-    }
-
-    private static function encodedConnectorConfigHeaderWithoutApiKey(): array
-    {
-        return [
-            'HTTP_ce-config' => self::encoding([
-                'failedApikey' => self::FAILED_API_KEY,
-            ]),
-        ];
-    }
-
-    public static function encodedConnectorConfigWithoutApiKey(): array
-    {
-        return [
-            [
-                self::encodedConnectorConfigHeaderWithoutApiKey(),
-            ],
-        ];
-    }
-
-    public static function encodedConnectorConfigWithFailedRefreshToken(): array
-    {
-        return [
-            [
-                [
-                    'HTTP_ce-config' => self::encoding([
-                        'apiKey' => AuthenticationDataProvider::FAILED_API_KEY,
-                    ]),
-                ],
-            ],
-        ];
     }
 
     public static function getMethodProvider(): array
@@ -113,16 +75,14 @@ final class AuthenticationDataProvider
         ];
     }
 
-    public static function authProviderWithConnectorConfigWithoutApiKey(): array
+    public static function authProviderWithoutRequest(): array
     {
         return [
             'auth_by_api_key' => [
                 AuthTypeEnum::apiKey,
-                self::encodedConnectorConfigHeaderWithoutApiKey(),
             ],
             'generate_auth_utl' => [
                 AuthTypeEnum::OAuth,
-                self::encodedConnectorConfigHeaderWithoutApiKey(),
             ],
         ];
     }

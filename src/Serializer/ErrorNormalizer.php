@@ -23,12 +23,11 @@ class ErrorNormalizer implements NormalizerInterface
 
         ['exception' => $exception] = $context;
 
-        $payload = $exception instanceof HttpException ? [
+        $payload = $exception instanceof HttpException ? array_filter([
             'errorCode' => $exception->getErrorCode()->value,
-            'details' => $exception->getDetails()->toArray(),
-        ] : [
+            'details' => $exception->getDetails()?->toArray(),
+        ]) : [
             'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR,
-            'details' => [],
         ];
 
         $payload['message'] = $object->getMessage();

@@ -4,10 +4,9 @@ namespace App\Renderer;
 
 use App\DTO\Identifier;
 use App\DTO\Response\CacheResponse;
-use App\Interfaces\Renderer\CacheRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class CacheRenderer implements CacheRendererInterface
+class CacheRenderer
 {
     public function __construct(
         private readonly JsonResponseRenderer $jsonResponseRenderer,

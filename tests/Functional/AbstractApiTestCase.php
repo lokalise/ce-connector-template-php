@@ -3,6 +3,7 @@
 namespace App\Tests\Functional;
 
 use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
+use Exception;
 use JsonException;
 use LogicException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -17,7 +18,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
         try {
             /** @var KernelBrowser $client */
             $client = static::getContainer()->get('test.client');
-        } catch (ServiceNotFoundException) {
+        } catch (Exception|ServiceNotFoundException) {
             if (class_exists(KernelBrowser::class)) {
                 throw new LogicException(
                     'You cannot create the client used in functional tests if the "framework.test" config is not set to true.'

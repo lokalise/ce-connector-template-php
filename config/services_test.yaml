@@ -19,6 +19,7 @@ services:
         arguments:
             - '@serializer'
             - '@validator'
+            - '@App\Formatter\BadRequestErrorsFormatter'
             - !php/const App\Enum\OAuthResponseParamsEnum::query
 
     App\Interfaces\Service\AuthenticationServiceInterface:
