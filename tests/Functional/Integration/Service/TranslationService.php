@@ -2,9 +2,9 @@
 
 namespace App\Tests\Functional\Integration\Service;
 
+use App\DTO\Identifier;
 use App\DTO\IdentifiersList;
 use App\DTO\TranslationItem;
-use App\DTO\Identifier;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
 use App\Interfaces\Service\TranslationServiceInterface;

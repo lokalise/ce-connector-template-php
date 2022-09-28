@@ -3,8 +3,8 @@
 namespace App\Renderer;
 
 use App\DTO\ErrorItem;
-use App\DTO\TranslationItem;
 use App\DTO\Response\TranslationResponse;
+use App\DTO\TranslationItem;
 use Symfony\Component\HttpFoundation\Response;
 
 class TranslationRenderer

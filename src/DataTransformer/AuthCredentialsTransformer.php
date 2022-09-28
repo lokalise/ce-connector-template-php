@@ -3,11 +3,13 @@
 namespace App\DataTransformer;
 
 use App\Integration\DTO\AuthCredentials;
-use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class AuthCredentialsTransformer implements AuthCredentialsTransformerInterface
+/**
+ * трансформер декодирует авторизационный хедер и создает объект типа AuthCredentials
+ */
+class AuthCredentialsTransformer
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
@@ -23,12 +25,5 @@ class AuthCredentialsTransformer implements AuthCredentialsTransformerInterface
             AuthCredentials::class,
             JsonEncoder::FORMAT,
         );
-    }
-
-    public function reverseTransform(AuthCredentials $credentials): string
-    {
-        $credentialsJson = $this->serializer->serialize($credentials, JsonEncoder::FORMAT);
-
-        return base64_encode($credentialsJson);
     }
 }

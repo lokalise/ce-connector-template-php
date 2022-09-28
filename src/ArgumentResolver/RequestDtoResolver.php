@@ -17,6 +17,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * данный резолвер срабатывает когда у экшена контроллера есть параметр с типом RequestDTO
+ * На основе входящего реквеста создается объект типа RequestDTO который возвращается и передается экшену контроллера
+ *
+ * @link https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ */
 class RequestDtoResolver implements ArgumentValueResolverInterface
 {
     public function __construct(

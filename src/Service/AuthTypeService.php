@@ -5,6 +5,9 @@ namespace App\Service;
 use App\Enum\AuthTypeEnum;
 use Symfony\Bundle\FrameworkBundle\Routing\Attribute\AsRoutingConditionService;
 
+/**
+ * используется в кондишенах рутов для матчинга роутов в зависимости от типа авторизации
+ */
 #[AsRoutingConditionService]
 class AuthTypeService
 {

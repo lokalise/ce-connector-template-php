@@ -4,6 +4,9 @@ namespace App\Integration\DTO;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * авторизационные параметры специфичные для вашего конектора
+ */
 class AuthCredentials
 {
     public function __construct(

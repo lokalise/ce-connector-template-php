@@ -2,12 +2,12 @@
 
 namespace App\ArgumentResolver;
 
+use App\DataTransformer\AuthCredentialsTransformer;
 use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
 use App\Integration\DTO\AuthCredentials;
-use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
 use App\RequestValueExtractor\AuthCredentialsExtractor;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +17,17 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * данный резолвер срабатывает когда у экшена контроллера есть параметр с типом AuthCredentials
+ * На основе входящего реквеста создается объект типа AuthCredentials который возвращается и передается экшену контроллера
+ *
+ * @link https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ */
 class AuthCredentialsResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
-        private readonly AuthCredentialsTransformerInterface $authCredentialsDataTransformer,
+        private readonly AuthCredentialsTransformer $authCredentialsDataTransformer,
         private readonly ValidatorInterface $validator,
         private readonly BadRequestErrorsFormatter $badRequestErrorsFormatter,
     ) {
@@ -62,7 +68,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
     {
         /** @var ConstraintViolationListInterface|array<int, ConstraintViolationInterface> $violations */
         $violations = $this->validator->validate($authCredentials);
-        
+
         if (count($violations) > 0) {
             $errors = $this->badRequestErrorsFormatter->format($violations);
 

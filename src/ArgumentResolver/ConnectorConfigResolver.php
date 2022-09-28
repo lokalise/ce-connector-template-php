@@ -2,12 +2,12 @@
 
 namespace App\ArgumentResolver;
 
+use App\DataTransformer\ConnectorConfigTransformer;
 use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\DataTransformer\ConnectorConfigTransformerInterface;
 use App\RequestValueExtractor\ConnectorConfigExtractor;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +17,17 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * данный резолвер срабатывает когда у экшена контроллера есть параметр с типом ConnectorConfig
+ * На основе входящего реквеста создается объект типа ConnectorConfig который возвращается и передается экшену контроллера
+ *
+ * @link https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ */
 class ConnectorConfigResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
-        private readonly ConnectorConfigTransformerInterface $connectorConfigTransformer,
+        private readonly ConnectorConfigTransformer $connectorConfigTransformer,
         private readonly ValidatorInterface $validator,
         private readonly BadRequestErrorsFormatter $badRequestErrorsFormatter,
     ) {

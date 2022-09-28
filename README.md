@@ -1,12 +1,59 @@
 # Connector Template PHP
 
+Если у вас есть контент который необходимо перевести то локалайз может предоставить вам юай интервейс управления переводами вашего контента.
+для этого вам нужно реализовать конектор. В качестве шаблона может быть использован данный репозиторий.
+
+This Connector Template позволяет создать приложение которое will act as a bridge between the content platform and Lokalise content engine, and will enable users to connect both systems, select the content they want to translate, transfer it to Lokalise, see the translation status, and receive the translated content back. Read more about the technical implementation requirements.
+Требования которые реализует данный конектор находятся в данной статье https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector.
+Данный темплейт конектор реализует апи https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector#connector-api-beta.
+
+##Стек технологий
+php 8.1
+symfony 6.1
+phpunit 9.5
+roadrunner 2
+composer latest
+
+preinstall
+docker latest
+docker-compose latest
+
 
 ## How to start the project
 
-1. Make sure you have installed docker, docker-compose, make on your local machine.
-2. In root project folder copy `.env` file and name it as `.env.local`.
-3. Run `make init` in command line.
+1.  In root project folder copy `.env` file and name it as `.env.local`.
+2. Run `make init` in command line.
 
+##настройка конфигураций для вашего конектора
+
+если ваш конектор использует OAuth2 авторизацию, то в файл .env.local добавте следующие параметры с нужными значениями:
+```
+PLATFORM_CLIENT_ID=
+PLATFORM_CLIENT_SECRET=
+```
+зайдите в config/services.yaml файл
+
+если ваш конектор использует apiKey авторизацию, то задайте следующие значения:
+```yaml
+services:
+    _defaults:
+        bind:
+            App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::apiKey
+```
+
+если ваш конектор использует OAuth2 авторизацию, то задайте следующие значения:
+```yaml
+services:
+    _defaults:
+        bind:
+          App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::OAuth
+          App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: !php/const App\Enum\OAuthResponseParamsEnum::query
+          string $platformClientId: '%env(PLATFORM_CLIENT_ID)%'
+          string $platformClientSecret: '%env(PLATFORM_CLIENT_SECRET)%'
+```
+Перейдите в папку src/Integration/DTO/ и задайте нужные для вашего конектора парметры для классов, которые перечислены в этой папке.
+
+Реализуйте логику ваших конекторов в сервисах которые находятся в папке src/Integration/Service/. Данные сервисы должны реализовывать интерфейсы указанные в папке src/Interfaces/Service/.
 
 ## How to run tests
 
