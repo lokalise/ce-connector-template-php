@@ -23,7 +23,7 @@ class MultiStatusErrorsFormatter
                 $violation->getCode(),
             );
 
-            if ($fieldPath === 'uniqueId') {
+            if ('uniqueId' === $fieldPath) {
                 $errors[$uniqueId]['uniqueId'] = $errorItem;
             } else {
                 $errors[$uniqueId]['uniqueId'] = $uniqueId;

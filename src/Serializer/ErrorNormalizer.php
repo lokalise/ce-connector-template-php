@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * преобразует ошибки к общему формату
+ * Converts errors to a common format.
  */
 class ErrorNormalizer implements NormalizerInterface
 {

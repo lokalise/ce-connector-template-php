@@ -3,7 +3,7 @@
 namespace App\Integration\DTO;
 
 /**
- * заголовки дополнительных столбцов, которые будут оторажаться в юай приложения лакалайз для вашего конектора
+ * Additional column headings that will be displayed in the Lokalise UI application for your connector.
  */
 class CacheItemStructure
 {

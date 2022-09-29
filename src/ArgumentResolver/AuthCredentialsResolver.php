@@ -18,10 +18,10 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * данный резолвер срабатывает когда у экшена контроллера есть параметр с типом AuthCredentials
- * На основе входящего реквеста создается объект типа AuthCredentials который возвращается и передается экшену контроллера
+ * This resolver is triggered when the controller action has a parameter with the type {@link AuthCredentials}.
+ * Based on the incoming request, an object of type {@link AuthCredentials} is created and passed to the controller action.
  *
- * @link https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ * @see https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
  */
 class AuthCredentialsResolver implements ArgumentValueResolverInterface
 {
@@ -35,7 +35,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return $argument->getType() === AuthCredentials::class;
+        return AuthCredentials::class === $argument->getType();
     }
 
     /**

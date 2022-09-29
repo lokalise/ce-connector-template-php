@@ -15,7 +15,7 @@ class TranslationRenderer
     }
 
     /**
-     * @param array<int, TranslationItem> $items
+     * @param array<int, TranslationItem>          $items
      * @param array<int, array<string, ErrorItem>> $errors
      */
     public function render(array $items, ?string $errorMessage = null, array $errors = []): Response

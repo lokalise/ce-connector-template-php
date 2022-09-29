@@ -3,7 +3,7 @@
 namespace App\Integration\DTO;
 
 /**
- *  поля которые будут содержать значения для столбцов которые были определены с помощью CacheItemStructure
+ * Fields that will contain values for columns that have been defined using the {@link CacheItemStructure}.
  */
 class CacheItemFields
 {

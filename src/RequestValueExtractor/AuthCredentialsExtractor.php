@@ -5,7 +5,7 @@ namespace App\RequestValueExtractor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Извлекает авторизационный хедер из реквеста
+ * Extracts the authorization header from the request.
  */
 class AuthCredentialsExtractor implements RequestValueExtractorInterface
 {

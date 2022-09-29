@@ -39,7 +39,7 @@ final class CacheDataProvider
                 self::CACHE_ITEMS_REQUEST,
                 [
                     'items' => array_map(
-                        static fn(array $identifier) => array_merge(
+                        static fn (array $identifier) => array_merge(
                             $identifier,
                             [
                                 'title' => self::CACHE_ITEM_TITLE,

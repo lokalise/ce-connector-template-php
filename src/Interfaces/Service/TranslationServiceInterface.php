@@ -10,7 +10,7 @@ use App\Integration\DTO\ConnectorConfig;
 interface TranslationServiceInterface
 {
     /**
-     * @param array<int, string> $locales
+     * @param array<int, string>     $locales
      * @param array<int, Identifier> $identifiers
      */
     public function getTranslations(

@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * трансформер декодирует конфигурационный хедер и создает объект типа ConnectorConfig
+ * The transformer decodes the configuration header and creates an object of type {@link ConnectorConfig}.
  */
 class ConnectorConfigTransformer
 {

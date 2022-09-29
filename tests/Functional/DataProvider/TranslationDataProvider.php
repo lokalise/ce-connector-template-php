@@ -28,7 +28,7 @@ final class TranslationDataProvider
                 self::TRANSLATION_REQUEST,
                 [
                     'items' => array_map(
-                        static fn(array $identifier) => array_merge(
+                        static fn (array $identifier) => array_merge(
                             $identifier,
                             [
                                 'translations' => array_combine(

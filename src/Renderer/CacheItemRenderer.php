@@ -15,7 +15,7 @@ class CacheItemRenderer
     }
 
     /**
-     * @param array<int, CacheItem> $items
+     * @param array<int, CacheItem>                $items
      * @param array<int, array<string, ErrorItem>> $errors
      */
     public function render(array $items, ?string $errorMessage = null, array $errors = []): Response

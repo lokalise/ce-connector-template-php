@@ -5,7 +5,7 @@ namespace App\RequestValueExtractor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Извлекает конфигурационный хедер из реквеста
+ * Extracts the configuration header from the request.
  */
 class ConnectorConfigExtractor implements RequestValueExtractorInterface
 {

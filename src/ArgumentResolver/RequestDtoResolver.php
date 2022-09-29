@@ -18,10 +18,10 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * данный резолвер срабатывает когда у экшена контроллера есть параметр с типом RequestDTO
- * На основе входящего реквеста создается объект типа RequestDTO который возвращается и передается экшену контроллера
+ * This resolver is triggered when the controller action has a parameter with the type {@link RequestDTO}.
+ * Based on the incoming request, an object of type {@link RequestDTO} is created and passed to the controller action.
  *
- * @link https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ * @see https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
  */
 class RequestDtoResolver implements ArgumentValueResolverInterface
 {

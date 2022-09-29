@@ -5,7 +5,7 @@ namespace App\Integration\DTO;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * параметры которые 3-я сторона отправлят на редирект урл при oauth авторизации
+ * Parameters that the 3rd party service sends to the redirect URL during OAuth authorization.
  */
 class OAuthParams
 {

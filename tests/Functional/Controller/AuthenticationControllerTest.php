@@ -12,7 +12,6 @@ use App\Renderer\AuthMethodRenderer;
 use App\Renderer\JsonResponseRenderer;
 use App\Service\AuthTypeService;
 use App\Tests\Functional\AbstractApiTestCase;
-use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use Exception;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;

@@ -12,7 +12,7 @@ use App\Interfaces\Service\TranslationServiceInterface;
 class TranslationService implements TranslationServiceInterface
 {
     /**
-     * @param array<int, string> $locales
+     * @param array<int, string>     $locales
      * @param array<int, Identifier> $identifiers
      */
     public function getTranslations(

@@ -26,7 +26,7 @@ class JsonResponseRenderer
             AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
         ];
 
-        if ($errorMessage === null && empty($errors)) {
+        if (null === $errorMessage && empty($errors)) {
             return new JsonResponse(
                 data: $this->serializer->serialize($responseDTO, JsonEncoder::FORMAT, $context),
                 json: true,
@@ -37,7 +37,7 @@ class JsonResponseRenderer
 
         $normalizedResponse['code'] = Response::HTTP_MULTI_STATUS;
 
-        if ($errorMessage !== null) {
+        if (null !== $errorMessage) {
             $normalizedResponse['message'] = $errorMessage;
         }
 

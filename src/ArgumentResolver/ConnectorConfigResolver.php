@@ -18,10 +18,10 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * данный резолвер срабатывает когда у экшена контроллера есть параметр с типом ConnectorConfig
- * На основе входящего реквеста создается объект типа ConnectorConfig который возвращается и передается экшену контроллера
+ * This resolver is triggered when the controller action has a parameter with the type {@link ConnectorConfig}.
+ * Based on the incoming request, an object of type {@link ConnectorConfig} is created and passed to the controller action.
  *
- * @link https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ * @see https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
  */
 class ConnectorConfigResolver implements ArgumentValueResolverInterface
 {
@@ -35,7 +35,7 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return $argument->getType() === ConnectorConfig::class;
+        return ConnectorConfig::class === $argument->getType();
     }
 
     /**

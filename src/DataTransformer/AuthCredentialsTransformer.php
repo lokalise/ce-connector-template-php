@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * трансформер декодирует авторизационный хедер и создает объект типа AuthCredentials
+ * The transformer decodes the authorization header and creates an object of type {@link AuthCredentials}.
  */
 class AuthCredentialsTransformer
 {

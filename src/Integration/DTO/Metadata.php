@@ -3,7 +3,7 @@
 namespace App\Integration\DTO;
 
 /**
- * вспомогательные данные необходимые конектору для мапинга между сущностями конектора и сущностями 3-й стороны
+ * Ancillary data needed by the connector to map between connector entities and 3rd party service entities.
  */
 class Metadata
 {
