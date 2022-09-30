@@ -19,7 +19,7 @@ init: build up
 tests: init
 	docker-compose exec development_workspace php bin/phpunit $(c)
 
-code-fixer:
+format:
 	vendor/bin/php-cs-fixer fix
 
 build-prod:

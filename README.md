@@ -80,7 +80,7 @@ Run `make tests` in command line.
 ## How to run code fixer
 
 We follow Symfony coding standards. For this we use the [PHP CS Fixer](https://cs.symfony.com/) tool. To check and fix
-the code run `make code-fixer` in command line.
+the code run `make format` in command line.
 
 ## How to set up Xdebug
 
@@ -135,7 +135,7 @@ the code run `make code-fixer` in command line.
 * `make restart` - restart service containers
 * `make init` - build or rebuild services and create and start containers
 * `make tests` - runs tests
-* `make code-fixer` - fixes code according to Symfony coding standards
+* `make format` - fixes code according to Symfony coding standards
 * `make build-prod` - build or rebuild services for prod
 * `make up-prod` - create and start containers for prod
 
