@@ -1,10 +1,9 @@
 # Connector Template PHP
 
 If you have content that needs to be translated and which would be automatically transmitted to the localization system,
-then [Lokalise](https://lokalise.com/) can provide you with UI interface to manage translations. For the system that
-will transmit data to
-[Lokalise](https://lokalise.com/) you need to implement a connector. This repository can be used as a template for your
-connector.
+then [Lokalise](https://lokalise.com/) can provide you with UI to manage translations. For the system that will transmit
+data to [Lokalise](https://lokalise.com/) you need to implement a connector. This repository can be used as a template
+for your connector.
 
 This Connector Template allows you to create an application that will act as a bridge between the content platform and
 [Lokalise](https://lokalise.com/) content engine, and will enable users to connect both systems, select the content they
@@ -127,17 +126,16 @@ the code run `make code-fixer` in command line.
 
 ## Short description of make commands
 
-```
-make build
-make up
-make start
-make down
-make destroy
-make stop
-make restart
-make init
-make tests
-make code-fixer
-make build-prod
-make up-prod
-```
+* `make build` - build or rebuild services
+* `make up` - create and start containers
+* `make start` - start services
+* `make down` - stop and remove containers, networks
+* `make destroy` - stop and remove containers, networks with volumes
+* `make stop` - stop services
+* `make restart` - restart service containers
+* `make init` - build or rebuild services and create and start containers
+* `make tests` - runs tests
+* `make code-fixer` - fixes code according to Symfony coding standards
+* `make build-prod` - build or rebuild services for prod
+* `make up-prod` - create and start containers for prod
+
