@@ -1,13 +1,15 @@
 # Connector Template PHP
 
 If you have content that needs to be translated and which would be automatically transmitted to the localization system,
-then Lokalise can provide you with UI interface to manage translations. For the system that will transmit data to
-Lokalise you need to implement a connector. This repository can be used as a template for your connector.
+then [Lokalise](https://lokalise.com/) can provide you with UI interface to manage translations. For the system that
+will transmit data to
+[Lokalise](https://lokalise.com/) you need to implement a connector. This repository can be used as a template for your
+connector.
 
 This Connector Template allows you to create an application that will act as a bridge between the content platform and
-Lokalise content engine, and will enable users to connect both systems, select the content they want to translate,
-transfer it to Lokalise, see the translation status, and receive the translated content back. Read more about the
-technical implementation requirements in this
+[Lokalise](https://lokalise.com/) content engine, and will enable users to connect both systems, select the content they
+want to translate, transfer it to [Lokalise](https://lokalise.com/), see the translation status, and receive the
+translated content back. Read more about the technical implementation requirements in this
 [article](https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector).
 
 ## Table of Contents
