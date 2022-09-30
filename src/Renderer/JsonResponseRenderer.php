@@ -43,6 +43,7 @@ class JsonResponseRenderer
 
         foreach ($errors as $errorItems) {
             $normalizedErrors = [];
+
             foreach ($errorItems as $key => $errorItem) {
                 $normalizedErrors[$key] = $this->serializer->normalize($errorItem, JsonEncoder::FORMAT, $context);
             }

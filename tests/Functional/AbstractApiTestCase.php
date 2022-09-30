@@ -127,9 +127,9 @@ abstract class AbstractApiTestCase extends KernelTestCase
     }
 
     /**
-     * @return array{
+     * @return array[
      *     HTTP_ce-auth: string,
-     * }
+     * ]
      *
      * @throws JsonException
      */
@@ -141,9 +141,9 @@ abstract class AbstractApiTestCase extends KernelTestCase
     }
 
     /**
-     * @return array{
+     * @return array[
      *     HTTP_ce-config: string,
-     * }
+     * ]
      *
      * @throws JsonException
      */

@@ -19,6 +19,9 @@ init: build up
 tests: init
 	docker-compose exec development_workspace php bin/phpunit $(c)
 
+code-fixer:
+	vendor/bin/php-cs-fixer fix
+
 build-prod:
 	docker-compose -f docker-compose.yml --env-file .env.local build production_workspace $(c)
 up-prod: build-prod

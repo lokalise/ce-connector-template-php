@@ -46,7 +46,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
         $apiKey = $apiKeyExtractor->extract($request);
 
-        if ($apiKey === null) {
+        if (null === $apiKey) {
             throw new BadRequestHttpException(
                 'Invalid authentication data',
                 new BadRequestErrorDetails([

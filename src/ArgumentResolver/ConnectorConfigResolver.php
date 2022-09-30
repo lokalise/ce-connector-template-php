@@ -46,7 +46,7 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $connectorConfigExtractor = $this->requestValueExtractorFactory->factory(ConnectorConfig::class);
         $encodedConnectorConfig = $connectorConfigExtractor->extract($request);
 
-        if ($encodedConnectorConfig === null) {
+        if (null === $encodedConnectorConfig) {
             throw new BadRequestHttpException(
                 'Invalid configuration data',
                 new BadRequestErrorDetails([

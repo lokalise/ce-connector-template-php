@@ -1,64 +1,85 @@
 # Connector Template PHP
 
-Если у вас есть контент который необходимо перевести то локалайз может предоставить вам юай интервейс управления переводами вашего контента.
-для этого вам нужно реализовать конектор. В качестве шаблона может быть использован данный репозиторий.
+If you have content that needs to be translated and which would be automatically transmitted to the localization system,
+then Lokalise can provide you with UI interface to manage translations. For the system that will transmit data to
+Lokalise you need to implement a connector. This repository can be used as a template for your connector.
 
-This Connector Template позволяет создать приложение которое will act as a bridge between the content platform and Lokalise content engine, and will enable users to connect both systems, select the content they want to translate, transfer it to Lokalise, see the translation status, and receive the translated content back. Read more about the technical implementation requirements.
-Требования которые реализует данный конектор находятся в данной статье https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector.
-Данный темплейт конектор реализует апи https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector#connector-api-beta.
+This Connector Template allows you to create an application that will act as a bridge between the content platform and
+Lokalise content engine, and will enable users to connect both systems, select the content they want to translate,
+transfer it to Lokalise, see the translation status, and receive the translated content back. Read more about the
+technical implementation requirements in this
+[article](https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector).
 
-##Стек технологий
-php 8.1
-symfony 6.1
-phpunit 9.5
-roadrunner 2
-composer latest
+## Table of Contents
 
-preinstall
-docker latest
-docker-compose latest
+* [Tech stack](#tech-stack)
+* [Preinstall](#preinstall)
+* [How to start the project](#how-to-start-the-project)
+* [Configuration settings for your connector](#configuration-settings-for-your-connector)
+* [How to run tests](#how-to-run-tests)
+* [How to run code fixer](#how-to-run-code-fixer)
+* [How to set up Xdebug](#how-to-set-up-xdebug)
+* [Short description of make commands](#short-description-of-make-commands)
 
+## Tech stack
+
+* PHP - 8.1
+* Symfony - 6.1
+* PHPUnit - 9.5
+* RoadRunner - 2
+* Composer - latest
+
+## Preinstall
+
+* Docker - latest
+* Docker Compose - latest
 
 ## How to start the project
 
-1.  In root project folder copy `.env` file and name it as `.env.local`.
+1. In root project folder copy `.env` file and name it as `.env.local`.
 2. Run `make init` in command line.
 
-##настройка конфигураций для вашего конектора
+## Configuration settings for your connector
 
-если ваш конектор использует OAuth2 авторизацию, то в файл .env.local добавте следующие параметры с нужными значениями:
-```
-PLATFORM_CLIENT_ID=
-PLATFORM_CLIENT_SECRET=
-```
-зайдите в config/services.yaml файл
+1. If your connector uses _OAuth2_ authorization, then add the following parameters to the .env.local file with the
+   required values:
+    ```
+    PLATFORM_CLIENT_ID=
+    PLATFORM_CLIENT_SECRET=
+    ```
 
-если ваш конектор использует apiKey авторизацию, то задайте следующие значения:
-```yaml
-services:
-    _defaults:
-        bind:
-            App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::apiKey
-```
+2. Go to config/services.yaml file:
+    - If your connector uses _apiKey_ authorization, then set the following values:
+       ```yaml
+        services:
+          _defaults:
+            bind:
+              App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::apiKey
+        ```
+    - If your connector uses _OAuth2_ authorization, then set the following values:
+        ```yaml
+        services:
+          _defaults:
+            bind:
+              App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::OAuth
+              App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: !php/const App\Enum\OAuthResponseParamsEnum::query
+              string $platformClientId: '%env(PLATFORM_CLIENT_ID)%'
+              string $platformClientSecret: '%env(PLATFORM_CLIENT_SECRET)%'
+        ```
 
-если ваш конектор использует OAuth2 авторизацию, то задайте следующие значения:
-```yaml
-services:
-    _defaults:
-        bind:
-          App\Enum\AuthTypeEnum $defaultAuthType: !php/const App\Enum\AuthTypeEnum::OAuth
-          App\Enum\OAuthResponseParamsEnum $defaultOAuthResponseParams: !php/const App\Enum\OAuthResponseParamsEnum::query
-          string $platformClientId: '%env(PLATFORM_CLIENT_ID)%'
-          string $platformClientSecret: '%env(PLATFORM_CLIENT_SECRET)%'
-```
-Перейдите в папку src/Integration/DTO/ и задайте нужные для вашего конектора парметры для классов, которые перечислены в этой папке.
-
-Реализуйте логику ваших конекторов в сервисах которые находятся в папке src/Integration/Service/. Данные сервисы должны реализовывать интерфейсы указанные в папке src/Interfaces/Service/.
+3. Go to the [DTO](src/Integration/DTO/) folder and set the parameters you need for your connector for the classes
+   listed in this folder.
+4. Implement the logic of your connectors in services located in the [Service](src/Integration/Service/) folder. These
+   services should implement the interfaces specified in [this](src/Interfaces/Service/) folder.
 
 ## How to run tests
 
 Run `make tests` in command line.
 
+## How to run code fixer
+
+We follow Symfony coding standards. For this we use the [PHP CS Fixer](https://cs.symfony.com/) tool. To check and fix
+the code run `make code-fixer` in command line.
 
 ## How to set up Xdebug
 
@@ -77,16 +98,16 @@ Run `make tests` in command line.
             - press ok.
         - Apply changes.
     - Go to ***PHP->Debug*** menu item:
-         - Make sure that are the following settings are disabled:
-             - Ignore external connections through unregistered server configurations.
-             - Break at first line in PHP scripts.
-             - Force break at first line when no path mapping specified.
-             - Force break at first line when a script is outside the project.
-         - Set *Debug Port* as `9003`.
-         - Apply changes.
+        - Make sure that are the following settings are disabled:
+            - Ignore external connections through unregistered server configurations.
+            - Break at first line in PHP scripts.
+            - Force break at first line when no path mapping specified.
+            - Force break at first line when a script is outside the project.
+        - Set *Debug Port* as `9003`.
+        - Apply changes.
     - Go to ***PHP->Debug->DBGp Proxy*** menu item:
-   
-        Set the following values:
+
+      Set the following values:
         ```
         IDE key = PHPSTORM
         Host = localhost 
@@ -102,8 +123,8 @@ Run `make tests` in command line.
         - apply changes.
 3. Run `make init` once again.
 
-
 ## Short description of make commands
+
 ```
 make build
 make up
@@ -114,6 +135,7 @@ make stop
 make restart
 make init
 make tests
+make code-fixer
 make build-prod
 make up-prod
 ```

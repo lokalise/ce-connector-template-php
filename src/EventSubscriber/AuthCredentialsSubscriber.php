@@ -13,8 +13,8 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
- * данный сабскрайбер срабатывает перед экшеном контролера который имплементирует AuthenticatedControllerInterface
- * Сабскрайбер проверяет присутствует ли авторизационный хедер
+ * This subscriber is triggered before an action of controller which implements the AuthenticatedControllerInterface.
+ * Subscriber checks if authorization header is present.
  */
 class AuthCredentialsSubscriber implements EventSubscriberInterface
 {

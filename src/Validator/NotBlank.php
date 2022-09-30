@@ -37,10 +37,12 @@ class NotBlank extends BaseNotBlank
     protected function normalizeGroups(array $groups): array
     {
         $normalized = [];
+
         foreach ($groups as $group) {
             if ($group instanceof BackedEnum) {
                 $group = $group->value;
             }
+
             $normalized[] = $group;
         }
 
