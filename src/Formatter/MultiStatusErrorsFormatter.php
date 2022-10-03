@@ -13,6 +13,7 @@ class MultiStatusErrorsFormatter
     public function format(ConstraintViolationListInterface $violations): array
     {
         $errors = [];
+
         foreach ($violations as $violation) {
             $uniqueId = $violation->getCause();
             $fieldPath = $violation->getPropertyPath();
@@ -23,7 +24,7 @@ class MultiStatusErrorsFormatter
                 $violation->getCode(),
             );
 
-            if ($fieldPath === 'uniqueId') {
+            if ('uniqueId' === $fieldPath) {
                 $errors[$uniqueId]['uniqueId'] = $errorItem;
             } else {
                 $errors[$uniqueId]['uniqueId'] = $uniqueId;

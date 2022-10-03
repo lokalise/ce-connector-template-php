@@ -27,7 +27,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string
     {
         return sprintf(
-            "https://authorization-server.com/auth?response_type=code&client_id=%s&redirect_uri=%s&scope=scope&state=",
+            'https://authorization-server.com/auth?response_type=code&client_id=%s&redirect_uri=%s&scope=scope&state=',
             $this->platformClientId,
             $redirectUrl,
         );

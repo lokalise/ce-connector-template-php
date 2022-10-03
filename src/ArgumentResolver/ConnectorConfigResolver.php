@@ -2,12 +2,12 @@
 
 namespace App\ArgumentResolver;
 
+use App\DataTransformer\ConnectorConfigTransformer;
 use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
 use App\Integration\DTO\ConnectorConfig;
-use App\Interfaces\DataTransformer\ConnectorConfigTransformerInterface;
 use App\RequestValueExtractor\ConnectorConfigExtractor;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +17,17 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * This resolver is triggered when the controller action has a parameter with the type {@link ConnectorConfig}.
+ * Based on the incoming request, an object of type {@link ConnectorConfig} is created and passed to the controller action.
+ *
+ * @see https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ */
 class ConnectorConfigResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
-        private readonly ConnectorConfigTransformerInterface $connectorConfigTransformer,
+        private readonly ConnectorConfigTransformer $connectorConfigTransformer,
         private readonly ValidatorInterface $validator,
         private readonly BadRequestErrorsFormatter $badRequestErrorsFormatter,
     ) {
@@ -29,7 +35,7 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return $argument->getType() === ConnectorConfig::class;
+        return ConnectorConfig::class === $argument->getType();
     }
 
     /**
@@ -40,7 +46,7 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $connectorConfigExtractor = $this->requestValueExtractorFactory->factory(ConnectorConfig::class);
         $encodedConnectorConfig = $connectorConfigExtractor->extract($request);
 
-        if ($encodedConnectorConfig === null) {
+        if (null === $encodedConnectorConfig) {
             throw new BadRequestHttpException(
                 'Invalid configuration data',
                 new BadRequestErrorDetails([

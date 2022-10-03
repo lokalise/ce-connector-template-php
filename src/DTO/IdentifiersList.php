@@ -6,7 +6,7 @@ class IdentifiersList
 {
     /**
      * @param array<int, CacheItem|TranslationItem|Identifier> $items
-     * @param array<int, array<string, ErrorItem>> $errors
+     * @param array<int, array<string, ErrorItem>>             $errors
      */
     public function __construct(
         public readonly array $items = [],

@@ -12,6 +12,7 @@ class BadRequestErrorsFormatter
     public function format(ConstraintViolationListInterface $violations): array
     {
         $errors = [];
+
         foreach ($violations as $violation) {
             if (!isset($errors[$violation->getPropertyPath()])) {
                 $errors[$violation->getPropertyPath()] = [];

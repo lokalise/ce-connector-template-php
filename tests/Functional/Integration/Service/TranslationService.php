@@ -2,9 +2,9 @@
 
 namespace App\Tests\Functional\Integration\Service;
 
+use App\DTO\Identifier;
 use App\DTO\IdentifiersList;
 use App\DTO\TranslationItem;
-use App\DTO\Identifier;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
 use App\Interfaces\Service\TranslationServiceInterface;
@@ -12,7 +12,7 @@ use App\Interfaces\Service\TranslationServiceInterface;
 class TranslationService implements TranslationServiceInterface
 {
     /**
-     * @param array<int, string> $locales
+     * @param array<int, string>     $locales
      * @param array<int, Identifier> $identifiers
      */
     public function getTranslations(

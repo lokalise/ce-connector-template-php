@@ -4,6 +4,9 @@ namespace App\RequestValueExtractor;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Extracts the configuration header from the request.
+ */
 class ConnectorConfigExtractor implements RequestValueExtractorInterface
 {
     public const CONNECTOR_CONFIG_HEADER = 'CE-Config';

@@ -5,6 +5,9 @@ namespace App\Service;
 use App\Enum\AuthTypeEnum;
 use Symfony\Bundle\FrameworkBundle\Routing\Attribute\AsRoutingConditionService;
 
+/**
+ * The service is used in route conditions to match routes depending on the type of authorization.
+ */
 #[AsRoutingConditionService]
 class AuthTypeService
 {
@@ -15,11 +18,11 @@ class AuthTypeService
 
     public function isApiKey(): bool
     {
-        return $this->defaultAuthType === AuthTypeEnum::apiKey;
+        return AuthTypeEnum::apiKey === $this->defaultAuthType;
     }
 
     public function isOAuth(): bool
     {
-        return $this->defaultAuthType === AuthTypeEnum::OAuth;
+        return AuthTypeEnum::OAuth === $this->defaultAuthType;
     }
 }

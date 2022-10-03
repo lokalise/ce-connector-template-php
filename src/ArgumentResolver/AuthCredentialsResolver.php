@@ -2,12 +2,12 @@
 
 namespace App\ArgumentResolver;
 
+use App\DataTransformer\AuthCredentialsTransformer;
 use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
 use App\Integration\DTO\AuthCredentials;
-use App\Interfaces\DataTransformer\AuthCredentialsTransformerInterface;
 use App\RequestValueExtractor\AuthCredentialsExtractor;
 use App\RequestValueExtractor\RequestValueExtractorFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +17,17 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * This resolver is triggered when the controller action has a parameter with the type {@link AuthCredentials}.
+ * Based on the incoming request, an object of type {@link AuthCredentials} is created and passed to the controller action.
+ *
+ * @see https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ */
 class AuthCredentialsResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
         private readonly RequestValueExtractorFactory $requestValueExtractorFactory,
-        private readonly AuthCredentialsTransformerInterface $authCredentialsDataTransformer,
+        private readonly AuthCredentialsTransformer $authCredentialsDataTransformer,
         private readonly ValidatorInterface $validator,
         private readonly BadRequestErrorsFormatter $badRequestErrorsFormatter,
     ) {
@@ -29,7 +35,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        return $argument->getType() === AuthCredentials::class;
+        return AuthCredentials::class === $argument->getType();
     }
 
     /**
@@ -40,7 +46,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         $apiKeyExtractor = $this->requestValueExtractorFactory->factory(AuthCredentials::class);
         $apiKey = $apiKeyExtractor->extract($request);
 
-        if ($apiKey === null) {
+        if (null === $apiKey) {
             throw new BadRequestHttpException(
                 'Invalid authentication data',
                 new BadRequestErrorDetails([
@@ -62,7 +68,7 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
     {
         /** @var ConstraintViolationListInterface|array<int, ConstraintViolationInterface> $violations */
         $violations = $this->validator->validate($authCredentials);
-        
+
         if (count($violations) > 0) {
             $errors = $this->badRequestErrorsFormatter->format($violations);
 

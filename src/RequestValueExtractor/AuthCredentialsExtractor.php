@@ -4,6 +4,9 @@ namespace App\RequestValueExtractor;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Extracts the authorization header from the request.
+ */
 class AuthCredentialsExtractor implements RequestValueExtractorInterface
 {
     public const AUTH_CREDENTIALS_HEADER = 'CE-Auth';

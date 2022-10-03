@@ -8,6 +8,9 @@ use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * Converts errors to a common format.
+ */
 class ErrorNormalizer implements NormalizerInterface
 {
     /**

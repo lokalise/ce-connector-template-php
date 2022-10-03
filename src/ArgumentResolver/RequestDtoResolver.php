@@ -17,6 +17,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * This resolver is triggered when the controller action has a parameter with the type {@link RequestDTO}.
+ * Based on the incoming request, an object of type {@link RequestDTO} is created and passed to the controller action.
+ *
+ * @see https://symfony.com/doc/current/controller/argument_value_resolver.html#adding-a-custom-value-resolver
+ */
 class RequestDtoResolver implements ArgumentValueResolverInterface
 {
     public function __construct(
