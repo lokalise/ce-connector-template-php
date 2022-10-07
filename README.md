@@ -76,8 +76,15 @@ In this repository you will find **PHP code that you can use as a template** for
 
 3. Go to the [DTO](src/Integration/DTO/) folder and set the parameters you need for your connector for the classes
    listed in this folder.
-    
+
+    Field values in [CacheItemStructure](src/Integration/DTO/CacheItemStructure.php) DTO should be in the following format:
+   - First letter of the first name word should be capitalized
+   - First letter of the second, etc word in name should be lower case
+   - Concatenated words should be split
+   - Name should be meaningful
+
     In response all DateTime fields from [CacheItemFields](src/Integration/DTO/CacheItemFields.php) DTO should be converted in format `yyyy-mm-dd`
+
 4. Implement the logic of your connectors in services located in the [Service](src/Integration/Service/) folder. These
    services should implement the interfaces specified in [this](src/Interfaces/Service/) folder.
 
