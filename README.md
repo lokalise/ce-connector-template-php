@@ -48,7 +48,7 @@ In this repository you will find **PHP code that you can use as a template** for
 
 ## Configuration settings for your connector
 
-1. If your connector uses _OAuth2_ authorization, then add the following parameters to the .env.local file with the
+1. If your connector uses _OAuth2_ authorization, then add the following parameters to the `.env.local` file with the
    required values:
     ```
     PLATFORM_CLIENT_ID=
@@ -76,6 +76,8 @@ In this repository you will find **PHP code that you can use as a template** for
 
 3. Go to the [DTO](src/Integration/DTO/) folder and set the parameters you need for your connector for the classes
    listed in this folder.
+    
+    In response all DateTime fields from [CacheItemFields](src/Integration/DTO/CacheItemFields.php) DTO should be converted in format `yyyy-mm-dd`
 4. Implement the logic of your connectors in services located in the [Service](src/Integration/Service/) folder. These
    services should implement the interfaces specified in [this](src/Interfaces/Service/) folder.
 

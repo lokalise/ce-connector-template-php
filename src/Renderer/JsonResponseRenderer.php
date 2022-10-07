@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class JsonResponseRenderer
@@ -24,6 +25,7 @@ class JsonResponseRenderer
     {
         $context = [
             AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
         ];
 
         if (null === $errorMessage && empty($errors)) {
