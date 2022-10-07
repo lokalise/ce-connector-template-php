@@ -20,7 +20,7 @@ connector.
 - The technical requirements of a connector are detailed
   on [Lokalise Developer Hub](https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector)
   .
-- The [OpenAPI schema](schema.yaml) describes the endpoints that must be served by a connector.
+- The [OpenAPI schema](https://github.com/lokalise/ce-connector-api) describes the endpoints that must be served by a connector.
 
 ## Table of Contents
 
@@ -81,7 +81,7 @@ connector.
               string $platformClientSecret: '%env(PLATFORM_CLIENT_SECRET)%'
         ```
 
-3. Go to the [DTO](src/Integration/DTO/) folder and set the parameters you need for your connector for the classes
+3. Go to the [DTO](src/Integration/DTO) folder and set the parameters you need for your connector for the classes
    listed in this folder.
 
    Field values in [CacheItemStructure](src/Integration/DTO/CacheItemStructure.php) DTO should be in the following
@@ -95,8 +95,8 @@ connector.
    In response all DateTime fields from [CacheItemFields](src/Integration/DTO/CacheItemFields.php) DTO should be
    converted in format `yyyy-mm-dd`.
 
-4. Implement the logic of your connectors in services located in the [Service](src/Integration/Service/) folder. These
-   services should implement the interfaces specified in [this](src/Interfaces/Service/) folder.
+4. Implement the logic of your connectors in services located in the [Service](src/Integration/Service) folder. These
+   services should implement the interfaces specified in [this](src/Interfaces/Service) folder.
 
 ## How to run tests
 

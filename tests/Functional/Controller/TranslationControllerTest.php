@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Exception\BadRequestHttpException;
-use App\Exception\UnauthorizedHttpException;
+use App\Enum\ErrorCodeEnum;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TranslationControllerTest extends AbstractApiTestCase
 {
@@ -15,14 +15,14 @@ class TranslationControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testTranslate(array $parameters, array $expectedResponse): void
+    public function testTranslate(array $request, array $expectedResponse): void
     {
-        static::checkRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/translate',
-            $parameters,
+            $request,
+            static::getTestHeaders(),
             $expectedResponse,
-            static::getTestTokenHeader()
         );
     }
 
@@ -31,14 +31,24 @@ class TranslationControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testTranslateNotAuthorised(array $parameters): void
+    public function testTranslateNotAuthorised(array $request): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/translate',
-            $parameters
+            $request,
+            static::getTestConnectorConfigHeader(),
+            [
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ],
+            Response::HTTP_UNAUTHORIZED,
         );
     }
 
@@ -47,12 +57,27 @@ class TranslationControllerTest extends AbstractApiTestCase
      */
     public function testTranslateEmptyRequest(): void
     {
-        $this->expectException(BadRequestHttpException::class);
-
-        static::checkEmptyRequest(
-            Request::METHOD_POST,
-            '/v2/translate',
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/translate',
+            server: static::getTestHeaders(),
+            expectedResponse: [
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [
+                            [
+                                'defaultLocale' => ['This value should not be blank.'],
+                                'locales' => ['This value should not be blank.'],
+                                'items' => ['This value should not be blank.'],
+                            ],
+                        ],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ],
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
 }

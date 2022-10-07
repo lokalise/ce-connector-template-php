@@ -75,18 +75,6 @@ final class AuthenticationDataProvider
         ];
     }
 
-    public static function authProviderWithoutRequest(): array
-    {
-        return [
-            'auth_by_api_key' => [
-                AuthTypeEnum::apiKey,
-            ],
-            'generate_auth_utl' => [
-                AuthTypeEnum::OAuth,
-            ],
-        ];
-    }
-
     public static function authByOAuthProvider(): array
     {
         return [

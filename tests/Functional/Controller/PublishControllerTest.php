@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Exception\BadRequestHttpException;
-use App\Exception\UnauthorizedHttpException;
+use App\Enum\ErrorCodeEnum;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PublishControllerTest extends AbstractApiTestCase
 {
@@ -15,14 +15,14 @@ class PublishControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testPublish(array $parameters, array $expectedResponse): void
+    public function testPublish(array $request, array $expectedResponse): void
     {
-        static::checkRequest(
-            Request::METHOD_POST,
-            '/v2/publish',
-            $parameters,
-            $expectedResponse,
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/publish',
+            parameters: $request,
+            server: static::getTestHeaders(),
+            expectedResponse: $expectedResponse,
         );
     }
 
@@ -31,14 +31,24 @@ class PublishControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testPublishNotAuthorised(array $parameters): void
+    public function testPublishNotAuthorised(array $request): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/publish',
-            $parameters
+            $request,
+            static::getTestConnectorConfigHeader(),
+            [
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ],
+            Response::HTTP_UNAUTHORIZED,
         );
     }
 
@@ -47,12 +57,26 @@ class PublishControllerTest extends AbstractApiTestCase
      */
     public function testPublishEmptyRequest(): void
     {
-        $this->expectException(BadRequestHttpException::class);
-
-        static::checkEmptyRequest(
-            Request::METHOD_POST,
-            '/v2/publish',
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/publish',
+            server: static::getTestHeaders(),
+            expectedResponse: [
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [
+                            [
+                                'defaultLocale' => ['This value should not be blank.'],
+                                'items' => ['This value should not be blank.'],
+                            ],
+                        ],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ],
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
 }

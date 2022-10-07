@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Exception\BadRequestHttpException;
-use App\Exception\UnauthorizedHttpException;
+use App\Enum\ErrorCodeEnum;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CacheControllerTest extends AbstractApiTestCase
 {
@@ -17,12 +17,11 @@ class CacheControllerTest extends AbstractApiTestCase
      */
     public function testCache(array $expectedResponse): void
     {
-        static::checkRequest(
-            Request::METHOD_GET,
-            '/v2/cache',
-            [],
-            $expectedResponse,
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_GET,
+            uri: '/v2/cache',
+            server: static::getTestHeaders(),
+            expectedResponse: $expectedResponse,
         );
     }
 
@@ -31,11 +30,21 @@ class CacheControllerTest extends AbstractApiTestCase
      */
     public function testCacheNotAuthorised(): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
-            Request::METHOD_GET,
-            '/v2/cache'
+        static::assertRequest(
+            method: Request::METHOD_GET,
+            uri: '/v2/cache',
+            server: static::getTestConnectorConfigHeader(),
+            expectedResponse: [
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ],
+            expectedStatusCode: Response::HTTP_UNAUTHORIZED,
         );
     }
 
@@ -44,14 +53,31 @@ class CacheControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testCacheItems(array $parameters, array $expectedResponse): void
+    public function testCacheItems(array $request, array $expectedResponse): void
     {
-        static::checkRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/cache/items',
-            $parameters,
+            $request,
+            static::getTestHeaders(),
             $expectedResponse,
-            static::getTestTokenHeader()
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::invalidCacheItemsProvider()
+     *
+     * @throws JsonException
+     */
+    public function testCacheItemsWithInvalidUniqueId(array $request, array $expectedResponse): void
+    {
+        static::assertRequest(
+            Request::METHOD_POST,
+            '/v2/cache/items',
+            $request,
+            static::getTestHeaders(),
+            $expectedResponse,
+            Response::HTTP_MULTI_STATUS,
         );
     }
 
@@ -60,14 +86,24 @@ class CacheControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testCacheItemsNotAuthorised(array $parameters): void
+    public function testCacheItemsNotAuthorised(array $request): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/cache/items',
-            $parameters
+            $request,
+            static::getTestConnectorConfigHeader(),
+            [
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ],
+            Response::HTTP_UNAUTHORIZED,
         );
     }
 
@@ -76,12 +112,23 @@ class CacheControllerTest extends AbstractApiTestCase
      */
     public function testCacheItemsEmptyRequest(): void
     {
-        $this->expectException(BadRequestHttpException::class);
-
-        static::checkEmptyRequest(
-            Request::METHOD_POST,
-            '/v2/cache/items',
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/cache/items',
+            server: static::getTestHeaders(),
+            expectedResponse: [
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [[
+                            'items' => ['This value should not be blank.'],
+                        ]],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ],
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
 }

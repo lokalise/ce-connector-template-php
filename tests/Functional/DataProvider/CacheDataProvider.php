@@ -2,6 +2,8 @@
 
 namespace App\Tests\Functional\DataProvider;
 
+use Symfony\Component\HttpFoundation\Response;
+
 final class CacheDataProvider
 {
     public const CACHE_RESPONSE = [
@@ -31,6 +33,30 @@ final class CacheDataProvider
     {
         return [
             [self::CACHE_ITEMS_REQUEST],
+        ];
+    }
+
+    public static function invalidCacheItemsProvider(): array
+    {
+        return [
+            [
+                [
+                    'items' => [
+                        IdentifierDataProvider::INVALID_UNIQUE_ITEM_IDENTIFIER,
+                    ],
+                ],
+                [
+                    'items' => [],
+                    'code' => Response::HTTP_MULTI_STATUS,
+                    'errors' => [
+                        [
+                            'uniqueId' => [
+                                'value' => IdentifierDataProvider::INVALID_UNIQUE_ID,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
