@@ -2,6 +2,8 @@
 
 namespace App\Integration\DTO;
 
+use DateTime;
+
 /**
  * Fields that will contain values for columns that have been defined using the {@link CacheItemStructure}.
  */
@@ -9,6 +11,7 @@ class CacheItemFields
 {
     public function __construct(
         public readonly string $id,
+        public readonly DateTime $createdAt,
     ) {
     }
 }

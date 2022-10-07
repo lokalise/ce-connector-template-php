@@ -10,6 +10,7 @@ final class EnvironmentDataProvider
 
     public const CACHE_ITEM_STRUCTURE = [
         'id' => 'ID',
+        'createdAt' => 'Created at',
     ];
 
     public const ENVIRONMENTS = [
