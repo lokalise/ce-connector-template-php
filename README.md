@@ -81,7 +81,7 @@ In this repository you will find **PHP code that you can use as a template** for
    - First letter of the first name word should be capitalized
    - First letter of the second, etc word in name should be lower case
    - Concatenated words should be split
-   - Name should be meaningful
+   - The field name should be meaningful to the user because it appears on the UI, and it helps users identify their content
 
     In response all DateTime fields from [CacheItemFields](src/Integration/DTO/CacheItemFields.php) DTO should be converted in format `yyyy-mm-dd`
 
