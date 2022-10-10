@@ -9,7 +9,7 @@ class CacheItemStructure
 {
     public function __construct(
         public readonly string $id = 'ID',
-        public readonly string $createdAt = 'Created at',
+        public readonly string $createdAt = 'Created',
     ) {
     }
 }
