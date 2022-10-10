@@ -10,6 +10,7 @@ use App\Integration\DTO\CacheItemFields;
 use App\Integration\DTO\ConnectorConfig;
 use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
+use DateTime;
 
 class CacheService implements CacheServiceInterface
 {
@@ -41,7 +42,7 @@ class CacheService implements CacheServiceInterface
                     $cacheItem = CacheItem::createFromIdentifier($translatableItem);
                     $cacheItem->title = 'title';
                     $cacheItem->groupTitle = 'groupTitle';
-                    $cacheItem->fields = new CacheItemFields('id');
+                    $cacheItem->fields = new CacheItemFields('id', new DateTime());
 
                     return $cacheItem;
                 },

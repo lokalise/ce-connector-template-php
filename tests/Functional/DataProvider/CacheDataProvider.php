@@ -18,6 +18,8 @@ final class CacheDataProvider
 
     public const CACHE_ITEM_FIELD_ID = 'id';
 
+    public const CACHE_ITEM_FIELD_CREATED_AT = '2022-10-07';
+
     public static function cacheResponseProvider(): array
     {
         return [
@@ -46,6 +48,7 @@ final class CacheDataProvider
                                 'groupTitle' => self::CACHE_ITEM_GROUP_TITLE,
                                 'fields' => [
                                     'id' => self::CACHE_ITEM_FIELD_ID,
+                                    'createdAt' => self::CACHE_ITEM_FIELD_CREATED_AT,
                                 ],
                             ]
                         ),
