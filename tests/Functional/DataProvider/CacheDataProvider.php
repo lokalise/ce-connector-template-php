@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\DataProvider;
 
+use App\Enum\ErrorCodeEnum;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CacheDataProvider
@@ -29,10 +30,56 @@ final class CacheDataProvider
         ];
     }
 
-    public static function cacheItemsRequestProvider(): array
+    public static function cacheWithoutAuthHeaderProvider(): array
     {
         return [
-            [self::CACHE_ITEMS_REQUEST],
+            [[
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ]],
+        ];
+    }
+
+    public static function cacheItemsRequestWithoutAuthHeaderProvider(): array
+    {
+        return [
+            [
+                self::CACHE_ITEMS_REQUEST,
+                [
+                    'statusCode' => Response::HTTP_UNAUTHORIZED,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                        'details' => [
+                            'error' => 'Invalid api key',
+                        ],
+                        'message' => 'Authorization failed',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function cacheItemsWithEmptyRequestProvider(): array
+    {
+        return [
+            [[
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [[
+                            'items' => ['This value should not be blank.'],
+                        ]],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ]],
         ];
     }
 

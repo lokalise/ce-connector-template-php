@@ -27,55 +27,34 @@ class PublishControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\PublishDataProvider::publishRequestProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\PublishDataProvider::publishRequestWithoutAuthHeaderProvider
      *
      * @throws JsonException
      */
-    public function testPublishNotAuthorised(array $request): void
+    public function testPublishNotAuthorised(array $request, array $response): void
     {
         static::assertRequest(
             Request::METHOD_POST,
             '/v2/publish',
             $request,
             static::getTestConnectorConfigHeader(),
-            [
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
-                    ],
-                    'message' => 'Authorization failed',
-                ],
-            ],
+            $response,
             Response::HTTP_UNAUTHORIZED,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\PublishDataProvider::publishWithEmptyRequestProvider
+     *
      * @throws JsonException
      */
-    public function testPublishEmptyRequest(): void
+    public function testPublishEmptyRequest(array $response): void
     {
         static::assertRequest(
             method: Request::METHOD_POST,
             uri: '/v2/publish',
             server: static::getTestHeaders(),
-            expectedResponse: [
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [
-                            [
-                                'defaultLocale' => ['This value should not be blank.'],
-                                'items' => ['This value should not be blank.'],
-                            ],
-                        ],
-                    ],
-                    'message' => 'Bad request',
-                ],
-            ],
+            expectedResponse: $response,
             expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }

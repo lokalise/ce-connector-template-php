@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Enum\ErrorCodeEnum;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,24 +25,17 @@ class CacheControllerTest extends AbstractApiTestCase
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheWithoutAuthHeaderProvider
+     *
      * @throws JsonException
      */
-    public function testCacheNotAuthorised(): void
+    public function testCacheNotAuthorised(array $response): void
     {
         static::assertRequest(
             method: Request::METHOD_GET,
             uri: '/v2/cache',
             server: static::getTestConnectorConfigHeader(),
-            expectedResponse: [
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
-                    ],
-                    'message' => 'Authorization failed',
-                ],
-            ],
+            expectedResponse: $response,
             expectedStatusCode: Response::HTTP_UNAUTHORIZED,
         );
     }
@@ -82,52 +74,34 @@ class CacheControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsRequestProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsRequestWithoutAuthHeaderProvider
      *
      * @throws JsonException
      */
-    public function testCacheItemsNotAuthorised(array $request): void
+    public function testCacheItemsNotAuthorised(array $request, array $response): void
     {
         static::assertRequest(
             Request::METHOD_POST,
             '/v2/cache/items',
             $request,
             static::getTestConnectorConfigHeader(),
-            [
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
-                    ],
-                    'message' => 'Authorization failed',
-                ],
-            ],
+            $response,
             Response::HTTP_UNAUTHORIZED,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsWithEmptyRequestProvider
+     *
      * @throws JsonException
      */
-    public function testCacheItemsEmptyRequest(): void
+    public function testCacheItemsEmptyRequest(array $response): void
     {
         static::assertRequest(
             method: Request::METHOD_POST,
             uri: '/v2/cache/items',
             server: static::getTestHeaders(),
-            expectedResponse: [
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [[
-                            'items' => ['This value should not be blank.'],
-                        ]],
-                    ],
-                    'message' => 'Bad request',
-                ],
-            ],
+            expectedResponse: $response,
             expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }

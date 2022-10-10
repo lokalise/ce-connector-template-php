@@ -2,6 +2,9 @@
 
 namespace App\Tests\Functional\DataProvider;
 
+use App\Enum\ErrorCodeEnum;
+use Symfony\Component\HttpFoundation\Response;
+
 final class PublishDataProvider
 {
     public const PUBLISH_REQUEST = [
@@ -16,10 +19,22 @@ final class PublishDataProvider
         ],
     ];
 
-    public static function publishRequestProvider(): array
+    public static function publishRequestWithoutAuthHeaderProvider(): array
     {
         return [
-            [self::PUBLISH_REQUEST],
+            [
+                self::PUBLISH_REQUEST,
+                [
+                    'statusCode' => Response::HTTP_UNAUTHORIZED,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                        'details' => [
+                            'error' => 'Invalid api key',
+                        ],
+                        'message' => 'Authorization failed',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -33,6 +48,27 @@ final class PublishDataProvider
                     'message' => 'Content successfully updated',
                 ],
             ],
+        ];
+    }
+
+    public static function publishWithEmptyRequestProvider(): array
+    {
+        return [
+            [[
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [
+                            [
+                                'defaultLocale' => ['This value should not be blank.'],
+                                'items' => ['This value should not be blank.'],
+                            ],
+                        ],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ]],
         ];
     }
 }

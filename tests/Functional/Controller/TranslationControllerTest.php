@@ -27,56 +27,34 @@ class TranslationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationRequestProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationRequestWithoutAuthHeaderProvider
      *
      * @throws JsonException
      */
-    public function testTranslateNotAuthorised(array $request): void
+    public function testTranslateNotAuthorised(array $request, array $response): void
     {
         static::assertRequest(
             Request::METHOD_POST,
             '/v2/translate',
             $request,
             static::getTestConnectorConfigHeader(),
-            [
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
-                    ],
-                    'message' => 'Authorization failed',
-                ],
-            ],
+            $response,
             Response::HTTP_UNAUTHORIZED,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationWithEmptyRequestProvider
+     *
      * @throws JsonException
      */
-    public function testTranslateEmptyRequest(): void
+    public function testTranslateEmptyRequest(array $response): void
     {
         static::assertRequest(
             method: Request::METHOD_POST,
             uri: '/v2/translate',
             server: static::getTestHeaders(),
-            expectedResponse: [
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [
-                            [
-                                'defaultLocale' => ['This value should not be blank.'],
-                                'locales' => ['This value should not be blank.'],
-                                'items' => ['This value should not be blank.'],
-                            ],
-                        ],
-                    ],
-                    'message' => 'Bad request',
-                ],
-            ],
+            expectedResponse: $response,
             expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }

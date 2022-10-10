@@ -3,8 +3,10 @@
 namespace App\Tests\Functional\DataProvider;
 
 use App\Enum\AuthTypeEnum;
+use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
 use JsonException;
+use Symfony\Component\HttpFoundation\Response;
 
 final class AuthenticationDataProvider
 {
@@ -75,6 +77,24 @@ final class AuthenticationDataProvider
         ];
     }
 
+    public static function oAuthWithEmptyRequestProvider(): array
+    {
+        return [
+            [[
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [[
+                            'redirectUrl' => ['This value should not be blank.'],
+                        ]],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ]],
+        ];
+    }
+
     public static function authByOAuthProvider(): array
     {
         return [
@@ -136,6 +156,22 @@ final class AuthenticationDataProvider
                 AuthTypeEnum::OAuth,
                 self::API_KEY,
             ],
+        ];
+    }
+
+    public static function refreshWithoutHeadersProvider(): array
+    {
+        return [
+            [[
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ]],
         ];
     }
 }

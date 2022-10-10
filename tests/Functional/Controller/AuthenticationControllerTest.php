@@ -4,7 +4,6 @@ namespace App\Tests\Functional\Controller;
 
 use App\ArgumentResolver\RequestDtoResolver;
 use App\Enum\AuthTypeEnum;
-use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
 use App\Formatter\BadRequestErrorsFormatter;
 use App\Renderer\AuthMethodRenderer;
@@ -55,9 +54,11 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::oAuthWithEmptyRequestProvider
+     *
      * @throws Exception
      */
-    public function testOAuthWithEmptyRequest(): void
+    public function testOAuthWithEmptyRequest(array $response): void
     {
         $this->setRequestDtoResolver();
         $this->setAuthTypeService(AuthTypeEnum::OAuth);
@@ -65,18 +66,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         static::assertRequest(
             method: Request::METHOD_POST,
             uri: '/v2/auth',
-            expectedResponse: [
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [[
-                            'redirectUrl' => ['This value should not be blank.'],
-                        ]],
-                    ],
-                    'message' => 'Bad request',
-                ],
-            ],
+            expectedResponse: $response,
             expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
@@ -143,21 +133,15 @@ class AuthenticationControllerTest extends AbstractApiTestCase
         );
     }
 
-    public function testRefreshWithoutApiKey(): void
+    /**
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::refreshWithoutHeadersProvider()
+     */
+    public function testRefreshWithoutHeaders(array $response): void
     {
         static::assertRequest(
             method: Request::METHOD_POST,
             uri: '/v2/auth/refresh',
-            expectedResponse: [
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
-                    ],
-                    'message' => 'Authorization failed',
-                ],
-            ],
+            expectedResponse: $response,
             expectedStatusCode: Response::HTTP_UNAUTHORIZED,
         );
     }
