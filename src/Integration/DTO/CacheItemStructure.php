@@ -8,7 +8,7 @@ namespace App\Integration\DTO;
 class CacheItemStructure
 {
     public function __construct(
-        public readonly string $id = 'ID',
+        public readonly string $id = 'Id',
         public readonly string $createdAt = 'Created',
     ) {
     }
