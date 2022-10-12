@@ -10,22 +10,29 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Install composer and dependencies
-        uses: php-actions/composer@v6
+      - name: "Install PHP with XDebug"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+          coverage: "xdebug"
+          tools: "composer:v2,flex"
 
-      - name: PHPUnit Tests
-        uses: php-actions/phpunit@v3
+      - name: "Cache dependencies installed with composer"
+        uses: "actions/cache@v2"
+        with:
+          path: "~/.composer/cache"
+          key: "php-${{ matrix.php-version }}-composer-locked-${{ hashFiles('composer.lock') }}"
+          restore-keys: "php-${{ matrix.php-version }}-composer-locked-"
+
+      - name: "Install dependencies with composer"
         env:
-          XDEBUG_MODE: coverage
-        with:
-          bootstrap: vendor/autoload.php
-          configuration: phpunit.xml.dist
-          php_extensions: xdebug
-          args: tests --coverage-clover ./coverage.xml
+          SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
+        run: |
+          composer remove friendsofphp/php-cs-fixer --dev --no-update
+          composer update --no-interaction --no-progress ${{ matrix.composer-flags }}
 
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODE_COV_TOKEN }}
-          files: ./coverage.xml
-          verbose: true
+      - name: "Run PHPUnit"
+        run: |
+          XDEBUG_MODE=coverage ./bin/phpunit --coverage-clover=coverage.clover
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
