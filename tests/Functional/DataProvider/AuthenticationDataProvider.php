@@ -132,6 +132,12 @@ final class AuthenticationDataProvider
                     ],
                     'redirectUrl' => self::REDIRECT_URL,
                 ],
+                [
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'payload' => [
+                        'errorCode' => 'UNKNOWN_ERROR',
+                    ],
+                ]
             ],
             'auth_by_oauth_using_api_key_type_with_body_in_request' => [
                 OAuthResponseParamsEnum::body,
@@ -141,6 +147,12 @@ final class AuthenticationDataProvider
                     ],
                     'redirectUrl' => self::REDIRECT_URL,
                 ],
+                [
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'payload' => [
+                        'errorCode' => 'UNKNOWN_ERROR',
+                    ],
+                ]
             ],
         ];
     }

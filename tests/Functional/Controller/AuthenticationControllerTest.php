@@ -95,8 +95,11 @@ class AuthenticationControllerTest extends AbstractApiTestCase
      *
      * @throws Exception
      */
-    public function testAuthByOAuthUsingApiKey(OAuthResponseParamsEnum $oAuthResponseParams, array $request): void
-    {
+    public function testAuthByOAuthUsingApiKey(
+        OAuthResponseParamsEnum $oAuthResponseParams,
+        array $request,
+        array $response,
+    ): void {
         $this->setRequestDtoResolver($oAuthResponseParams);
         $this->setAuthTypeService(AuthTypeEnum::apiKey);
 
@@ -105,12 +108,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             '/v2/auth/response',
             $request,
             static::getTestConnectorConfigHeader(),
-            [
-                'statusCode' => Response::HTTP_NOT_FOUND,
-                'payload' => [
-                    'errorCode' => 'UNKNOWN_ERROR',
-                ],
-            ],
+            $response,
             Response::HTTP_NOT_FOUND,
         );
     }
