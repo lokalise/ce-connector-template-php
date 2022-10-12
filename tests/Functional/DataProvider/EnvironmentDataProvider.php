@@ -12,7 +12,7 @@ final class EnvironmentDataProvider
     public const LOCALE_NAME = 'German';
 
     public const CACHE_ITEM_STRUCTURE = [
-        'id' => 'ID',
+        'id' => 'Id',
         'createdAt' => 'Created',
     ];
 
