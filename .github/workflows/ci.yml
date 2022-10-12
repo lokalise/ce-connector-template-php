@@ -21,20 +21,12 @@ jobs:
 
       - name: "Cache dependencies installed with composer"
         uses: "actions/cache@v2"
-        with:
-          path: "~/.composer/cache"
-          key: "php-8.1-composer-locked-${{ hashFiles('composer.lock') }}"
-          restore-keys: "php-8.1-composer-locked-"
 
       - name: "Install dependencies with composer"
-        env:
-          SYMFONY_REQUIRE: "${{ matrix.symfony-require }}"
         run: |
-          composer remove friendsofphp/php-cs-fixer --dev --no-update
-          composer update --no-interaction --no-progress
+          composer install --no-interaction --no-progress
 
       - name: "Run PHPUnit"
         run: |
-          XDEBUG_MODE=coverage ./bin/phpunit --coverage-clover coverage.xml
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.xml
+          XDEBUG_MODE=coverage ./bin/phpunit --coverage-xml target/coverage-xml
+          php phpunit-threshold.php target/coverage-xml/index.xml 75
