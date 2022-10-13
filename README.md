@@ -168,4 +168,4 @@ the code run `make format` in command line.
 
 This project is licensed under the [Apache 2.0 license](LICENSE).
 
-Copyright (c) [Lokalise group](https://lokalise.com/).
+Copyright (c) [Lokalise](https://lokalise.com/).
