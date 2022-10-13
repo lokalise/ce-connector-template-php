@@ -166,4 +166,6 @@ the code run `make format` in command line.
 
 ## License
 
-This library is licensed under the [Apache 2.0 license](LICENSE). Copyright (c) [Lokalise group](https://lokalise.com/).
+This project is licensed under the [Apache 2.0 license](LICENSE).
+
+Copyright (c) [Lokalise group](https://lokalise.com/).
