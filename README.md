@@ -1,8 +1,12 @@
 # PHP Template for a Lokalise Content Engine Connector
 
-Lokalise **content exchange apps** facilitate the exchange of translatable content between Lokalise and third party content platforms. Users interact with them to connect both systems, select the content they want to translate, transfer it to Lokalise, see the translation status, and send the translations back to the content platform. 
+Lokalise **content exchange apps** facilitate the exchange of translatable content between Lokalise and third party
+content platforms. Users interact with them to connect both systems, select the content they want to translate, transfer
+it to Lokalise, see the translation status, and send the translations back to the content platform.
 
-You can build and publish **your own content exchange app** by building a connector for the Lokalise content engine. The **content engine** will take care of the UI and handle the standard install, config and content management flows, while the **connector** will act as a bridge between the content platform and Lokalise content engine.
+You can build and publish **your own content exchange app** by building a connector for the Lokalise content engine.
+The **content engine** will take care of the UI and handle the standard install, config and content management flows,
+while the **connector** will act as a bridge between the content platform and Lokalise content engine.
 
 ```
  ------------------     -------------------------     ----------------
@@ -10,12 +14,13 @@ You can build and publish **your own content exchange app** by building a connec
  ------------------     -------------------------     ----------------  
 ```
 
-In this repository you will find **PHP code that you can use as a template** for your Lokalise content exchange connector. 
+In this repository you will find **PHP code that you can use as a template** for your Lokalise content exchange
+connector.
 
-- The technical requirements of a connector are detailed on [Lokalise Developer Hub](https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector).
-- The [OpenAPI schema](schema.yaml) describes the endpoints that must be served by a connector. 
-
-
+- The technical requirements of a connector are detailed
+  on [Lokalise Developer Hub](https://developers.lokalise.com/docs/technical-requirements-content-exchange-hosted-connector)
+  .
+- The [OpenAPI schema](schema.yaml) describes the endpoints that must be served by a connector.
 
 ## Table of Contents
 
@@ -27,6 +32,7 @@ In this repository you will find **PHP code that you can use as a template** for
 * [How to run code fixer](#how-to-run-code-fixer)
 * [How to set up Xdebug](#how-to-set-up-xdebug)
 * [Short description of make commands](#short-description-of-make-commands)
+* [License](#license)
 
 ## Tech stack
 
@@ -45,6 +51,7 @@ In this repository you will find **PHP code that you can use as a template** for
 
 1. In root project folder copy `.env` file and name it as `.env.local`.
 2. Run `make init` in command line.
+3. The app is available at: http://localhost:8080/.
 
 ## Configuration settings for your connector
 
@@ -77,13 +84,16 @@ In this repository you will find **PHP code that you can use as a template** for
 3. Go to the [DTO](src/Integration/DTO/) folder and set the parameters you need for your connector for the classes
    listed in this folder.
 
-    Field values in [CacheItemStructure](src/Integration/DTO/CacheItemStructure.php) DTO should be in the following format:
-   - First letter of the first name word should be capitalized
-   - First letter of the second, etc word in name should be lower case
-   - Concatenated words should be split
-   - The field name should be meaningful to the user because it appears on the UI, and it helps users identify their content
+   Field values in [CacheItemStructure](src/Integration/DTO/CacheItemStructure.php) DTO should be in the following
+   format:
+    - First letter of the first name word should be capitalized.
+    - First letter of the second, etc word in name should be lower case.
+    - Concatenated words should be split.
+    - The field name should be meaningful to the user because it appears on the UI, and it helps users identify their
+      content.
 
-    In response all DateTime fields from [CacheItemFields](src/Integration/DTO/CacheItemFields.php) DTO should be converted in format `yyyy-mm-dd`
+   In response all DateTime fields from [CacheItemFields](src/Integration/DTO/CacheItemFields.php) DTO should be
+   converted in format `yyyy-mm-dd`.
 
 4. Implement the logic of your connectors in services located in the [Service](src/Integration/Service/) folder. These
    services should implement the interfaces specified in [this](src/Interfaces/Service/) folder.
@@ -154,3 +164,6 @@ the code run `make format` in command line.
 * `make build-prod` - build or rebuild services for prod
 * `make up-prod` - create and start containers for prod
 
+## License
+
+This library is licensed under the [Apache 2.0 license](LICENSE). Copyright (c) [Lokalise group](https://lokalise.com/).
