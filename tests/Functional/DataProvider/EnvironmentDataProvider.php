@@ -2,6 +2,9 @@
 
 namespace App\Tests\Functional\DataProvider;
 
+use App\Enum\ErrorCodeEnum;
+use Symfony\Component\HttpFoundation\Response;
+
 final class EnvironmentDataProvider
 {
     public const LOCALE_CODE = 'de';
@@ -9,7 +12,7 @@ final class EnvironmentDataProvider
     public const LOCALE_NAME = 'German';
 
     public const CACHE_ITEM_STRUCTURE = [
-        'id' => 'ID',
+        'id' => 'Id',
         'createdAt' => 'Created',
     ];
 
@@ -28,6 +31,22 @@ final class EnvironmentDataProvider
     {
         return [
             [self::ENVIRONMENTS],
+        ];
+    }
+
+    public static function environmentWithoutAuthHeaderProvider(): array
+    {
+        return [
+            [[
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ]],
         ];
     }
 }

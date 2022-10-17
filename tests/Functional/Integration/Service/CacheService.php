@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
+use App\DTO\ErrorItem;
 use App\DTO\Identifier;
 use App\DTO\IdentifiersList;
 use App\Integration\DTO\AuthCredentials;
@@ -41,6 +42,15 @@ class CacheService implements CacheServiceInterface
         ConnectorConfig $connectorConfig,
         array $identifiers,
     ): IdentifiersList {
+        $validIdentifiers = array_filter(
+            $identifiers,
+            static fn (Identifier $identifier) => IdentifierDataProvider::UNIQUE_ID === $identifier->uniqueId,
+        );
+        $invalidIdentifiers = array_filter(
+            $identifiers,
+            static fn (Identifier $identifier) => IdentifierDataProvider::INVALID_UNIQUE_ID === $identifier->uniqueId,
+        );
+
         return new IdentifiersList(
             array_map(
                 static function (Identifier $translatableItem) {
@@ -57,7 +67,14 @@ class CacheService implements CacheServiceInterface
 
                     return $cacheItem;
                 },
-                $identifiers,
+                $validIdentifiers,
+            ),
+            count($invalidIdentifiers) > 0 ? 'Some items were not published' : null,
+            array_map(
+                static fn (Identifier $identifier) => [
+                    'uniqueId' => new ErrorItem($identifier->uniqueId, 'The field contains invalid characters'),
+                ],
+                $invalidIdentifiers,
             ),
         );
     }

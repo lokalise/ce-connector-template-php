@@ -3,8 +3,10 @@
 namespace App\Tests\Functional\DataProvider;
 
 use App\Enum\AuthTypeEnum;
+use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
 use JsonException;
+use Symfony\Component\HttpFoundation\Response;
 
 final class AuthenticationDataProvider
 {
@@ -75,15 +77,21 @@ final class AuthenticationDataProvider
         ];
     }
 
-    public static function authProviderWithoutRequest(): array
+    public static function oAuthWithEmptyRequestProvider(): array
     {
         return [
-            'auth_by_api_key' => [
-                AuthTypeEnum::apiKey,
-            ],
-            'generate_auth_utl' => [
-                AuthTypeEnum::OAuth,
-            ],
+            [[
+                'statusCode' => Response::HTTP_BAD_REQUEST,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                    'details' => [
+                        'errors' => [[
+                            'redirectUrl' => ['This value should not be blank.'],
+                        ]],
+                    ],
+                    'message' => 'Bad request',
+                ],
+            ]],
         ];
     }
 
@@ -124,6 +132,12 @@ final class AuthenticationDataProvider
                     ],
                     'redirectUrl' => self::REDIRECT_URL,
                 ],
+                [
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'payload' => [
+                        'errorCode' => 'UNKNOWN_ERROR',
+                    ],
+                ]
             ],
             'auth_by_oauth_using_api_key_type_with_body_in_request' => [
                 OAuthResponseParamsEnum::body,
@@ -133,6 +147,12 @@ final class AuthenticationDataProvider
                     ],
                     'redirectUrl' => self::REDIRECT_URL,
                 ],
+                [
+                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'payload' => [
+                        'errorCode' => 'UNKNOWN_ERROR',
+                    ],
+                ]
             ],
         ];
     }
@@ -148,6 +168,22 @@ final class AuthenticationDataProvider
                 AuthTypeEnum::OAuth,
                 self::API_KEY,
             ],
+        ];
+    }
+
+    public static function refreshWithoutHeadersProvider(): array
+    {
+        return [
+            [[
+                'statusCode' => Response::HTTP_UNAUTHORIZED,
+                'payload' => [
+                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                    'details' => [
+                        'error' => 'Invalid api key',
+                    ],
+                    'message' => 'Authorization failed',
+                ],
+            ]],
         ];
     }
 }

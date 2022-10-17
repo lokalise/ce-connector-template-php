@@ -2,11 +2,10 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Exception\BadRequestHttpException;
-use App\Exception\UnauthorizedHttpException;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CacheControllerTest extends AbstractApiTestCase
 {
@@ -17,25 +16,27 @@ class CacheControllerTest extends AbstractApiTestCase
      */
     public function testCache(array $expectedResponse): void
     {
-        static::checkRequest(
-            Request::METHOD_GET,
-            '/v2/cache',
-            [],
-            $expectedResponse,
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_GET,
+            uri: '/v2/cache',
+            server: static::getTestHeaders(),
+            expectedResponse: $expectedResponse,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheWithoutAuthHeaderProvider
+     *
      * @throws JsonException
      */
-    public function testCacheNotAuthorised(): void
+    public function testCacheNotAuthorised(array $response): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
-            Request::METHOD_GET,
-            '/v2/cache'
+        static::assertRequest(
+            method: Request::METHOD_GET,
+            uri: '/v2/cache',
+            server: static::getTestConnectorConfigHeader(),
+            expectedResponse: $response,
+            expectedStatusCode: Response::HTTP_UNAUTHORIZED,
         );
     }
 
@@ -44,44 +45,64 @@ class CacheControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testCacheItems(array $parameters, array $expectedResponse): void
+    public function testCacheItems(array $request, array $expectedResponse): void
     {
-        static::checkRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/cache/items',
-            $parameters,
+            $request,
+            static::getTestHeaders(),
             $expectedResponse,
-            static::getTestTokenHeader()
         );
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsRequestProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::invalidCacheItemsProvider()
      *
      * @throws JsonException
      */
-    public function testCacheItemsNotAuthorised(array $parameters): void
+    public function testCacheItemsWithInvalidUniqueId(array $request, array $expectedResponse): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/cache/items',
-            $parameters
+            $request,
+            static::getTestHeaders(),
+            $expectedResponse,
+            Response::HTTP_MULTI_STATUS,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsRequestWithoutAuthHeaderProvider
+     *
      * @throws JsonException
      */
-    public function testCacheItemsEmptyRequest(): void
+    public function testCacheItemsNotAuthorised(array $request, array $response): void
     {
-        $this->expectException(BadRequestHttpException::class);
-
-        static::checkEmptyRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/cache/items',
-            static::getTestTokenHeader()
+            $request,
+            static::getTestConnectorConfigHeader(),
+            $response,
+            Response::HTTP_UNAUTHORIZED,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsWithEmptyRequestProvider
+     *
+     * @throws JsonException
+     */
+    public function testCacheItemsEmptyRequest(array $response): void
+    {
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/cache/items',
+            server: static::getTestHeaders(),
+            expectedResponse: $response,
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
 }

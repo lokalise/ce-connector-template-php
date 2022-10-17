@@ -2,10 +2,10 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Exception\UnauthorizedHttpException;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class EnvironmentControllerTest extends AbstractApiTestCase
 {
@@ -16,25 +16,27 @@ class EnvironmentControllerTest extends AbstractApiTestCase
      */
     public function testEnv(array $expectedResponse): void
     {
-        static::checkRequest(
-            Request::METHOD_GET,
-            '/v2/env',
-            [],
-            $expectedResponse,
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_GET,
+            uri: '/v2/env',
+            server: static::getTestHeaders(),
+            expectedResponse: $expectedResponse,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\EnvironmentDataProvider::environmentWithoutAuthHeaderProvider
+     *
      * @throws JsonException
      */
-    public function testEnvNotAuthorised(): void
+    public function testEnvNotAuthorised(array $response): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
-            Request::METHOD_GET,
-            '/v2/env'
+        static::assertRequest(
+            method: Request::METHOD_GET,
+            uri: '/v2/env',
+            server: static::getTestConnectorConfigHeader(),
+            expectedResponse: $response,
+            expectedStatusCode: Response::HTTP_UNAUTHORIZED,
         );
     }
 }

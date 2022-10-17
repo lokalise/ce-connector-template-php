@@ -2,11 +2,11 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Exception\BadRequestHttpException;
-use App\Exception\UnauthorizedHttpException;
+use App\Enum\ErrorCodeEnum;
 use App\Tests\Functional\AbstractApiTestCase;
 use JsonException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TranslationControllerTest extends AbstractApiTestCase
 {
@@ -15,44 +15,47 @@ class TranslationControllerTest extends AbstractApiTestCase
      *
      * @throws JsonException
      */
-    public function testTranslate(array $parameters, array $expectedResponse): void
+    public function testTranslate(array $request, array $expectedResponse): void
     {
-        static::checkRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/translate',
-            $parameters,
+            $request,
+            static::getTestHeaders(),
             $expectedResponse,
-            static::getTestTokenHeader()
         );
     }
 
     /**
-     * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationRequestProvider
+     * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationRequestWithoutAuthHeaderProvider
      *
      * @throws JsonException
      */
-    public function testTranslateNotAuthorised(array $parameters): void
+    public function testTranslateNotAuthorised(array $request, array $response): void
     {
-        $this->expectException(UnauthorizedHttpException::class);
-
-        static::checkNotAuthorisedRequest(
+        static::assertRequest(
             Request::METHOD_POST,
             '/v2/translate',
-            $parameters
+            $request,
+            static::getTestConnectorConfigHeader(),
+            $response,
+            Response::HTTP_UNAUTHORIZED,
         );
     }
 
     /**
+     * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationWithEmptyRequestProvider
+     *
      * @throws JsonException
      */
-    public function testTranslateEmptyRequest(): void
+    public function testTranslateEmptyRequest(array $response): void
     {
-        $this->expectException(BadRequestHttpException::class);
-
-        static::checkEmptyRequest(
-            Request::METHOD_POST,
-            '/v2/translate',
-            static::getTestTokenHeader()
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/translate',
+            server: static::getTestHeaders(),
+            expectedResponse: $response,
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
 }
