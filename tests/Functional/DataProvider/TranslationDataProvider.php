@@ -39,22 +39,24 @@ final class TranslationDataProvider
     public static function translationWithEmptyRequestProvider(): array
     {
         return [
-            [[
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [
-                            [
-                                'defaultLocale' => ['This value should not be blank.'],
-                                'locales' => ['This value should not be blank.'],
-                                'items' => ['This value should not be blank.'],
+            [
+                [
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                        'details' => [
+                            'errors' => [
+                                [
+                                    'defaultLocale' => ['This value should not be blank.'],
+                                    'locales' => ['This value should not be blank.'],
+                                    'items' => ['This value should not be blank.'],
+                                ],
                             ],
                         ],
+                        'message' => 'Bad request',
                     ],
-                    'message' => 'Bad request',
                 ],
-            ]],
+            ],
         ];
     }
 

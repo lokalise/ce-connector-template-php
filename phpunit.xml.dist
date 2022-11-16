@@ -23,10 +23,18 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage pathCoverage="true" processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>
+
+        <exclude>
+            <directory suffix=".php">src/Middleware</directory>
+        </exclude>
+
+        <report>
+            <text outputFile="coverage.txt" showOnlySummary="true"/>
+        </report>
     </coverage>
 
     <listeners>

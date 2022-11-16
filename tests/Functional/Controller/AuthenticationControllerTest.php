@@ -10,7 +10,6 @@ use App\Renderer\AuthMethodRenderer;
 use App\Renderer\JsonResponseRenderer;
 use App\Service\AuthTypeService;
 use App\Tests\Functional\AbstractApiTestCase;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -21,7 +20,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::getMethodProvider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testGetMethod(AuthTypeEnum $authType, array $response): void
     {
@@ -37,7 +36,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authProvider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAuth(AuthTypeEnum $authType, array $request, array $response): void
     {
@@ -56,7 +55,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::oAuthWithEmptyRequestProvider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testOAuthWithEmptyRequest(array $response): void
     {
@@ -74,7 +73,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authByOAuthProvider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAuthByOAuth(OAuthResponseParamsEnum $oAuthResponseParams, array $request, array $response): void
     {
@@ -93,7 +92,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authByOAuthUsingApiKeyProvider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testAuthByOAuthUsingApiKey(
         OAuthResponseParamsEnum $oAuthResponseParams,
@@ -116,7 +115,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::refreshProvider
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function testRefresh(AuthTypeEnum $authType, array $response): void
     {
@@ -153,7 +152,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function setAuthMethodRenderer(AuthTypeEnum $authType): void
     {
@@ -168,7 +167,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function setRequestDtoResolver(
         OAuthResponseParamsEnum $oAuthResponseParams = OAuthResponseParamsEnum::query,

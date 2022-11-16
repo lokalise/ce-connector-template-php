@@ -2,13 +2,11 @@
 
 namespace App\Validator;
 
-use Attribute;
-use BackedEnum;
 use Symfony\Component\Validator\Constraints\NotBlank as BaseNotBlank;
 use Symfony\Component\Validator\Constraints\NotBlankValidator;
 use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
-#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
 class NotBlank extends BaseNotBlank
 {
     public function __set(string $option, mixed $value): void
@@ -30,7 +28,7 @@ class NotBlank extends BaseNotBlank
     }
 
     /**
-     * @param array<int, string|BackedEnum> $groups
+     * @param array<int, string|\BackedEnum> $groups
      *
      * @return array<int, string>
      */
@@ -39,7 +37,7 @@ class NotBlank extends BaseNotBlank
         $normalized = [];
 
         foreach ($groups as $group) {
-            if ($group instanceof BackedEnum) {
+            if ($group instanceof \BackedEnum) {
                 $group = $group->value;
             }
 

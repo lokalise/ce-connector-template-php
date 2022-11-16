@@ -37,16 +37,18 @@ final class EnvironmentDataProvider
     public static function environmentWithoutAuthHeaderProvider(): array
     {
         return [
-            [[
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
+            [
+                [
+                    'statusCode' => Response::HTTP_UNAUTHORIZED,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                        'details' => [
+                            'error' => 'Invalid api key',
+                        ],
+                        'message' => 'Authorization failed',
                     ],
-                    'message' => 'Authorization failed',
                 ],
-            ]],
+            ],
         ];
     }
 }

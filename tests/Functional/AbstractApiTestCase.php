@@ -4,9 +4,6 @@ namespace App\Tests\Functional;
 
 use App\Tests\Constraint\IsResponse;
 use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
-use Exception;
-use JsonException;
-use LogicException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -18,14 +15,14 @@ abstract class AbstractApiTestCase extends KernelTestCase
     {
         try {
             return static::getContainer()->get('test.client');
-        } catch (Exception|ServiceNotFoundException) {
+        } catch (\Exception|ServiceNotFoundException) {
             if (class_exists(KernelBrowser::class)) {
-                throw new LogicException(
+                throw new \LogicException(
                     'You cannot create the client used in functional tests if the "framework.test" config is not set to true.'
                 );
             }
 
-            throw new LogicException(
+            throw new \LogicException(
                 'You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit".'
             );
         }
@@ -57,7 +54,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
      *     HTTP_ce-auth: string,
      * }
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public static function getTestTokenHeader(): array
     {
@@ -71,7 +68,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
      *     HTTP_ce-config: string,
      * }
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public static function getTestConnectorConfigHeader(): array
     {
@@ -86,7 +83,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
      *     HTTP_ce-auth: string,
      * }
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public static function getTestHeaders(): array
     {

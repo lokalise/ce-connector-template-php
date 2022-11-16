@@ -3,7 +3,6 @@
 namespace App\Tests\Functional\Controller;
 
 use App\Tests\Functional\AbstractApiTestCase;
-use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,7 +11,7 @@ class EnvironmentControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\EnvironmentDataProvider::environmentResponseProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testEnv(array $expectedResponse): void
     {
@@ -27,7 +26,7 @@ class EnvironmentControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\EnvironmentDataProvider::environmentWithoutAuthHeaderProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testEnvNotAuthorised(array $response): void
     {

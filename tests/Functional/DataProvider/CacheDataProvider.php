@@ -33,16 +33,18 @@ final class CacheDataProvider
     public static function cacheWithoutAuthHeaderProvider(): array
     {
         return [
-            [[
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
+            [
+                [
+                    'statusCode' => Response::HTTP_UNAUTHORIZED,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                        'details' => [
+                            'error' => 'Invalid api key',
+                        ],
+                        'message' => 'Authorization failed',
                     ],
-                    'message' => 'Authorization failed',
                 ],
-            ]],
+            ],
         ];
     }
 
@@ -68,18 +70,22 @@ final class CacheDataProvider
     public static function cacheItemsWithEmptyRequestProvider(): array
     {
         return [
-            [[
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [[
-                            'items' => ['This value should not be blank.'],
-                        ]],
+            [
+                [
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                        'details' => [
+                            'errors' => [
+                                [
+                                    'items' => ['This value should not be blank.'],
+                                ],
+                            ],
+                        ],
+                        'message' => 'Bad request',
                     ],
-                    'message' => 'Bad request',
                 ],
-            ]],
+            ],
         ];
     }
 
