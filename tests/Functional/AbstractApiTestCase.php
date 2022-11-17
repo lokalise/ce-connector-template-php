@@ -18,12 +18,12 @@ abstract class AbstractApiTestCase extends KernelTestCase
         } catch (\Exception|ServiceNotFoundException) {
             if (class_exists(KernelBrowser::class)) {
                 throw new \LogicException(
-                    'You cannot create the client used in functional tests if the "framework.test" config is not set to true.'
+                    'You cannot create the client used in functional tests if the "framework.test" config is not set to true.',
                 );
             }
 
             throw new \LogicException(
-                'You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit".'
+                'You cannot create the client used in functional tests if the BrowserKit component is not available. Try running "composer require symfony/browser-kit".',
             );
         }
     }
@@ -45,7 +45,7 @@ abstract class AbstractApiTestCase extends KernelTestCase
             new IsResponse(
                 $expectedStatusCode,
                 $expectedResponse,
-            )
+            ),
         );
     }
 

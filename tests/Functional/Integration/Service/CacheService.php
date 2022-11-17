@@ -28,7 +28,7 @@ class CacheService implements CacheServiceInterface
                 new Metadata(
                     IdentifierDataProvider::METADATA['contentType'],
                     IdentifierDataProvider::METADATA['field'],
-                )
+                ),
             ),
         ];
     }

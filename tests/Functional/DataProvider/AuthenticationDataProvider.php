@@ -25,8 +25,8 @@ final class AuthenticationDataProvider
         return base64_encode(
             json_encode(
                 self::API_KEY,
-                JSON_THROW_ON_ERROR
-            )
+                JSON_THROW_ON_ERROR,
+            ),
         );
     }
 

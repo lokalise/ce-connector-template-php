@@ -23,7 +23,7 @@ foreach ($coverageParts as $coveragePart) {
                 substr(
                     $coveragePart,
                     $metricLabelLength,
-                    $positionPercentage - $metricLabelLength
+                    $positionPercentage - $metricLabelLength,
                 ),
             );
 

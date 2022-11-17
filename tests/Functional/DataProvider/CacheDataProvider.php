@@ -129,7 +129,7 @@ final class CacheDataProvider
                                     'id' => self::CACHE_ITEM_FIELD_ID,
                                     'createdAt' => self::CACHE_ITEM_FIELD_CREATED_AT,
                                 ],
-                            ]
+                            ],
                         ),
                         self::CACHE_ITEMS_REQUEST['items'],
                     ),

@@ -74,7 +74,7 @@ final class TranslationDataProvider
                                     self::TRANSLATION_REQUEST['locales'],
                                     self::TRANSLATION_REQUEST['locales'],
                                 ),
-                            ]
+                            ],
                         ),
                         self::TRANSLATION_REQUEST['items'],
                     ),

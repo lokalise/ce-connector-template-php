@@ -11,7 +11,7 @@ class DefaultController extends AbstractController
 {
     #[Route(
         path: ['/', '/health'],
-        methods: [Request::METHOD_GET]
+        methods: [Request::METHOD_GET],
     )]
     public function index(): JsonResponse
     {

@@ -45,7 +45,7 @@ class CacheService implements CacheServiceInterface
 
                     return $cacheItem;
                 },
-                $identifiers
+                $identifiers,
             ),
         );
     }

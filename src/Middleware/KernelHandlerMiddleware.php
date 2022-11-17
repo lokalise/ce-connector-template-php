@@ -34,7 +34,7 @@ class KernelHandlerMiddleware implements MiddlewareInterface
 
                     $controllerEvent->setController($errorController);
                     $controllerEvent->setArguments([$exception]);
-                }
+                },
             );
 
             yield $next->handle($request);

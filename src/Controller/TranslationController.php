@@ -23,7 +23,7 @@ class TranslationController extends AbstractController implements AuthenticatedC
 
     #[Route(
         path: '/translate',
-        methods: [Request::METHOD_POST]
+        methods: [Request::METHOD_POST],
     )]
     public function translate(
         AuthCredentials $credentials,
@@ -35,7 +35,7 @@ class TranslationController extends AbstractController implements AuthenticatedC
             $connectorConfig,
             $translateRequest->locales,
             $translateRequest->items,
-            $translateRequest->defaultLocale
+            $translateRequest->defaultLocale,
         );
 
         return $this->translationRenderer->render(
