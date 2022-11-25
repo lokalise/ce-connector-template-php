@@ -3,7 +3,6 @@
 namespace App\Middleware;
 
 use Baldinof\RoadRunnerBundle\Http\MiddlewareInterface;
-use Iterator;
 use Symfony\Component\ErrorHandler\ErrorRenderer\SerializerErrorRenderer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +21,7 @@ class KernelHandlerMiddleware implements MiddlewareInterface
     ) {
     }
 
-    public function process(Request $request, HttpKernelInterface $next): Iterator
+    public function process(Request $request, HttpKernelInterface $next): \Iterator
     {
         try {
             yield $next->handle($request);
@@ -35,7 +34,7 @@ class KernelHandlerMiddleware implements MiddlewareInterface
 
                     $controllerEvent->setController($errorController);
                     $controllerEvent->setArguments([$exception]);
-                }
+                },
             );
 
             yield $next->handle($request);

@@ -35,7 +35,7 @@ class AuthenticationController extends AbstractController
     #[Route(
         path: '/auth',
         methods: [Request::METHOD_POST],
-        condition: "service('App\\\Service\\\AuthTypeService').isApiKey()"
+        condition: "service('App\\\Service\\\AuthTypeService').isApiKey()",
     )]
     public function authByApiKey(ConnectorConfig $connectorConfig): Response
     {
@@ -47,7 +47,7 @@ class AuthenticationController extends AbstractController
     #[Route(
         path: '/auth',
         methods: [Request::METHOD_POST],
-        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()"
+        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()",
     )]
     public function generateAuthUrl(
         AuthenticationRequest $authenticationRequest,
@@ -61,7 +61,7 @@ class AuthenticationController extends AbstractController
     #[Route(
         path: '/auth/response',
         methods: [Request::METHOD_POST],
-        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()"
+        condition: "service('App\\\Service\\\AuthTypeService').isOAuth()",
     )]
     public function authByOAuth(OAuthRequest $oAuthRequest, ConnectorConfig $connectorConfig): Response
     {

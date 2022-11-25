@@ -13,7 +13,6 @@ use App\Integration\DTO\Metadata;
 use App\Interfaces\Service\CacheServiceInterface;
 use App\Tests\Functional\DataProvider\CacheDataProvider;
 use App\Tests\Functional\DataProvider\IdentifierDataProvider;
-use DateTime;
 
 class CacheService implements CacheServiceInterface
 {
@@ -29,7 +28,7 @@ class CacheService implements CacheServiceInterface
                 new Metadata(
                     IdentifierDataProvider::METADATA['contentType'],
                     IdentifierDataProvider::METADATA['field'],
-                )
+                ),
             ),
         ];
     }
@@ -59,7 +58,7 @@ class CacheService implements CacheServiceInterface
                     $cacheItem->groupTitle = CacheDataProvider::CACHE_ITEM_GROUP_TITLE;
                     $cacheItem->fields = new CacheItemFields(
                         CacheDataProvider::CACHE_ITEM_FIELD_ID,
-                        DateTime::createFromFormat(
+                        \DateTime::createFromFormat(
                             'Y-m-d',
                             CacheDataProvider::CACHE_ITEM_FIELD_CREATED_AT,
                         ),

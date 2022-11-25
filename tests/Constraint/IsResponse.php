@@ -2,7 +2,6 @@
 
 namespace App\Tests\Constraint;
 
-use JsonException;
 use PHPUnit\Framework\Constraint\Constraint;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,7 +24,7 @@ class IsResponse extends Constraint
      *
      * @param mixed $other value or object to evaluate
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     protected function matches($other): bool
     {

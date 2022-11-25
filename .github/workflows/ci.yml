@@ -27,5 +27,5 @@ jobs:
 
       - name: "Run PHPUnit"
         run: |
-          XDEBUG_MODE=coverage ./bin/phpunit --coverage-xml target/coverage-xml
-          php phpunit-threshold.php target/coverage-xml/index.xml 75
+          php -d memory_limit=1G -dxdebug.mode=coverage ./bin/phpunit
+          php phpunit-threshold.php 75 80 60 75 75

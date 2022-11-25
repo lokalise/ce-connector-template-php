@@ -1,14 +1,24 @@
 <?php
 
-$finder = (new PhpCsFixer\Finder())
+$finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
-    ->exclude('var')
-;
+    ->exclude('var');
 
-return (new PhpCsFixer\Config())
+$config = new PhpCsFixer\Config();
+
+return $config
     ->setRules([
+        '@PHP81Migration' => true,
         '@Symfony' => true,
-        'single_line_throw' => false
+        'trailing_comma_in_multiline' => [
+            'elements' => ['arguments', 'arrays', 'match', 'parameters'],
+        ],
+        'phpdoc_align' => [
+            'align' => 'left',
+        ],
+        'concat_space' => [
+            'spacing' => 'one',
+        ],
+        'single_line_throw' => false,
     ])
-    ->setFinder($finder)
-;
+    ->setFinder($finder);

@@ -1,7 +1,7 @@
 /.idea
 
 /docker/logs
-/target
+/coverage.txt
 
 ###> symfony/framework-bundle ###
 /.env.local

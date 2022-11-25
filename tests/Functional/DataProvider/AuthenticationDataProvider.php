@@ -5,7 +5,6 @@ namespace App\Tests\Functional\DataProvider;
 use App\Enum\AuthTypeEnum;
 use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
-use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 
 final class AuthenticationDataProvider
@@ -19,20 +18,20 @@ final class AuthenticationDataProvider
     public const AUTH_URL = 'auth_url';
 
     /**
-     * @throws JsonException
+     * @throws \JsonException
      */
     public static function encodedApiKey(): string
     {
         return base64_encode(
             json_encode(
                 self::API_KEY,
-                JSON_THROW_ON_ERROR
-            )
+                JSON_THROW_ON_ERROR,
+            ),
         );
     }
 
     /**
-     * @throws JsonException
+     * @throws \JsonException
      */
     public static function encodedConnectorConfig(): string
     {
@@ -80,18 +79,22 @@ final class AuthenticationDataProvider
     public static function oAuthWithEmptyRequestProvider(): array
     {
         return [
-            [[
-                'statusCode' => Response::HTTP_BAD_REQUEST,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
-                    'details' => [
-                        'errors' => [[
-                            'redirectUrl' => ['This value should not be blank.'],
-                        ]],
+            [
+                [
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                        'details' => [
+                            'errors' => [
+                                [
+                                    'redirectUrl' => ['This value should not be blank.'],
+                                ],
+                            ],
+                        ],
+                        'message' => 'Bad request',
                     ],
-                    'message' => 'Bad request',
                 ],
-            ]],
+            ],
         ];
     }
 
@@ -137,7 +140,7 @@ final class AuthenticationDataProvider
                     'payload' => [
                         'errorCode' => 'UNKNOWN_ERROR',
                     ],
-                ]
+                ],
             ],
             'auth_by_oauth_using_api_key_type_with_body_in_request' => [
                 OAuthResponseParamsEnum::body,
@@ -152,7 +155,7 @@ final class AuthenticationDataProvider
                     'payload' => [
                         'errorCode' => 'UNKNOWN_ERROR',
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -174,16 +177,18 @@ final class AuthenticationDataProvider
     public static function refreshWithoutHeadersProvider(): array
     {
         return [
-            [[
-                'statusCode' => Response::HTTP_UNAUTHORIZED,
-                'payload' => [
-                    'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
-                    'details' => [
-                        'error' => 'Invalid api key',
+            [
+                [
+                    'statusCode' => Response::HTTP_UNAUTHORIZED,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::AUTH_FAILED_ERROR->value,
+                        'details' => [
+                            'error' => 'Invalid api key',
+                        ],
+                        'message' => 'Authorization failed',
                     ],
-                    'message' => 'Authorization failed',
                 ],
-            ]],
+            ],
         ];
     }
 }

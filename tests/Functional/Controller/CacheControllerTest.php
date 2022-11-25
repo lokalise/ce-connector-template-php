@@ -3,7 +3,6 @@
 namespace App\Tests\Functional\Controller;
 
 use App\Tests\Functional\AbstractApiTestCase;
-use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,7 +11,7 @@ class CacheControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheResponseProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testCache(array $expectedResponse): void
     {
@@ -27,7 +26,7 @@ class CacheControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheWithoutAuthHeaderProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testCacheNotAuthorised(array $response): void
     {
@@ -43,7 +42,7 @@ class CacheControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testCacheItems(array $request, array $expectedResponse): void
     {
@@ -59,7 +58,7 @@ class CacheControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::invalidCacheItemsProvider()
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testCacheItemsWithInvalidUniqueId(array $request, array $expectedResponse): void
     {
@@ -76,7 +75,7 @@ class CacheControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsRequestWithoutAuthHeaderProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testCacheItemsNotAuthorised(array $request, array $response): void
     {
@@ -93,7 +92,7 @@ class CacheControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\CacheDataProvider::cacheItemsWithEmptyRequestProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testCacheItemsEmptyRequest(array $response): void
     {

@@ -2,9 +2,7 @@
 
 namespace App\Tests\Functional\Controller;
 
-use App\Enum\ErrorCodeEnum;
 use App\Tests\Functional\AbstractApiTestCase;
-use JsonException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,7 +11,7 @@ class TranslationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testTranslate(array $request, array $expectedResponse): void
     {
@@ -29,7 +27,7 @@ class TranslationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationRequestWithoutAuthHeaderProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testTranslateNotAuthorised(array $request, array $response): void
     {
@@ -46,7 +44,7 @@ class TranslationControllerTest extends AbstractApiTestCase
     /**
      * @dataProvider \App\Tests\Functional\DataProvider\TranslationDataProvider::translationWithEmptyRequestProvider
      *
-     * @throws JsonException
+     * @throws \JsonException
      */
     public function testTranslateEmptyRequest(array $response): void
     {

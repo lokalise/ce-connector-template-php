@@ -23,7 +23,7 @@ class PublishController extends AbstractController implements AuthenticatedContr
 
     #[Route(
         path: '/publish',
-        methods: [Request::METHOD_POST]
+        methods: [Request::METHOD_POST],
     )]
     public function publish(
         AuthCredentials $credentials,
