@@ -2,25 +2,22 @@
 
 namespace App\Formatter;
 
+use App\DTO\CustomErrorInfo;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class BadRequestErrorsFormatter
+class BadRequestErrorsFormatter implements ErrorsFormatterInterface
 {
     /**
-     * @return array<string, array<int, string>>
+     * @return array<int, CustomErrorInfo>
      */
     public function format(ConstraintViolationListInterface $violations): array
     {
-        $errors = [];
+        $errors = new CustomErrorInfo();
 
         foreach ($violations as $violation) {
-            if (!isset($errors[$violation->getPropertyPath()])) {
-                $errors[$violation->getPropertyPath()] = [];
-            }
-
-            $errors[$violation->getPropertyPath()][] = $violation->getMessage();
+            $errors->addError($violation->getPropertyPath(), $violation->getMessage());
         }
 
-        return $errors;
+        return [$errors];
     }
 }

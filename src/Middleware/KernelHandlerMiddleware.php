@@ -3,24 +3,25 @@
 namespace App\Middleware;
 
 use Baldinof\RoadRunnerBundle\Http\MiddlewareInterface;
-use Symfony\Component\ErrorHandler\ErrorRenderer\SerializerErrorRenderer;
+use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ErrorController;
 use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class KernelHandlerMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private EventDispatcherInterface $dispatcher,
-        private SerializerInterface $serializer,
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly ErrorRendererInterface $errorRenderer,
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function process(Request $request, HttpKernelInterface $next): \Iterator
     {
         try {
@@ -29,8 +30,7 @@ class KernelHandlerMiddleware implements MiddlewareInterface
             $this->dispatcher->addListener(
                 KernelEvents::CONTROLLER_ARGUMENTS,
                 function (ControllerArgumentsEvent $controllerEvent) use ($exception, $next) {
-                    $errorRenderer = new SerializerErrorRenderer($this->serializer, JsonEncoder::FORMAT);
-                    $errorController = new ErrorController($next, null, $errorRenderer);
+                    $errorController = new ErrorController($next, null, $this->errorRenderer);
 
                     $controllerEvent->setController($errorController);
                     $controllerEvent->setArguments([$exception]);

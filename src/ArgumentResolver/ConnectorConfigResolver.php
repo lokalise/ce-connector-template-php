@@ -3,7 +3,8 @@
 namespace App\ArgumentResolver;
 
 use App\DataTransformer\ConnectorConfigTransformer;
-use App\DTO\ErrorDetails\BadRequestErrorDetails;
+use App\DTO\CustomErrorInfo;
+use App\Enum\ErrorCodeEnum;
 use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
@@ -47,15 +48,16 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $encodedConnectorConfig = $connectorConfigExtractor->extract($request);
 
         if (null === $encodedConnectorConfig) {
+            $error = new CustomErrorInfo();
+            $error->addError(
+                ConnectorConfigExtractor::CONNECTOR_CONFIG_HEADER,
+                'Configuration header should not be blank',
+            );
+
             throw new BadRequestHttpException(
                 'Invalid configuration data',
-                new BadRequestErrorDetails([
-                    [
-                        ConnectorConfigExtractor::CONNECTOR_CONFIG_HEADER => [
-                            'Configuration header should not be blank',
-                        ],
-                    ],
-                ]),
+                [$error],
+                ErrorCodeEnum::CLIENT_ERROR,
             );
         }
 
@@ -72,11 +74,10 @@ class ConnectorConfigResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($connectorConfig);
 
         if (count($violations) > 0) {
-            $errors = $this->badRequestErrorsFormatter->format($violations);
-
             throw new BadRequestHttpException(
                 'Invalid configuration data',
-                new BadRequestErrorDetails([$errors]),
+                $this->badRequestErrorsFormatter->format($violations),
+                ErrorCodeEnum::CLIENT_ERROR,
             );
         }
     }

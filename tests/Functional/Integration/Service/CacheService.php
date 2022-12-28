@@ -3,9 +3,10 @@
 namespace App\Tests\Functional\Integration\Service;
 
 use App\DTO\CacheItem;
-use App\DTO\ErrorItem;
+use App\DTO\ErrorInfoWithErrorCode;
 use App\DTO\Identifier;
-use App\DTO\IdentifiersList;
+use App\Enum\SingleItemErrorCodeEnum;
+use App\Exception\MultiStatusHttpException;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\CacheItemFields;
 use App\Integration\DTO\ConnectorConfig;
@@ -40,7 +41,7 @@ class CacheService implements CacheServiceInterface
         AuthCredentials $credentials,
         ConnectorConfig $connectorConfig,
         array $identifiers,
-    ): IdentifiersList {
+    ): array {
         $validIdentifiers = array_filter(
             $identifiers,
             static fn (Identifier $identifier) => IdentifierDataProvider::UNIQUE_ID === $identifier->uniqueId,
@@ -50,31 +51,36 @@ class CacheService implements CacheServiceInterface
             static fn (Identifier $identifier) => IdentifierDataProvider::INVALID_UNIQUE_ID === $identifier->uniqueId,
         );
 
-        return new IdentifiersList(
-            array_map(
-                static function (Identifier $translatableItem) {
-                    $cacheItem = CacheItem::createFromIdentifier($translatableItem);
-                    $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
-                    $cacheItem->groupTitle = CacheDataProvider::CACHE_ITEM_GROUP_TITLE;
-                    $cacheItem->fields = new CacheItemFields(
-                        CacheDataProvider::CACHE_ITEM_FIELD_ID,
-                        \DateTime::createFromFormat(
-                            'Y-m-d',
-                            CacheDataProvider::CACHE_ITEM_FIELD_CREATED_AT,
-                        ),
-                    );
+        if (count($invalidIdentifiers) > 0) {
+            throw new MultiStatusHttpException(
+                'Some items were not fetched',
+                errors: array_map(
+                    static fn (Identifier $identifier) => new ErrorInfoWithErrorCode(
+                        $identifier->uniqueId,
+                        SingleItemErrorCodeEnum::ITEM_NOT_FOUND_ERROR,
+                    ),
+                    $invalidIdentifiers,
+                ),
+                items: $validIdentifiers,
+            );
+        }
 
-                    return $cacheItem;
-                },
-                $validIdentifiers,
-            ),
-            count($invalidIdentifiers) > 0 ? 'Some items were not published' : null,
-            array_map(
-                static fn (Identifier $identifier) => [
-                    'uniqueId' => new ErrorItem($identifier->uniqueId, 'The field contains invalid characters'),
-                ],
-                $invalidIdentifiers,
-            ),
+        return array_map(
+            static function (Identifier $translatableItem) {
+                $cacheItem = CacheItem::createFromIdentifier($translatableItem);
+                $cacheItem->title = CacheDataProvider::CACHE_ITEM_TITLE;
+                $cacheItem->groupTitle = CacheDataProvider::CACHE_ITEM_GROUP_TITLE;
+                $cacheItem->fields = new CacheItemFields(
+                    CacheDataProvider::CACHE_ITEM_FIELD_ID,
+                    \DateTime::createFromFormat(
+                        'Y-m-d',
+                        CacheDataProvider::CACHE_ITEM_FIELD_CREATED_AT,
+                    ),
+                );
+
+                return $cacheItem;
+            },
+            $validIdentifiers,
         );
     }
 }

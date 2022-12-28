@@ -68,9 +68,54 @@ final class AuthenticationDataProvider
                 AuthTypeEnum::OAuth,
                 [
                     'redirectUrl' => self::REDIRECT_URL,
+                    'state' => 'state',
                 ],
                 [
                     'url' => self::AUTH_URL,
+                ],
+            ],
+        ];
+    }
+
+    public static function authWithoutHeadersProvider(): array
+    {
+        return [
+            [
+                [
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::CLIENT_ERROR->value,
+                        'details' => [
+                            'errors' => [
+                                [
+                                    'CE-Config' => ['Configuration header should not be blank'],
+                                ],
+                            ],
+                        ],
+                        'message' => 'Invalid configuration data',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public static function authWithInvalidHeadersProvider(): array
+    {
+        return [
+            [
+                [
+                    'statusCode' => Response::HTTP_BAD_REQUEST,
+                    'payload' => [
+                        'errorCode' => ErrorCodeEnum::CLIENT_ERROR->value,
+                        'details' => [
+                            'errors' => [
+                                [
+                                    'apiKey' => ['This value should not be blank.'],
+                                ],
+                            ],
+                        ],
+                        'message' => 'Invalid configuration data',
+                    ],
                 ],
             ],
         ];
@@ -83,7 +128,7 @@ final class AuthenticationDataProvider
                 [
                     'statusCode' => Response::HTTP_BAD_REQUEST,
                     'payload' => [
-                        'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                        'errorCode' => ErrorCodeEnum::CLIENT_ERROR->value,
                         'details' => [
                             'errors' => [
                                 [
@@ -136,9 +181,9 @@ final class AuthenticationDataProvider
                     'redirectUrl' => self::REDIRECT_URL,
                 ],
                 [
-                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
                     'payload' => [
-                        'errorCode' => 'UNKNOWN_ERROR',
+                        'errorCode' => ErrorCodeEnum::UNRECOGNIZED_ERROR->value,
                     ],
                 ],
             ],
@@ -151,9 +196,9 @@ final class AuthenticationDataProvider
                     'redirectUrl' => self::REDIRECT_URL,
                 ],
                 [
-                    'statusCode' => Response::HTTP_NOT_FOUND,
+                    'statusCode' => Response::HTTP_INTERNAL_SERVER_ERROR,
                     'payload' => [
-                        'errorCode' => 'UNKNOWN_ERROR',
+                        'errorCode' => ErrorCodeEnum::UNRECOGNIZED_ERROR->value,
                     ],
                 ],
             ],

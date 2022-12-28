@@ -15,10 +15,6 @@ baldinof_road_runner:
     # See https://github.com/baldinof/roadrunner-bundle#metrics
     metrics:
         enabled: false
-        # collect:
-        #     my_counter:
-        #         type: counter
-        #         help: Some help
 
 
     # You can use middlewares to manipulate Symfony requests & responses.

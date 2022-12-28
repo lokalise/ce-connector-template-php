@@ -20,7 +20,7 @@ class AuthenticationService implements AuthenticationServiceInterface
         return $this->authByApiKey($connectorConfig);
     }
 
-    public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string
+    public function generateAuthUrl(string $redirectUrl, string $state, ConnectorConfig $connectorConfig): string
     {
         return AuthenticationDataProvider::AUTH_URL;
     }

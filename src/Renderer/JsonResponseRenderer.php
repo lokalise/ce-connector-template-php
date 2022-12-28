@@ -2,13 +2,10 @@
 
 namespace App\Renderer;
 
-use App\DTO\ErrorItem;
 use App\DTO\Response\ResponseDTO;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class JsonResponseRenderer
@@ -18,44 +15,13 @@ class JsonResponseRenderer
     ) {
     }
 
-    /**
-     * @param array<int, array<string, ErrorItem>> $errors
-     */
-    public function render(ResponseDTO $responseDTO, ?string $errorMessage = null, array $errors = []): JsonResponse
+    public function render(ResponseDTO $responseDTO): JsonResponse
     {
-        $context = [
-            AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
-            DateTimeNormalizer::FORMAT_KEY => 'Y-m-d',
-        ];
-
-        if (null === $errorMessage && empty($errors)) {
-            return new JsonResponse(
-                data: $this->serializer->serialize($responseDTO, JsonEncoder::FORMAT, $context),
-                json: true,
-            );
-        }
-
-        $normalizedResponse = $this->serializer->normalize($responseDTO, JsonEncoder::FORMAT, $context);
-
-        $normalizedResponse['code'] = Response::HTTP_MULTI_STATUS;
-
-        if (null !== $errorMessage) {
-            $normalizedResponse['message'] = $errorMessage;
-        }
-
-        foreach ($errors as $errorItems) {
-            $normalizedErrors = [];
-
-            foreach ($errorItems as $key => $errorItem) {
-                $normalizedErrors[$key] = $this->serializer->normalize($errorItem, JsonEncoder::FORMAT, $context);
-            }
-
-            $normalizedResponse['errors'][] = $normalizedErrors;
-        }
-
         return new JsonResponse(
-            data: $this->serializer->encode($normalizedResponse, JsonEncoder::FORMAT, $context),
-            status: Response::HTTP_MULTI_STATUS,
+            data: $this->serializer->serialize($responseDTO, JsonEncoder::FORMAT, [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+                AbstractObjectNormalizer::PRESERVE_EMPTY_OBJECTS => true,
+            ]),
             json: true,
         );
     }

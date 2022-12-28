@@ -45,10 +45,6 @@ class CacheController extends AbstractController implements AuthenticatedControl
     ): Response {
         $identifiersList = $this->cacheService->getCacheItems($credentials, $connectorConfig, $cacheRequest->items);
 
-        return $this->cacheItemRenderer->render(
-            $identifiersList->items,
-            $identifiersList->errorMessage,
-            $identifiersList->errors,
-        );
+        return $this->cacheItemRenderer->render($identifiersList);
     }
 }

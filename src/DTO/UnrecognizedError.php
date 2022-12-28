@@ -2,12 +2,10 @@
 
 namespace App\DTO;
 
-class ErrorItem
+class UnrecognizedError
 {
     public function __construct(
-        public readonly ?string $value,
         public readonly string $message,
-        public readonly ?string $errorCode = null,
     ) {
     }
 }

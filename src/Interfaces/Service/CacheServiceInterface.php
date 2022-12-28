@@ -2,8 +2,8 @@
 
 namespace App\Interfaces\Service;
 
+use App\DTO\CacheItem;
 use App\DTO\Identifier;
-use App\DTO\IdentifiersList;
 use App\Integration\DTO\AuthCredentials;
 use App\Integration\DTO\ConnectorConfig;
 
@@ -16,10 +16,12 @@ interface CacheServiceInterface
 
     /**
      * @param array<int, Identifier> $identifiers
+     *
+     * @return array<int, CacheItem>
      */
     public function getCacheItems(
         AuthCredentials $credentials,
         ConnectorConfig $connectorConfig,
         array $identifiers,
-    ): IdentifiersList;
+    ): array;
 }

@@ -2,17 +2,20 @@
 
 namespace App\Exception;
 
-use App\DTO\ErrorDetails\ErrorDetailsDTO;
+use App\DTO\CustomErrorInfo;
 use App\Enum\ErrorCodeEnum;
 use Symfony\Component\HttpFoundation\Response;
 
 class BadRequestHttpException extends HttpException
 {
+    /**
+     * @param array<int, CustomErrorInfo> $errors
+     */
     public function __construct(
         string $message = '',
-        ?ErrorDetailsDTO $details = null,
-        ErrorCodeEnum $errorCode = ErrorCodeEnum::AUTH_INVALID_DATA_ERROR,
+        array $errors = [],
+        ErrorCodeEnum $errorCode = ErrorCodeEnum::UNRECOGNIZED_ERROR,
     ) {
-        parent::__construct($errorCode, $details, $message, Response::HTTP_BAD_REQUEST);
+        parent::__construct($message, Response::HTTP_BAD_REQUEST, $errorCode, $errors);
     }
 }

@@ -43,7 +43,7 @@ final class TranslationDataProvider
                 [
                     'statusCode' => Response::HTTP_BAD_REQUEST,
                     'payload' => [
-                        'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                        'errorCode' => ErrorCodeEnum::CLIENT_ERROR->value,
                         'details' => [
                             'errors' => [
                                 [

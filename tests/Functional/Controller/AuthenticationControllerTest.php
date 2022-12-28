@@ -10,6 +10,7 @@ use App\Renderer\AuthMethodRenderer;
 use App\Renderer\JsonResponseRenderer;
 use App\Service\AuthTypeService;
 use App\Tests\Functional\AbstractApiTestCase;
+use App\Tests\Functional\DataProvider\AuthenticationDataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -49,6 +50,41 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             $request,
             static::getTestConnectorConfigHeader(),
             $response,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authWithoutHeadersProvider
+     *
+     * @throws \Exception
+     */
+    public function testAuthWithoutHeaders(array $response): void
+    {
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/auth',
+            expectedResponse: $response,
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
+        );
+    }
+
+    /**
+     * @dataProvider \App\Tests\Functional\DataProvider\AuthenticationDataProvider::authWithInvalidHeadersProvider
+     *
+     * @throws \Exception
+     */
+    public function testAuthWithInvalidHeaders(array $response): void
+    {
+        static::assertRequest(
+            method: Request::METHOD_POST,
+            uri: '/v2/auth',
+            server: [
+                'HTTP_ce-config' => base64_encode(
+                    json_encode([], JSON_THROW_ON_ERROR),
+                ),
+            ],
+            expectedResponse: $response,
+            expectedStatusCode: Response::HTTP_BAD_REQUEST,
         );
     }
 
@@ -108,7 +144,7 @@ class AuthenticationControllerTest extends AbstractApiTestCase
             $request,
             static::getTestConnectorConfigHeader(),
             $response,
-            Response::HTTP_NOT_FOUND,
+            Response::HTTP_INTERNAL_SERVER_ERROR,
         );
     }
 
