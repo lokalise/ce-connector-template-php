@@ -2,7 +2,6 @@
 
 namespace App\Renderer;
 
-use App\DTO\ErrorItem;
 use App\DTO\Response\PublishResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,13 +12,10 @@ class PublishRenderer
     ) {
     }
 
-    /**
-     * @param array<int, array<string, ErrorItem>> $errors
-     */
-    public function render(?string $errorMessage = null, array $errors = []): Response
+    public function render(): Response
     {
         $responseDTO = new PublishResponse(Response::HTTP_OK, 'Content successfully updated');
 
-        return $this->jsonResponseRenderer->render($responseDTO, $errorMessage, $errors);
+        return $this->jsonResponseRenderer->render($responseDTO);
     }
 }

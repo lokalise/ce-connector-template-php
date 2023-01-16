@@ -53,7 +53,11 @@ class AuthenticationController extends AbstractController
         AuthenticationRequest $authenticationRequest,
         ConnectorConfig $connectorConfig,
     ): Response {
-        $url = $this->authenticationService->generateAuthUrl($authenticationRequest->redirectUrl, $connectorConfig);
+        $url = $this->authenticationService->generateAuthUrl(
+            $authenticationRequest->redirectUrl,
+            $authenticationRequest->state,
+            $connectorConfig,
+        );
 
         return $this->authRenderer->renderUrl($url);
     }

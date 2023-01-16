@@ -2,7 +2,6 @@
 
 namespace App\ArgumentResolver;
 
-use App\DTO\ErrorDetails\BadRequestErrorDetails;
 use App\DTO\Request\RequestDTO;
 use App\Enum\ErrorCodeEnum;
 use App\Enum\OAuthResponseParamsEnum;
@@ -50,7 +49,7 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
         } catch (MissingConstructorArgumentsException) {
             throw new BadRequestHttpException(
                 message: 'Bad request',
-                errorCode: ErrorCodeEnum::UNKNOWN_ERROR,
+                errorCode: ErrorCodeEnum::CLIENT_ERROR,
             );
         }
 
@@ -70,12 +69,10 @@ class RequestDtoResolver implements ArgumentValueResolverInterface
         );
 
         if (count($violations) > 0) {
-            $errors = $this->badRequestErrorsFormatter->format($violations);
-
             throw new BadRequestHttpException(
                 'Bad request',
-                new BadRequestErrorDetails([$errors]),
-                ErrorCodeEnum::UNKNOWN_ERROR,
+                $this->badRequestErrorsFormatter->format($violations),
+                ErrorCodeEnum::CLIENT_ERROR,
             );
         }
     }

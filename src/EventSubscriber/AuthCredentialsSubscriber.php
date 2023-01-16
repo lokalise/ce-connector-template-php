@@ -3,7 +3,6 @@
 namespace App\EventSubscriber;
 
 use App\Controller\AuthenticatedControllerInterface;
-use App\DTO\ErrorDetails\InvalidApiKeyErrorDetails;
 use App\Exception\ExtractorNotExistException;
 use App\Exception\UnauthorizedHttpException;
 use App\Integration\DTO\AuthCredentials;
@@ -52,10 +51,7 @@ class AuthCredentialsSubscriber implements EventSubscriberInterface
         $apiKey = $apiKeyExtractor->extract($event->getRequest());
 
         if (!$apiKey) {
-            throw new UnauthorizedHttpException(
-                'Authorization failed',
-                new InvalidApiKeyErrorDetails(),
-            );
+            throw new UnauthorizedHttpException(error: 'Invalid api key');
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\DataProvider;
 
 use App\Enum\ErrorCodeEnum;
+use App\Enum\SingleItemErrorCodeEnum;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CacheDataProvider
@@ -74,7 +75,7 @@ final class CacheDataProvider
                 [
                     'statusCode' => Response::HTTP_BAD_REQUEST,
                     'payload' => [
-                        'errorCode' => ErrorCodeEnum::UNKNOWN_ERROR->value,
+                        'errorCode' => ErrorCodeEnum::CLIENT_ERROR->value,
                         'details' => [
                             'errors' => [
                                 [
@@ -99,15 +100,20 @@ final class CacheDataProvider
                     ],
                 ],
                 [
-                    'items' => [],
-                    'code' => Response::HTTP_MULTI_STATUS,
-                    'errors' => [
-                        [
-                            'uniqueId' => [
-                                'value' => IdentifierDataProvider::INVALID_UNIQUE_ID,
+                    'statusCode' => Response::HTTP_MULTI_STATUS,
+                    'payload' => [
+                        'message' => 'Some items were not fetched',
+                        'errorCode' => ErrorCodeEnum::SOME_ITEMS_HAVE_ERRORS->value,
+                        'details' => [
+                            'errors' => [
+                                [
+                                    'uniqueId' => IdentifierDataProvider::INVALID_UNIQUE_ID,
+                                    'errorCode' => SingleItemErrorCodeEnum::ITEM_NOT_FOUND_ERROR->value,
+                                ],
                             ],
                         ],
                     ],
+                    'items' => [],
                 ],
             ],
         ];

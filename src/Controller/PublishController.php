@@ -30,13 +30,13 @@ class PublishController extends AbstractController implements AuthenticatedContr
         ConnectorConfig $connectorConfig,
         PublishRequest $publishRequest,
     ): Response {
-        $identifiersList = $this->publishService->publishContent(
+        $this->publishService->publishContent(
             $credentials,
             $connectorConfig,
             $publishRequest->items,
             $publishRequest->defaultLocale,
         );
 
-        return $this->publishRenderer->render($identifiersList->errorMessage, $identifiersList->errors);
+        return $this->publishRenderer->render();
     }
 }

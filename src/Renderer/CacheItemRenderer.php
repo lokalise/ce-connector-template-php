@@ -3,7 +3,6 @@
 namespace App\Renderer;
 
 use App\DTO\CacheItem;
-use App\DTO\ErrorItem;
 use App\DTO\Response\CacheItemsResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -16,12 +15,11 @@ class CacheItemRenderer
 
     /**
      * @param array<int, CacheItem> $items
-     * @param array<int, array<string, ErrorItem>> $errors
      */
-    public function render(array $items, ?string $errorMessage = null, array $errors = []): Response
+    public function render(array $items): Response
     {
         $responseDTO = new CacheItemsResponse($items);
 
-        return $this->jsonResponseRenderer->render($responseDTO, $errorMessage, $errors);
+        return $this->jsonResponseRenderer->render($responseDTO);
     }
 }

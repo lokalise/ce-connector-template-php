@@ -3,7 +3,8 @@
 namespace App\ArgumentResolver;
 
 use App\DataTransformer\AuthCredentialsTransformer;
-use App\DTO\ErrorDetails\BadRequestErrorDetails;
+use App\DTO\CustomErrorInfo;
+use App\Enum\ErrorCodeEnum;
 use App\Exception\BadRequestHttpException;
 use App\Exception\ExtractorNotExistException;
 use App\Formatter\BadRequestErrorsFormatter;
@@ -47,13 +48,16 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         $apiKey = $apiKeyExtractor->extract($request);
 
         if (null === $apiKey) {
+            $error = new CustomErrorInfo();
+            $error->addError(
+                AuthCredentialsExtractor::AUTH_CREDENTIALS_HEADER,
+                'Authentication header should not be blank.',
+            );
+
             throw new BadRequestHttpException(
                 'Invalid authentication data',
-                new BadRequestErrorDetails([
-                    [
-                        AuthCredentialsExtractor::AUTH_CREDENTIALS_HEADER => ['Authentication header should not be blank.'],
-                    ],
-                ]),
+                [$error],
+                ErrorCodeEnum::AUTH_INVALID_DATA_ERROR,
             );
         }
 
@@ -70,11 +74,10 @@ class AuthCredentialsResolver implements ArgumentValueResolverInterface
         $violations = $this->validator->validate($authCredentials);
 
         if (count($violations) > 0) {
-            $errors = $this->badRequestErrorsFormatter->format($violations);
-
             throw new BadRequestHttpException(
                 'Invalid authentication data',
-                new BadRequestErrorDetails([$errors]),
+                $this->badRequestErrorsFormatter->format($violations),
+                ErrorCodeEnum::AUTH_INVALID_DATA_ERROR,
             );
         }
     }

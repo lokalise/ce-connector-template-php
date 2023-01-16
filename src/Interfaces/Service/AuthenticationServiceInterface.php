@@ -12,7 +12,7 @@ interface AuthenticationServiceInterface
 
     public function refreshApiKey(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials;
 
-    public function generateAuthUrl(string $redirectUrl, ConnectorConfig $connectorConfig): string;
+    public function generateAuthUrl(string $redirectUrl, string $state, ConnectorConfig $connectorConfig): string;
 
     public function refreshAccessToken(AuthCredentials $credentials, ConnectorConfig $connectorConfig): AuthCredentials;
 

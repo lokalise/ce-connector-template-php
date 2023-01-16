@@ -8,4 +8,7 @@ class AuthenticationRequest implements RequestDTO
 {
     #[Assert\NotBlank]
     public ?string $redirectUrl = null;
+
+    #[Assert\NotBlank]
+    public ?string $state = null;
 }

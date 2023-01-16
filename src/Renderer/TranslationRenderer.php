@@ -2,7 +2,6 @@
 
 namespace App\Renderer;
 
-use App\DTO\ErrorItem;
 use App\DTO\Response\TranslationResponse;
 use App\DTO\TranslationItem;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,12 +15,11 @@ class TranslationRenderer
 
     /**
      * @param array<int, TranslationItem> $items
-     * @param array<int, array<string, ErrorItem>> $errors
      */
-    public function render(array $items, ?string $errorMessage = null, array $errors = []): Response
+    public function render(array $items): Response
     {
         $responseDTO = new TranslationResponse($items);
 
-        return $this->jsonResponseRenderer->render($responseDTO, $errorMessage, $errors);
+        return $this->jsonResponseRenderer->render($responseDTO);
     }
 }

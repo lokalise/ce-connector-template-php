@@ -2,18 +2,23 @@
 
 namespace App\Exception;
 
-use App\DTO\ErrorDetails\ErrorDetailsDTO;
+use App\DTO\BaseErrorInfo;
+use App\DTO\CustomErrorInfo;
+use App\DTO\UnrecognizedError;
 use App\Enum\ErrorCodeEnum;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException as BaseHttpException;
 
 class HttpException extends BaseHttpException
 {
+    /**
+     * @param array<int, BaseErrorInfo|CustomErrorInfo|UnrecognizedError>|null $errors
+     */
     public function __construct(
-        private readonly ErrorCodeEnum $errorCode = ErrorCodeEnum::UNKNOWN_ERROR,
-        private readonly ?ErrorDetailsDTO $details = null,
-        string $message = '',
+        string $message = 'Unrecognized error',
         int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR,
+        private readonly ErrorCodeEnum $errorCode = ErrorCodeEnum::UNRECOGNIZED_ERROR,
+        private readonly ?array $errors = null,
     ) {
         parent::__construct($statusCode, $message);
     }
@@ -23,8 +28,11 @@ class HttpException extends BaseHttpException
         return $this->errorCode;
     }
 
-    public function getDetails(): ?ErrorDetailsDTO
+    /**
+     * @return array<int, BaseErrorInfo|CustomErrorInfo|UnrecognizedError>|null
+     */
+    public function getErrors(): ?array
     {
-        return $this->details;
+        return $this->errors;
     }
 }

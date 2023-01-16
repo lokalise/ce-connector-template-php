@@ -2,36 +2,24 @@
 
 namespace App\Formatter;
 
-use App\DTO\ErrorItem;
+use App\DTO\BaseErrorInfo;
+use App\DTO\CustomErrorInfo;
+use App\Integration\Formatter\ErrorsCollection;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class MultiStatusErrorsFormatter
+class MultiStatusErrorsFormatter implements ErrorsFormatterInterface
 {
     /**
-     * @return array<int, array<string, ErrorItem>>
+     * @return array<int, BaseErrorInfo|CustomErrorInfo>
      */
     public function format(ConstraintViolationListInterface $violations): array
     {
-        $errors = [];
+        $errorsCollection = new ErrorsCollection();
 
         foreach ($violations as $violation) {
-            $uniqueId = $violation->getCause();
-            $fieldPath = $violation->getPropertyPath();
-
-            $errorItem = new ErrorItem(
-                $violation->getInvalidValue(),
-                $violation->getMessage(),
-                $violation->getCode(),
-            );
-
-            if ('uniqueId' === $fieldPath) {
-                $errors[$uniqueId]['uniqueId'] = $errorItem;
-            } else {
-                $errors[$uniqueId]['uniqueId'] = $uniqueId;
-                $errors[$uniqueId]['translations'][$fieldPath] = $errorItem;
-            }
+            $errorsCollection->addError($violation);
         }
 
-        return array_values($errors);
+        return $errorsCollection->getErrors();
     }
 }
