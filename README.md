@@ -51,7 +51,7 @@ connector.
 
 1. In root project folder copy `.env` file and name it as `.env.local`.
 2. Run `make init` in command line.
-3. The app is available at: http://localhost:8080/.
+3. The app is available at: http://localhost:8080/ (If `WORKSPACE_HTTP_PORT` was not changed).
 
 ## Configuration settings for your connector
 
